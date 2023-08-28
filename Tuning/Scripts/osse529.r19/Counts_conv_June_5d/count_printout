@@ -1,0 +1,247 @@
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    1   12  20060623         0
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H00/osse529.diag_conv.20060623_00z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H00/
+ osse529.diag_conv.20060623_00z.ods
+Times on file offset by      0 min.
+ number of obs in file =     1266535
+ Program end for time=           1    20060623           0
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    2   12  20060623     60000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H06/osse529.diag_conv.20060623_06z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H06/
+ osse529.diag_conv.20060623_06z.ods
+Times on file offset by   -360 min.
+ number of obs in file =     1027624
+ File read
+ Program end for time=           2    20060623       60000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    3   12  20060623    120000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H12/osse529.diag_conv.20060623_12z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H12/
+ osse529.diag_conv.20060623_12z.ods
+Times on file offset by   -720 min.
+ number of obs in file =     1217927
+ File read
+ Program end for time=           3    20060623      120000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    4   12  20060623    180000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H18/osse529.diag_conv.20060623_18z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D23/H18/
+ osse529.diag_conv.20060623_18z.ods
+Times on file offset by  -1080 min.
+ number of obs in file =     1202335
+ File read
+ Program end for time=           4    20060623      180000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    5   12  20060624         0
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H00/osse529.diag_conv.20060624_00z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H00/
+ osse529.diag_conv.20060624_00z.ods
+Times on file offset by      0 min.
+ number of obs in file =     1259901
+ File read
+ Program end for time=           5    20060624           0
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    6   12  20060624     60000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H06/osse529.diag_conv.20060624_06z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H06/
+ osse529.diag_conv.20060624_06z.ods
+Times on file offset by   -360 min.
+ number of obs in file =     1032642
+ File read
+ Program end for time=           6    20060624       60000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    7   12  20060624    120000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H12/osse529.diag_conv.20060624_12z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H12/
+ osse529.diag_conv.20060624_12z.ods
+Times on file offset by   -720 min.
+ number of obs in file =     1277631
+ File read
+ Program end for time=           7    20060624      120000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    8   12  20060624    180000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H18/osse529.diag_conv.20060624_18z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D24/H18/
+ osse529.diag_conv.20060624_18z.ods
+Times on file offset by  -1080 min.
+ number of obs in file =     1247168
+ File read
+ Program end for time=           8    20060624      180000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+    9   12  20060625         0
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H00/osse529.diag_conv.20060625_00z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H00/
+ osse529.diag_conv.20060625_00z.ods
+Times on file offset by      0 min.
+ number of obs in file =     1264722
+ File read
+ Program end for time=           9    20060625           0
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   10   12  20060625     60000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H06/osse529.diag_conv.20060625_06z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H06/
+ osse529.diag_conv.20060625_06z.ods
+Times on file offset by   -360 min.
+ number of obs in file =     1073492
+ File read
+ Program end for time=          10    20060625       60000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   11   12  20060625    120000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H12/osse529.diag_conv.20060625_12z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H12/
+ osse529.diag_conv.20060625_12z.ods
+Times on file offset by   -720 min.
+ number of obs in file =     1286659
+ File read
+ Program end for time=          11    20060625      120000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   12   12  20060625    180000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H18/osse529.diag_conv.20060625_18z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D25/H18/
+ osse529.diag_conv.20060625_18z.ods
+Times on file offset by  -1080 min.
+ number of obs in file =     1248360
+ File read
+ Program end for time=          12    20060625      180000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   13   12  20060626         0
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H00/osse529.diag_conv.20060626_00z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H00/
+ osse529.diag_conv.20060626_00z.ods
+Times on file offset by      0 min.
+ number of obs in file =     1305546
+ File read
+ Program end for time=          13    20060626           0
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   14   12  20060626     60000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H06/osse529.diag_conv.20060626_06z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H06/
+ osse529.diag_conv.20060626_06z.ods
+Times on file offset by   -360 min.
+ number of obs in file =     1000613
+ File read
+ Program end for time=          14    20060626       60000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   15   12  20060626    120000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H12/osse529.diag_conv.20060626_12z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H12/
+ osse529.diag_conv.20060626_12z.ods
+Times on file offset by   -720 min.
+ number of obs in file =     1197593
+ File read
+ Program end for time=          15    20060626      120000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   16   12  20060626    180000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H18/osse529.diag_conv.20060626_18z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D26/H18/
+ osse529.diag_conv.20060626_18z.ods
+Times on file offset by  -1080 min.
+ number of obs in file =     1210966
+ File read
+ Program end for time=          16    20060626      180000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   17   12  20060627         0
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H00/osse529.diag_conv.20060627_00z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H00/
+ osse529.diag_conv.20060627_00z.ods
+Times on file offset by      0 min.
+ number of obs in file =     1248672
+ File read
+ Program end for time=          17    20060627           0
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   18   12  20060627     60000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H06/osse529.diag_conv.20060627_06z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H06/
+ osse529.diag_conv.20060627_06z.ods
+Times on file offset by   -360 min.
+ number of obs in file =      972147
+ File read
+ Program end for time=          18    20060627       60000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   19   12  20060627    120000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H12/osse529.diag_conv.20060627_12z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H12/
+ osse529.diag_conv.20060627_12z.ods
+Times on file offset by   -720 min.
+ number of obs in file =     1130735
+ File read
+ Program end for time=          19    20060627      120000
+ Reading file /discover/nobackup/nprive/postproc/geosnr/land.7km.nc
+  
+   20   12  20060627    180000
+    90.0   -90.0     0.0   360.0
+/discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H18/osse529.diag_conv.20060627_18z.ods
+ File opened =
+ /discover/nobackup/projects/gmao/nwposse/develop/osse529/obs/Y2006/M06/D27/H18/
+ osse529.diag_conv.20060627_18z.ods
+Times on file offset by  -1080 min.
+ number of obs in file =     1167152
+ File read
+ Program end for time=          20    20060627      180000
+ Input file read: input_stats
+Header info:         20        12  20060627    180000
+  
+ Output file opened: count_osse529_conv_290_v.txt
+ Header written to output file
+ Means, stdvs written to output file
+ Bin counts   written to output file
+ Program completed

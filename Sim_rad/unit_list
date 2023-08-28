@@ -1,0 +1,36 @@
+create_rad_bufr.F90:   
+    integer, parameter :: u_bufrin=15   ! unit for input having bufr table
+    integer, parameter :: u_bufrin2=16  ! unit for separate bufr table if needed
+    integer, parameter :: u_bufrout=17  ! unit for bufr output
+
+create_rad_bufr.F90:   
+    obs_list_unit_in=12
+
+create_rad_merge.f90:  
+    integer     :: unit_in_1=12
+    integer     :: unit_in_2=13
+    integer     :: unit_out=14   ! must agrre with unit in write profs module
+
+create_rad_obs_list.f90:   
+    integer, parameter :: lunit_bufr=20
+
+create_rad_profs.F90:
+    obs_list_unit_in=12
+
+create_rad_reord.f90:   
+    obs_list_unit_in=12
+
+m_rad_fields_info.f90:   
+    integer, parameter :: iunit=10
+
+m_rad_prob.f90:  
+    integer, parameter :: iunit=10
+
+m_rad_thin.f90:   
+    integer, parameter :: iunit=30
+
+m_rad_thin_flds.f90:    
+   integer, parameter :: iunit=10
+
+m_write_profiles.f90:   
+   integer, parameter :: profile_unit=14

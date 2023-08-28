@@ -1,0 +1,4 @@
+m_kinds.o: m_kinds.f90
+testMPI.o: testMPI.F90
+
+

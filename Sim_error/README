@@ -1,0 +1,36 @@
+In m_obs_pert.f90: Subroutine pert_obs
+
+For vertically correlated error fields that are not also horiz correlated,
+such as for raobs and gpsro, the correlation pararmeters that must be set 
+in the error.V03.rc file (V03 refers to a particular set of params, not a code
+version) as follow: 
+
+For GPSRO:
+vcorr_dist=      1 400.
+
+The "1" means correlations for a single variable, i.e., bending angle.  The
+"400" is the distance in meters over which the correlation drops to 0.1; it is
+not the value of L in the expression correl=exp(-0.5*(delta z/L)**2) which is
+instead the distance over which the correlation drops to 1/sqrt(e).
+
+For PREPBUFR:
+vcorr_dist=      4 1.12 1.05 1.12 1.12
+
+The "4" means 4 values: separate correlations for T, q, u, v, in that order.
+The units here are ratios of p between obs at 2 p-levels.  Distance cannot be
+used because the wind reports do not have T values and sometimes not z values,
+so differences in height between obs cannot be determined. Instead, we use
+
+Corr=exp [a* (log(P1/P2)/log(PR))**2] 
+
+where PR is the value for the vcorr_dist for the chosen field, 
+a=log(0.1) and P1/P2 are the P at two P levels. So, the correlation drops to
+0.1 when the 2 P values are in the ratio PR or 1/PR. Note this this
+formulation is in terms of p only. It would be equivalent to a constant
+correlation length in height if the atmosphere were isothermal. 
+
+I will try to check this again, but for now it is how I read the code. 
+
+
+ 
+

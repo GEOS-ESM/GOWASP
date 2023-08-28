@@ -1,0 +1,11 @@
+#!/bin/csh -f
+
+if( $?PBS_NODEFILE ) then
+   set dotexe = $HOME/bin/rmshmkeyhere
+
+   set nodes = `cat $PBS_NODEFILE | uniq`
+   foreach node ($nodes)
+      ssh -oNumberOfPasswordPrompts=0 -q $node 'rmshmkeyhere' &
+   end
+   wait
+endif

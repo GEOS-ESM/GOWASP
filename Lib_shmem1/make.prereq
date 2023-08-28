@@ -1,0 +1,7 @@
+sort.o: sort.c
+MAPL_Sort.o: MAPL_Sort.F90 
+MAPL_ShmemMod.o: MAPL_ShmemMod.F90 MAPL_Sort.o
+m_die.o: m_die.F90 
+
+
+

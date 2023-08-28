@@ -1,0 +1,4 @@
+read_akbk.o: read_akbk.f90 
+m_prnt_test.o: m_prnt_test.f90
+rw_nc4file.o: rw_nc4file.f90
+enorm.o: enorm.f90 read_akbk.o rw_nc4file.o m_prnt_test.o

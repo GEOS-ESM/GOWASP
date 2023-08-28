@@ -1,0 +1,11 @@
+bufr_amv_write.o: bufr_amv_write.f90
+m_kx_table.o: m_kx_table.f90 
+m_satloc.o: m_satloc.f90 m_kx_table.o 
+m_amv_view.o: m_amv_view.f90 m_satloc.o m_kx_table.o
+m_amv_fields.o: m_amv_fields.F90 m_kx_table.o
+compute_params.o: compute_params.F90 m_amv_view.o m_satloc.o m_kx_table.o m_amv_fields.o
+create_amv.o: create_amv.F90 m_amv_view.o m_satloc.o m_kx_table.o bufr_amv_write.o m_amv_fields.o
+sum_kx_table.o: sum_kx_table.f90 m_kx_table.o
+satwind_txt2bufr.o: satwind_txt2bufr.f90 
+
+

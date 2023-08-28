@@ -1,0 +1,323 @@
+setenv NBRPROCS 12
+source ~/GOWASP_3/GOWASP_ENV
+setenv GOWASP_ENV /discover/home/rerrico/GOWASP_3/GOWASP_ENV
+setenv NOBACKUP /discover/nobackup/rerrico
+setenv GOWASP_PATH /discover/home/rerrico/GOWASP_3
+setenv GOWASP_EXTRA_PATH /discover/home/rerrico/OSSEextra
+setenv GOWASP_BUFR_DATA /discover/nobackup/rerrico/BUFRDATA
+setenv GOWASP_BUFRBIN /discover/nobackup/mkim1/progress_cvs/EnADAS-5_15_2p1/GEOSadas/Linux/bin
+setenv GOWASP_RMSHMKEY /discover/home/rerrico/bin
+setenv GOWASP_G5MODS /discover/nobackup/mkim1/progress_cvs/EnADAS-5_15_2p1/GEOSadas/Linux/bin/g5_modules
+setenv GSI_TAG G5152
+setenv GOWASP_CRTM_COEF_DIR /gpfsm/dnb52/projects/p10/gmao_ops/fvInput_4dvar/gsi/etc/fix_ncep20151116/REL-2.2.3-r60152/CRTM_Coeffs/Little_Endian/
+source /discover/nobackup/mkim1/progress_cvs/EnADAS-5_15_2p1/GEOSadas/Linux/bin/g5_modules
+set scriptname = g5_modules
+if ( g5_modules == slurm_script ) then
+set sourced = 1
+endif
+if ( ! 1 && ! 0 ) goto usage
+if ( 1 && 0 ) goto usage
+set arch = `uname -s`
+uname -s
+set mach = `uname -m`
+uname -m
+set node = `uname -n`
+uname -n
+if ( ( borgo171 =~ discover* ) || ( borgo171 =~ borg* ) || ( borgo171 =~ dali* ) || ( borgo171 =~ warp* ) ) then
+set site = NCCS
+else if ( ( borgo171 =~ jibb* ) || ( borgo171 =~ jcc01* ) ) then
+alias echo2 echo !* > /dev/stderr
+if ( x86_64 == x86_64 ) goto X86_64
+goto X86_64
+set modinit = DUMMY
+set loadmodules = 0
+set usemodules = 0
+if ( NCCS == NCCS || NCCS == JIBB ) then
+set mod1 = comp/intel-15.0.2.164
+if ( NCCS == NCCS ) then
+set basedir = /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+else
+set mod2 = mpi/impi-5.0.3.048
+set mod3 = lib/mkl-15.0.2.164
+set mod4 = other/comp/gcc-4.6.3-sp1
+set mod5 = other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+set mods = ( comp/intel-15.0.2.164 mpi/impi-5.0.3.048 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+set modinit = /usr/share/modules/init/csh
+set loadmodules = 0
+set usemodules = 0
+else if ( NCCS == NAS ) then
+goto ACTION
+set wrapper = 0
+if ( 0 > 0 ) then
+SETVALUES:
+if ( 1 ) then
+if ( ! 0 ) echo -n g5_modules: Setting BASEDIR
+echo -n g5_modules: Setting BASEDIR
+g5_modules: Setting BASEDIRsetenv BASEDIR /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+else if ( 1 ) then
+if ( 1 ) then
+echo /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+grep /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+if ( 0 ) then
+else
+if ( 0 ) then
+if ( 0 ) then
+if ( -e /usr/share/modules/init/csh ) then
+if ( ! 0 ) echo -n  and modules
+echo -n  and modules
+ and modulessource /usr/share/modules/init/csh
+if ( 1 ) then
+set modules_shell=tcsh
+else
+if ( 1 ) then
+setenv MODULE_VERSION_STACK 3.1.6
+else
+set exec_prefix=/usr
+if ( 0 ) then
+if ( 0 ) then
+alias module eval `/usr/bin/modulecmd tcsh !*`
+endif
+endif
+unset exec_prefix
+setenv MODULESHOME /usr/share/modules
+if ( ! 1 ) then
+if ( ! 1 ) then
+eval `/usr/bin/modulecmd tcsh purge`
+/usr/bin/modulecmd tcsh purge
+setenv LD_LIBRARY_PATH /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv PATH .:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+unsetenv CPATH
+unsetenv MPICH_CLINKER
+unsetenv LIBRARY_PATH
+unsetenv I_MPI_ROOT
+unsetenv MPICH_CCC
+unsetenv CCC
+unsetenv _LMFILES_
+unsetenv LOADEDMODULES
+unsetenv I_MPI_FABRICS_LIST
+unsetenv FPATH
+unsetenv MPICH_FLINKER
+unsetenv CXX
+unsetenv DEFAULT_F90
+unsetenv INCLUDE
+unsetenv TBBROOT
+unsetenv MPICH_F90LINKER
+unsetenv I_MPI_MPD_TMPDIR
+unsetenv IPPROOT
+unsetenv INTEL_LICENSE_FILE
+unsetenv MPI_HOME
+unsetenv GDB_CROSS
+unsetenv MPIHOME
+unsetenv I_MPI_FABRICS
+unsetenv MPICH_F90
+unsetenv COMPILER_VER
+unsetenv F90
+unsetenv MIC_LD_LIBRARY_PATH
+unsetenv MKLROOT
+unsetenv DEFAULT_F77
+unsetenv MKLPATH
+unsetenv MIC_LIBRARY_PATH
+unsetenv FC
+unsetenv I_MPI_MPD_RSH
+unsetenv NLSPATH
+unsetenv DEFAULT_CC
+unsetenv MPICH_CCLINKER
+unsetenv COMPILER
+unsetenv GDBSERVER_MIC
+unsetenv MPICH_F77
+unsetenv F77
+unsetenv I_MPI_FALLBACK
+unsetenv MPICH_CC
+unsetenv CC
+unsetenv DEFAULT_CPP
+if ( 0 ) module load modules
+if ( 0 ) then
+foreach mod ( comp/intel-15.0.2.164 mpi/impi-5.0.3.048 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load comp/intel-15.0.2.164
+setenv CPATH /usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MPICH_CLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MANPATH /usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv MPICH_CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164
+setenv LOADEDMODULES comp/intel-15.0.2.164
+setenv FPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv MPICH_FLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv CXX /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv DEFAULT_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv INCLUDE /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv TBBROOT /usr/local/intel/Composer/composer_xe_2015.2.164/tbb
+setenv MPICH_F90LINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv IPPROOT /usr/local/intel/Composer/composer_xe_2015.2.164/ipp
+setenv INTEL_LICENSE_FILE /usr/local/intel/licenses
+setenv GDB_CROSS /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin/gdb-mic
+setenv MPICH_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv COMPILER_VER 15.0.2.164
+setenv F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MKLROOT /usr/local/intel/Composer/composer_xe_2015.2.164/mkl
+setenv MIC_LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/mic:/opt/intel/mic/coi/device-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv DEFAULT_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MKLPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64
+setenv MIC_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv FC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv NLSPATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64/locale/en_US/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/intel64/locale/%l_%t/%N
+setenv DEFAULT_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MPICH_CCLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv COMPILER intel
+setenv GDBSERVER_MIC /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/target/mic/bin/gdbserver
+setenv MPICH_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv PATH /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv MPICH_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv DEFAULT_CPP /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load mpi/impi-5.0.3.048
+setenv CPATH /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv LD_LIBRARY_PATH /usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv I_MPI_ROOT /usr/local/intel/mpi/5.0.3.048
+setenv LIBRARY_PATH /usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048
+setenv I_MPI_FABRICS_LIST dapl,ofa
+setenv FPATH /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv INCLUDE /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv I_MPI_MPD_TMPDIR /tmp
+setenv MPI_HOME /usr/local/intel/mpi/5.0.3.048
+setenv I_MPI_FABRICS shm:dapl
+setenv MPIHOME /usr/local/intel/mpi/5.0.3.048
+setenv I_MPI_MPD_RSH sshmpi
+setenv I_MPI_FALLBACK enable
+setenv PATH /usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load lib/mkl-15.0.2.164
+setenv INTEL_LICENSE_FILE /usr/local/intel/license
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load other/comp/gcc-4.6.3-sp1
+setenv INCLUDE /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv INCLUDE /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/include:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/man:/usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/share/man:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/bin:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1:/usr/local/other/modules/modulefiles/other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1:other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+end
+endif
+if ( ! 0 ) echo  for borgo171
+echo  for borgo171
+ for borgo171
+if ( 0 ) then
+exit
+setenv SIMPROGS /discover/home/rerrico/GOWASP_3
+setenv BASEDIR1 /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+setenv GEOSPATH1 /discover/nobackup/mkim1/progress_cvs/EnADAS-5_15_2p1/GEOSadas
+setenv SRCDIR /discover/home/rerrico/GOWASP_3
+umask 022
+echo GOWASP environment set
+GOWASP environment set
+setenv SIMHOME /discover/home/rerrico/GOWASP_3/Shmem_test
+setenv SIMWORK /discover/nobackup/rerrico/SHMEMTEST.5845
+if ( ! -e /discover/nobackup/rerrico/SHMEMTEST.5845 ) mkdir -p /discover/nobackup/rerrico/SHMEMTEST.5845
+mkdir -p /discover/nobackup/rerrico/SHMEMTEST.5845
+cd /discover/nobackup/rerrico/SHMEMTEST.5845
+cp /discover/home/rerrico/GOWASP_3/Shmem_test/shmem_reader.x prog.x
+mpirun -np 12 prog.x
+Starting MPI on   12 processors
+ 
+ In MAPL_Shmem:
+     NumCores per Node =           12
+     NumNodes in use   =            1
+     Total PEs         =           12
+ 
+ 
+ In MAPL_InitializeShmem (NodeRootsComm):
+     NumNodes in use   =            1
+ 
+ Reading U on PE            0
+ Reading T on PE            2
+ Reading V on PE            1
+ 
+ --- Array Statistics ---
+ U:            0   185.3355      -108.9388    
+ U:            1   185.3355      -108.9388    
+ U:            2   185.3355      -108.9388    
+ U:            3   185.3355      -108.9388    
+ U:            4   185.3355      -108.9388    
+ U:            5   185.3355      -108.9388    
+ U:            6   185.3355      -108.9388    
+ U:            7   185.3355      -108.9388    
+ U:            9   185.3355      -108.9388    
+ U:           11   185.3355      -108.9388    
+ U:            8   185.3355      -108.9388    
+ U:           10   185.3355      -108.9388    
+ V:            1   74.41072      -107.0984    
+ V:            0   74.41072      -107.0984    
+ V:            2   74.41072      -107.0984    
+ V:            3   74.41072      -107.0984    
+ V:            4   74.41072      -107.0984    
+ V:            5   74.41072      -107.0984    
+ V:            6   74.41072      -107.0984    
+ V:            7   74.41072      -107.0984    
+ V:            8   74.41072      -107.0984    
+ V:            9   74.41072      -107.0984    
+ V:           10   74.41072      -107.0984    
+ V:           11   74.41072      -107.0984    
+ T:            2   319.7634       174.7926    
+ T:            0   319.7634       174.7926    
+ T:            1   319.7634       174.7926    
+ T:            3   319.7634       174.7926    
+ T:            4   319.7634       174.7926    
+ T:            5   319.7634       174.7926    
+ T:            6   319.7634       174.7926    
+ all processors should have same min/max values!
+ T:            7   319.7634       174.7926    
+ T:            8   319.7634       174.7926    
+ T:            9   319.7634       174.7926    
+ T:           10   319.7634       174.7926    
+ T:           11   319.7634       174.7926    
+ um,vm,tm=   79.26441       17.21934       202.1876    
+date
+Mon Sep 12 13:04:25 EDT 2016
+exit
+________________________________________________________________
+Job Resource Usage Summary for 10837652 
+Note: SLURM doesn't account for the exact same resource types as PBS.  
+      Also, you may see some values missing or zero, typically for 
+      very short jobs.  However, please do contact NCCS USG if you 
+      think the values below are in error.
+
+  CPU Time Used		: 00:36:24
+  Memory Used		: 15118396K
+  Virtual Memory Used	: 221752620K
+  Walltime Used		: 00:01:18
+
+  Memory Requested	: 0n (n=per node; c=per core)
+  CPUs Requested / Allocated : 1 / 28
+  Walltime Requested	: 00:05:00
+
+  Execution Queue	: compute
+  Head Node		: borgo171
+  Charged to		: s0911
+
+  Job Stopped		: Mon Sep 12 13:04:25 EDT 2016
+_____________________________________________________________________
+

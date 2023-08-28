@@ -1,0 +1,177 @@
+This outlines the sequence of steps to tune most types of siimulated obs
+errors. The chapters in the GOWASP-3 Technical Note that describe the 
+algoithms used to simulate and tune these errors should be read, making
+special note of limitations of both sets of algorithms. 
+
+
+STEP 0: Get ods files from archive
+
+0.1: You should not need to copy ods files as long as the dir containing
+     the ods files is accessible to discover 
+     set input_path, output_path, datetime1
+     Do not change the format of the file names. 
+
+
+STEP 1: Compute required O-F statistics
+        For error tuning, these are required separately for both real and 
+        osse data sets.
+     
+1.1: Run chcorr_rad.j  to compute error correlations between rad channels.
+     Set exp, exp_dir, ods_path, datetime1, ntimes, region, OUTPUT, kx_set.
+     Note that ods_path is the portion of the path name before /Yyyyy/Mmm
+     as was automatically specified in step 0.1. For specification of the
+     region, consider WHEM (for Western Hemisphere) for the reason stated 
+     for step 1.2.
+
+1.2: Run hcorr_rad.j to compute horiz correlations of rad errors.
+     Set exp, exp_dir, ods_path, datetime1, ntimes, region, OUTPUT, kx_set.
+     Optionally set ibins, x_max althogh the current values are OK.
+     It is expensive to run this for hyper-spectral instruments over 
+     the whole globe.  Instead running this twice is recommended:
+     once for all non-hyper spectral instruments over the full globe, 
+     and a second time for the same hyper-spectral obs set and region 
+     used in step 1.1.
+
+1.3: Run hcorr_conv.j  to compute horiz correlations of conv obs errors.
+     Set exp, exp_dir, ods_path, datetime1, ntimes, region, OUTPUT, kx_set.
+     Optionally set ibins, x_max, delp_r, delp_o although the current values 
+     are OK.
+
+1.4:  Run vcorr_gps.j  to compute vertical correlations of gps and sonde obs.  
+      Set omf='omf'.  
+      Set exp, exp_dir, ods_path, datetime1, ntimes, region, OUTPUT, 
+      Note that if addhours=+12 then this is appropriate for raobs also.
+      In contrast, if addhours=+06, then the time averaging will include times 
+      when almost no raobs are present, so that the time mean will be approx. 
+      half what it is when addhours=+12. Using addhours=+12, however, excludes
+      half of the available gpsro obs.
+
+1.5:  Re-run vcorr_gps.j  for osse case with omf='obs'
+
+1.6: Run countobs_conv.j if only counts and stdvs are required.
+     This is generally not required for error tuning.
+     Set exp, exp_dir, ods_path, datetime1, ntimes, region, OUTPUT, kx_set.
+     This code is fast and does not require consideration of smaller than
+     global regions.   
+
+1.7: Run countobs_rad.j if only counts and stdvs are required.
+     This is generally not required for error tuning
+     Set exp, exp_dir, ods_path, datetime1, ntimes, region, OUTPUT, kx_set
+     This code is fast and does not require consideration of smaller than
+     global regions.   
+
+1.8: Run vcorr_gps_lat.j if gpsro errors are to be a function of lat. Run this
+     twice: once for for omf="omf" and once for omf="obs". 
+
+Besides computing correlations, results from steps 1.1-1.5 also will be used
+to estimate obs error variances to simulate. Results from steps 1.6-1.7 can be
+used for this purpose instead (except for GPSRO), but not for computing 
+correlations.
+
+
+STEP 2: Compute new iterate of error parameters
+
+2.1: Run eparams_conv_hcorr.j   to compute new error params for conv obs. 
+     set  target_exp, target_dir, osse_exp, osse_dir, corr_func_new
+          path_target_stats, path_osse_stats, RC_PATH, ERROR_PATH, version
+          OUTPUT_PATH 
+
+IF AVHRR is one of the radiance types, it is presently necessary to change the
+name of the instrument in the files in the dirs created by 1.2 or 1.7 so that
+"avhrr" is replaced by "avhrr3". 
+
+2.2: Run eparams_rad_hcorr.j   to compute new error params for rad obs. 
+     Set  target_exp, target_dir, osse_exp, osse_dir, corr_func_new
+          path_target_stats, path_osse_stats, RC_PATH, ERROR_PATH, version
+          OUTPUT_PATH 
+
+2.3: Run eparams_rad_chcorr.j   to compute new error params for rad chan covs.
+     Set  target_exp, target_dir, osse_exp, osse_dir, corr_func_new
+          path_target_stats, path_osse_stats, RC_PATH, ERROR_PATH, version
+          OUTPUT_PATH 
+
+
+These will produce parameters principally for the selected shape of
+correlation function (specified variable corr_func_new),
+although tables of values for other functions will be appended to the results.
+Based on these appended tables, if different corr_func_new seems more
+appropriate than the one originally selected, the selection should be changed
+and the program(s) rerun. 
+
+The files output by these programs should be browsed to see the table values
+are as expected, especially for any observation types for which the estimated
+parameters are expected to be significantly different than previously
+estimated. 
+
+
+STEP 3: Create new tables of error standard deviations
+
+3.1: Run new_R_table_rad.j to create new radiance error table file.
+     Set exp_dir, path_new_R, file_table_old, file_table_new. 
+     This may require mutiple runs if the files from which to extract 
+     parameters have different name structures for different obs types; 
+     e.g if some param files to be use were created by step 2.2 but others
+     by 2.3.  Alternatively, if step 1.2 was applied to all rad obs, then
+     2.2 coud be applied to all and 3.1 can be run once.  However, if 
+     channel correlations are to be use for some types, then it is best if
+     for those obs, corresponding results from both 1.1 and 1.2 were 
+     produced for the same regions so that the estimated error variances 
+     are identical, otherwise something strange may happen.    
+
+3.2: Run new_R_table_conv.j to create new prepbufr error table file.
+     Set exp_dir, path_new_R, file_table_old, file_table_new. 
+     This also uses a resource file (e.g., new_R_table_conv.rc)
+
+3.3: For ATMS and SSMIS guess at how to correct the error tables for these
+     instruments.  This guess should be based on differences in the values of 
+     VarInnov_t and VarInnov_o listed in the second of the tables produced 
+     by step 2.2 for these instruments. Essentially, increase the previous
+     error table values if VarInnov_o < VarInnov_t but decrease it
+     otherwise. Step 3.3 should only be done after 3.1, otherwise erroneous 
+     changes to the table for ATMS and SSMIS may be made, overwriting any
+     changes just made be hand. Note that if correlation parameters are
+     changed for these obs types, the resulting error variances will also 
+     change because the effect of the GSI noise filter will change.  Thus it
+     is very difficult to tune both correlations and variances.  If only
+     variances are to be tuned, it is best if the correlation parameters
+     remain unchanged between OSSE experiments.
+
+3.4: Run new_gpsro_err_table.j to create new error table for gpsro. These 
+     table values are factors, not standard deviations as for other tables, 
+     with the stdv set as the product of a factor and obs value. This requires
+     results from step 1.4 for both real and osse and also step 1.5 for the 
+     osee.  For vertical correlations, step 1.4 for real and osse should be 
+     compared.  
+ 
+Step 4:  Create new files of error parameters
+
+4.1: Copy previous hc_params_setup_*.txt files from previous experiments to
+     start with proper formats. This is only required for data types for which
+     simulated errors are to be correlated in some way. Uncorrelated errors
+     will only require the error tables produced in step 3.
+
+4.2: Specify parameters in the hc_param_setup* files.
+     The pmax and pmin values to be set for conventional obs should be in
+     millibars. Be careful about specifying all the 
+     relevant parameters, including paths and file names in these files so
+     that the correct information is accessed.  
+
+4.3: Run new_corr_err_params.j to create binary files of parameters for 
+     any data types whose errors are to have correlations. 
+
+4.4: Change the error_*.rc file to point to the proper files for each data
+     type.  For vertical correlations of PREPBUFR sondes or GPSRO obs, compare
+     real and osse vert correl statistics produced by step 1.4. Currently, the
+     code handels only the same correlation distance at all heights, so this
+     generally means compromising between different correlation determined for
+     high vs. low heights.  Also note that the tables provided by step 1.4 are
+     vertically coarse due to the variabilty of the obs distributions in the
+     vertical, except at raob mandatory levels that are too widely separated
+     to measure correlations.
+
+The only non-automated parameters are for ATMS and SSMIS, horizontal
+orrelation lengths for hyper-spectral radiances that also have errors
+correlated between channels, vertical correlation distances of sondes and
+gpsro, and standard deviations of GPSRO. 
+
+

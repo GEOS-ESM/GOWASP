@@ -5,3 +5,18 @@
 *#
 .#*
 **/CVS/
+
+# Common Fortran
+*.o
+*.mod
+*.a
+*.x
+*.so
+*.out
+
+VegFile/
+Rcfiles/
+
+*.nc
+*.nc4
+*.bin

@@ -1,0 +1,23 @@
+  
+ BEGIN NEW PROGRAM estimate_eparams_rad_chcorr
+ instrument=cris-fsr  satellite=npp
+  
+ Sat_file_info opened as file=/discover/nobackup/nprive/GOWASP_3/Rcfiles/sat_info.rc on unit=  10
+  
+number of sat/inst read:  35
+ before error.rc
+  
+ Rc file=/discover/nobackup/nprive/GOWASP_3/Rcfiles/ErrParams/V04.5/error.V04.5.rc opened on unit=  40
+ DEFAULT VALUE USED FOR vcorr_dist
+ Values read from error.rc file:
+   pert_fac=  1.000               (factor to multiply table stdv by)
+   random_seed=   1111 (exp) +     136 (dtype) =    1247
+   vert_corr_dist= none
+   file_err_stdv = sat_err_table_V04.5.txt
+   file_err_corr= hc_params_CRISFSR_04.5.bin
+  
+ ERROR attempting to open error_stdv file for iunit= 10 iostat=  29 and file name=sat_err_table_V04.5.txt
+  ERROR in attempt to read error table stdv file:           98
+ Error: mismatch between nk in sat table and et_n_levels
+ nk=         431   et_n_levels=           0
+ Program stopping

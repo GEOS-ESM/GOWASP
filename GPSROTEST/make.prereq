@@ -1,0 +1,22 @@
+m_xxx.o: m_xxx.f90
+m_counter.o: m_counter.f90
+m_gpsro_obs.o: m_gpsro_obs.F90 m_counter.o
+m_gpsro_fields.o: m_gpsro_fields.F90  
+gsisubs.o: gsisubs.f90 m_counter.o
+m_gpsro_ropp.o: m_gpsro_ropp.f90 ropp_fm_types.o ropp_utils_common.o m_gpsro_fields.o ropp_fm_constants.o m_xxx.o gsisubs.o m_counter.o
+ropp_utils_common.o: ropp_utils_common.f90 
+ropp_utils_X.o: ropp_utils_X.f90 
+ropp_geodesy.o: ropp_geodesy.f90 
+ropp_fm_types.o: ropp_fm_types.f90 ropp_utils_common.o
+ropp_fm_constants.o: ropp_fm_constants.f90 ropp_utils_common.o
+ropp_gravity.o: ropp_gravity.f90 ropp_utils_common.o ropp_geodesy.o
+ropp_r_eff.o: ropp_r_eff.f90 ropp_utils_common.o 
+ropp_fm_2d_plane.o: ropp_fm_2d_plane.f90 ropp_utils_common.o
+ropp_fm_alpha2drk.o: ropp_fm_alpha2drk.f90 ropp_utils_common.o ropp_utils_X.o ropp_geodesy.o m_xxx.o
+ropp_fm_gpspderiv.o: ropp_fm_gpspderiv.f90 ropp_utils_common.o
+ropp_fm_bangle_2d.o: ropp_fm_bangle_2d.f90 ropp_fm_types.o ropp_utils_common.o m_xxx.o
+ropp_fm_compress_2d.o: ropp_fm_compress_2d.f90 ropp_fm_types.o ropp_fm_constants.o
+create_gpsro.o: create_gpsro.F90 m_gpsro_fields.o m_gpsro_obs.o m_xxx.o m_counter.o
+
+
+

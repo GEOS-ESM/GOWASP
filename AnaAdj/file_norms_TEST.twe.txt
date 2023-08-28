@@ -1,0 +1,28 @@
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   8.1556E+00
+enorm ps     3.6329E-01
+enorm sphu   1.9776E+00
+enorm tv     1.3168E+00
+enorm u      2.5091E+00
+enorm v      1.9888E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   8.5927E+00
+enorm ps     3.6669E-01
+enorm sphu   2.1027E+00
+enorm tv     1.4154E+00
+enorm u      2.5917E+00
+enorm v      2.1162E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   8.2646E+00
+enorm ps     3.6362E-01
+enorm sphu   1.9394E+00
+enorm tv     1.3144E+00
+enorm u      2.5910E+00
+enorm v      2.0561E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   8.6717E+00
+enorm ps     3.6677E-01
+enorm sphu   2.0573E+00
+enorm tv     1.4167E+00
+enorm u      2.6780E+00
+enorm v      2.1529E+00

@@ -1,0 +1,70 @@
+Scripts for tuning errors:
+
+A. Get a past set of ODS file results from which to compute O-F statistics.
+These should be separately for both real and osse results
+
+(1) Use copy_ods.j to copy these to a new directory on nobackup that will
+    contain all ods files for a given month and experiment.
+
+B. Run programs to compute obs counts, O-F means and standard deviations, as
+well as horizontal, vertical, and channel correlations
+
+(3) Execute countobs_rad.j to compute time-mean counts and O-f means and 
+    standard deviations for radiances
+
+(4) Execute countobs_conv.j to compute time-mean counts and O-f means and 
+    standard deviations for conventional obs.  Note that this groups obs into
+    pressure bins of widths about 100 mb, unlike for hcorr_conv.j for which
+    the presuure bin widths are typically 4-10 mb. 
+
+(5) Execute hcorr_rad.j to create tables of means, standard deviations, and
+    horizontal correlations of O-F for all rad obs types for a given region. 
+    These statistics are expensive to compute globally for hyper-spectral
+    instruments and so for them using Western hemisphere only seems 
+    sufficient. 
+
+(6) Execute hcorr_conv.j to create tables of means, standard deviations, and
+    horizontal correlations of O-F for selected conv data types (specified by
+    set of kx values) for a given region. 
+
+(7) Execute chcorr_conv.j to create tables of means, standard deviations, and
+    inter-channel correlations of O-F for selected rad data types for a given
+    region.
+
+(8) Execute vcorr_gps.j to compute vertical correlations of GPSRO or sonde obs.
+
+
+C. Compute tables of fits of missing obs error and correlation functions.
+
+(9) Execute eparams_conv_hcorr.j to compare real and osse results from 
+    step (6) (or (4) if correlations not to be considered) and fits of 
+    functional shapes to differences of the the covariances.   
+
+(10) Execute eparams_rad_hcorr.j to compare real and osse results from 
+     step (5) (or (3) if correlations not to be considered) and fits of 
+     functional shapes to differences of the the covariances.   
+
+(11) Execute eparams_rad_chcorr.j to compare real and osse results from 
+     step (7) (or (3) if correlations not to be considered) and fits of 
+     functional shapes to differences of the the covariances.  
+
+D. Create new tables for adding errors to simulated obs
+ 
+(12) Execte new_R_table_rad.j using results from (10) and (11)
+
+(13) Execte new_R_table_conv.j using results from (9) 
+
+E. Create new input error parameter files for any desired correlations.
+
+(14) Execute corr_params_input.j to make files of parameters that define
+correlations of obs errors to add. The code is directed by files named
+hc_SETUP*txt. that need to be provided. Also, before executing this 
+program, examine the outputs from step C and make any desired changes
+
+(15) Complete the error.rc file for this version of the error pointing to the
+desired error stdv and correlation parameter files. Obtain values for vertical
+correlations of conventional sounding and GPSRO obs by examining output from
+step 8.
+
+
+ 

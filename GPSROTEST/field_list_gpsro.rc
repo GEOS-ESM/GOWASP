@@ -1,0 +1,24 @@
+format_types 1 1
+! Info for required fields for simulating conventional data
+! List for the 7 km GMAO NR
+#
+field_common_path /discover/nobackup/projects/gmao/osse2/pub/Ganymed/7km/c1440_NR/DATA/0.0625_deg
+field_dimensions 5760 2881 72
+lon_first -180.
+field_time_slots   13
+field_time_delta  0.5
+field_time_first -3.0
+akbk_filename /discover/home/rerrico/GOWASP_3/Rcfiles/eta_akbk_g5nr_1.txt
+#
+Lists of required field and file names (format=2a12,i3,2x,a)
+#
+GPSRO
+number_of_2d_fields 2  
+PHIS        PHIS          1  /const/const_2d_asm_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.const_2d_asm_Nx.$yyyymmdd#.nc4
+PS          PS            1  /inst/inst30mn_2d_met1_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_2d_met1_Nx.$yyyymmdd_hhmm#z.nc4
+#
+number_of_3d_fields 2
+QV          QV           72  /inst/inst30mn_3d_QV_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_QV_Nv.$yyyymmdd_hhmm#z.nc4
+T           T            72  /inst/inst30mn_3d_T_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_T_Nv.$yyyymmdd_hhmm#z.nc4
+----------
+EOF

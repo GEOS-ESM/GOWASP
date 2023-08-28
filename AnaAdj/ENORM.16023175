@@ -1,0 +1,4109 @@
+source ~/GOWASP_3/GOWASP_ENV
+setenv GOWASP_ENV /discover/home/rerrico/GOWASP_3/GOWASP_ENV
+setenv NOBACKUP /discover/nobackup/rerrico
+setenv GOWASP_PATH /discover/home/rerrico/GOWASP_3
+setenv GOWASP_EXTRA_PATH /discover/home/rerrico/OSSEextra
+setenv GOWASP_BUFR_DATA /discover/nobackup/rerrico/BUFRDATA
+setenv GOWASP_GSIPATH /discover/nobackup/rerrico/Tropics_Build/GEOSadas-5_14.OSSE.genrad
+setenv GOWASP_BUFRBIN /discover/nobackup/rerrico/Tropics_Build/GEOSadas-5_14.OSSE.genrad/Linux/bin
+setenv GOWASP_RMSHMKEY /discover/home/rerrico/bin
+setenv GOWASP_G5MODS /discover/nobackup/rerrico/Tropics_Build/GEOSadas-5_14.OSSE.genrad/Linux/bin/g5_modules
+setenv GSI_TAG G5142
+setenv GOWASP_CRTM_COEF_DIR /gpfsm/dnb52/projects/p10/gmao_ops/fvInput_4dvar/gsi/etc/fix_ncep20151116/REL-2.2.3-r60152/CRTM_Coeffs/Little_Endian/
+source /discover/nobackup/rerrico/Tropics_Build/GEOSadas-5_14.OSSE.genrad/Linux/bin/g5_modules
+set scriptname = g5_modules
+if ( g5_modules == slurm_script ) then
+set sourced = 1
+endif
+if ( ! 1 && ! 0 ) goto usage
+if ( 1 && 0 ) goto usage
+set arch = `uname -s`
+uname -s
+set mach = `uname -m`
+uname -m
+set node = `uname -n`
+uname -n
+if ( ( borgo154 =~ discover* ) || ( borgo154 =~ borg* ) || ( borgo154 =~ dali* ) || ( borgo154 =~ warp* ) ) then
+set site = NCCS
+else if ( ( borgo154 =~ jibb* ) || ( borgo154 =~ jcc01* ) ) then
+alias echo2 echo !* > /dev/stderr
+if ( x86_64 == x86_64 ) goto X86_64
+goto X86_64
+set modinit = DUMMY
+set loadmodules = 0
+set usemodules = 0
+if ( NCCS == NCCS || NCCS == JIBB ) then
+set mod1 = comp/intel-15.0.2.164
+if ( NCCS == NCCS ) then
+set basedir = /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+else
+set mod2 = mpi/impi-5.0.3.048
+set mod3 = lib/mkl-15.0.2.164
+set mod4 = other/comp/gcc-4.6.3-sp1
+set mod5 = other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+set mods = ( comp/intel-15.0.2.164 mpi/impi-5.0.3.048 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+set modinit = /usr/share/modules/init/csh
+set loadmodules = 0
+set usemodules = 0
+else if ( NCCS == NAS ) then
+goto ACTION
+set wrapper = 0
+if ( 0 > 0 ) then
+SETVALUES:
+if ( 1 ) then
+if ( ! 0 ) echo -n g5_modules: Setting BASEDIR
+echo -n g5_modules: Setting BASEDIR
+g5_modules: Setting BASEDIRsetenv BASEDIR /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+else if ( 1 ) then
+if ( 0 ) then
+setenv LD_LIBRARY_PATH /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+endif
+if ( 0 ) then
+if ( 0 ) then
+if ( -e /usr/share/modules/init/csh ) then
+if ( ! 0 ) echo -n  and modules
+echo -n  and modules
+ and modulessource /usr/share/modules/init/csh
+if ( 1 ) then
+set modules_shell=tcsh
+else
+if ( 1 ) then
+setenv MODULE_VERSION_STACK 3.1.6
+else
+set exec_prefix=/usr
+if ( 0 ) then
+if ( 0 ) then
+alias module eval `/usr/bin/modulecmd tcsh !*`
+endif
+endif
+unset exec_prefix
+setenv MODULESHOME /usr/share/modules
+if ( ! 1 ) then
+if ( ! 1 ) then
+eval `/usr/bin/modulecmd tcsh purge`
+/usr/bin/modulecmd tcsh purge
+setenv _MODULESBEGINENV_ /home/rerrico/.modulesbeginenv
+if ( 0 ) module load modules
+if ( 0 ) then
+foreach mod ( comp/intel-15.0.2.164 mpi/impi-5.0.3.048 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load comp/intel-15.0.2.164
+setenv CPATH /usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MPICH_CLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MANPATH /usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv MPICH_CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164
+setenv LOADEDMODULES comp/intel-15.0.2.164
+setenv FPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv MPICH_FLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv CXX /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv DEFAULT_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv INCLUDE /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv TBBROOT /usr/local/intel/Composer/composer_xe_2015.2.164/tbb
+setenv MPICH_F90LINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv IPPROOT /usr/local/intel/Composer/composer_xe_2015.2.164/ipp
+setenv INTEL_LICENSE_FILE /usr/local/intel/licenses
+setenv GDB_CROSS /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin/gdb-mic
+setenv MPICH_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv COMPILER_VER 15.0.2.164
+setenv F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MKLROOT /usr/local/intel/Composer/composer_xe_2015.2.164/mkl
+setenv MIC_LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/mic:/opt/intel/mic/coi/device-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv DEFAULT_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MKLPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64
+setenv MIC_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv FC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv NLSPATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64/locale/en_US/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/intel64/locale/%l_%t/%N
+setenv DEFAULT_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MPICH_CCLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv COMPILER intel
+setenv GDBSERVER_MIC /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/target/mic/bin/gdbserver
+setenv MPICH_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv PATH /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv MPICH_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv DEFAULT_CPP /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load mpi/impi-5.0.3.048
+setenv CPATH /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv LD_LIBRARY_PATH /usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv I_MPI_ROOT /usr/local/intel/mpi/5.0.3.048
+setenv LIBRARY_PATH /usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048
+setenv I_MPI_FABRICS_LIST dapl,ofa
+setenv FPATH /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv INCLUDE /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv I_MPI_MPD_TMPDIR /tmp
+setenv MPI_HOME /usr/local/intel/mpi/5.0.3.048
+setenv I_MPI_FABRICS shm:dapl
+setenv MPIHOME /usr/local/intel/mpi/5.0.3.048
+setenv I_MPI_MPD_RSH sshmpi
+setenv I_MPI_FALLBACK enable
+setenv PATH /usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load lib/mkl-15.0.2.164
+setenv INTEL_LICENSE_FILE /usr/local/intel/license
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load other/comp/gcc-4.6.3-sp1
+setenv INCLUDE /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv INCLUDE /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/include:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/man:/usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/share/man:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/bin:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1:/usr/local/other/modules/modulefiles/other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1:other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+end
+endif
+if ( ! 0 ) echo  for borgo154
+echo  for borgo154
+ for borgo154
+if ( 0 ) then
+exit
+setenv SIMPROGS /discover/home/rerrico/GOWASP_3
+setenv BASEDIR1 /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+setenv GEOSPATH1 /discover/nobackup/rerrico/Tropics_Build/GEOSadas-5_14.OSSE.genrad
+setenv SRCDIR /discover/home/rerrico/GOWASP_3
+umask 022
+echo GOWASP environment set
+GOWASP environment set
+source /discover/nobackup/rerrico/Tropics_Build/GEOSadas-5_14.OSSE.genrad/Linux/bin/g5_modules
+set scriptname = g5_modules
+if ( g5_modules == slurm_script ) then
+set sourced = 1
+endif
+if ( ! 1 && ! 0 ) goto usage
+if ( 1 && 0 ) goto usage
+set arch = `uname -s`
+uname -s
+set mach = `uname -m`
+uname -m
+set node = `uname -n`
+uname -n
+if ( ( borgo154 =~ discover* ) || ( borgo154 =~ borg* ) || ( borgo154 =~ dali* ) || ( borgo154 =~ warp* ) ) then
+set site = NCCS
+else if ( ( borgo154 =~ jibb* ) || ( borgo154 =~ jcc01* ) ) then
+alias echo2 echo !* > /dev/stderr
+if ( x86_64 == x86_64 ) goto X86_64
+goto X86_64
+set modinit = DUMMY
+set loadmodules = 0
+set usemodules = 0
+if ( NCCS == NCCS || NCCS == JIBB ) then
+set mod1 = comp/intel-15.0.2.164
+if ( NCCS == NCCS ) then
+set basedir = /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+else
+set mod2 = mpi/impi-5.0.3.048
+set mod3 = lib/mkl-15.0.2.164
+set mod4 = other/comp/gcc-4.6.3-sp1
+set mod5 = other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+set mods = ( comp/intel-15.0.2.164 mpi/impi-5.0.3.048 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+set modinit = /usr/share/modules/init/csh
+set loadmodules = 0
+set usemodules = 0
+else if ( NCCS == NAS ) then
+goto ACTION
+set wrapper = 0
+if ( 0 > 0 ) then
+SETVALUES:
+if ( 1 ) then
+if ( ! 0 ) echo -n g5_modules: Setting BASEDIR
+echo -n g5_modules: Setting BASEDIR
+g5_modules: Setting BASEDIRsetenv BASEDIR /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048
+else if ( 1 ) then
+if ( 1 ) then
+echo /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+grep /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+if ( 0 ) then
+else
+if ( 0 ) then
+if ( 0 ) then
+if ( -e /usr/share/modules/init/csh ) then
+if ( ! 0 ) echo -n  and modules
+echo -n  and modules
+ and modulessource /usr/share/modules/init/csh
+if ( 1 ) then
+set modules_shell=tcsh
+else
+if ( 1 ) then
+setenv MODULE_VERSION_STACK 3.1.6
+else
+set exec_prefix=/usr
+if ( 0 ) then
+if ( 0 ) then
+alias module eval `/usr/bin/modulecmd tcsh !*`
+endif
+endif
+unset exec_prefix
+setenv MODULESHOME /usr/share/modules
+if ( ! 1 ) then
+if ( ! 1 ) then
+eval `/usr/bin/modulecmd tcsh purge`
+/usr/bin/modulecmd tcsh purge
+setenv LD_LIBRARY_PATH /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv PATH .:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+unsetenv CPATH
+unsetenv MPICH_CLINKER
+unsetenv LIBRARY_PATH
+unsetenv I_MPI_ROOT
+unsetenv MPICH_CCC
+unsetenv CCC
+unsetenv _LMFILES_
+unsetenv LOADEDMODULES
+unsetenv I_MPI_FABRICS_LIST
+unsetenv FPATH
+unsetenv MPICH_FLINKER
+unsetenv CXX
+unsetenv DEFAULT_F90
+unsetenv INCLUDE
+unsetenv TBBROOT
+unsetenv MPICH_F90LINKER
+unsetenv I_MPI_MPD_TMPDIR
+unsetenv IPPROOT
+unsetenv INTEL_LICENSE_FILE
+unsetenv MPI_HOME
+unsetenv GDB_CROSS
+unsetenv MPIHOME
+unsetenv I_MPI_FABRICS
+unsetenv MPICH_F90
+unsetenv COMPILER_VER
+unsetenv F90
+unsetenv MIC_LD_LIBRARY_PATH
+unsetenv MKLROOT
+unsetenv DEFAULT_F77
+unsetenv MKLPATH
+unsetenv MIC_LIBRARY_PATH
+unsetenv FC
+unsetenv I_MPI_MPD_RSH
+unsetenv NLSPATH
+unsetenv DEFAULT_CC
+unsetenv MPICH_CCLINKER
+unsetenv COMPILER
+unsetenv GDBSERVER_MIC
+unsetenv MPICH_F77
+unsetenv F77
+unsetenv I_MPI_FALLBACK
+unsetenv MPICH_CC
+unsetenv CC
+unsetenv DEFAULT_CPP
+if ( 0 ) module load modules
+if ( 0 ) then
+foreach mod ( comp/intel-15.0.2.164 mpi/impi-5.0.3.048 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load comp/intel-15.0.2.164
+setenv CPATH /usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MPICH_CLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MANPATH /usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv MPICH_CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164
+setenv LOADEDMODULES comp/intel-15.0.2.164
+setenv FPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv MPICH_FLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv CXX /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv DEFAULT_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv INCLUDE /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv TBBROOT /usr/local/intel/Composer/composer_xe_2015.2.164/tbb
+setenv MPICH_F90LINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv IPPROOT /usr/local/intel/Composer/composer_xe_2015.2.164/ipp
+setenv INTEL_LICENSE_FILE /usr/local/intel/licenses
+setenv GDB_CROSS /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin/gdb-mic
+setenv MPICH_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv COMPILER_VER 15.0.2.164
+setenv F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MKLROOT /usr/local/intel/Composer/composer_xe_2015.2.164/mkl
+setenv MIC_LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/mic:/opt/intel/mic/coi/device-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv DEFAULT_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MKLPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64
+setenv MIC_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv FC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv NLSPATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64/locale/en_US/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/intel64/locale/%l_%t/%N
+setenv DEFAULT_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MPICH_CCLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv COMPILER intel
+setenv GDBSERVER_MIC /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/target/mic/bin/gdbserver
+setenv MPICH_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv PATH /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv MPICH_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv DEFAULT_CPP /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load mpi/impi-5.0.3.048
+setenv CPATH /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv LD_LIBRARY_PATH /usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv I_MPI_ROOT /usr/local/intel/mpi/5.0.3.048
+setenv LIBRARY_PATH /usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048
+setenv I_MPI_FABRICS_LIST dapl,ofa
+setenv FPATH /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv INCLUDE /usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv I_MPI_MPD_TMPDIR /tmp
+setenv MPI_HOME /usr/local/intel/mpi/5.0.3.048
+setenv I_MPI_FABRICS shm:dapl
+setenv MPIHOME /usr/local/intel/mpi/5.0.3.048
+setenv I_MPI_MPD_RSH sshmpi
+setenv I_MPI_FALLBACK enable
+setenv PATH /usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load lib/mkl-15.0.2.164
+setenv INTEL_LICENSE_FILE /usr/local/intel/license
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load other/comp/gcc-4.6.3-sp1
+setenv INCLUDE /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1
+end
+eval `/usr/bin/modulecmd tcsh load $mod`
+/usr/bin/modulecmd tcsh load other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv INCLUDE /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/include:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/mpi/5.0.3.048/include64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-intelmpi_5.0.3.048/Linux/lib
+setenv MANPATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/man:/usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/share/man:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man
+setenv LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/intel/mpi/5.0.3.048/lib64:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/bin:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/intel/mpi/5.0.3.048/bin64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/impi-5.0.3.048:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1:/usr/local/other/modules/modulefiles/other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/impi-5.0.3.048:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1:other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+end
+endif
+if ( ! 0 ) echo  for borgo154
+echo  for borgo154
+ for borgo154
+if ( 0 ) then
+exit
+setenv CGHOME /discover/home/rerrico/GOWASP_3/AnaAdj
+setenv ADDTIME /discover/home/rerrico/GOWASP_3
+setenv CGWORK /discover/nobackup/rerrico/WORK/CEwork.31177
+setenv AKBK /discover/home/rerrico/GOWASP_3/Rcfiles/eta_akbk_g5nr_1.txt
+set ab_path=/discover/nobackup/rerrico/ABfiles
+set nr_path=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana
+set fsens_file_in=/discover/nobackup/rerrico/Fsens/fsens.tmpl.nc4
+set output_path=/discover/nobackup/rerrico/G514osse/asens
+set expid=G514osse
+set datetime1=2006070100
+@ ntimes = 14
+set period=24
+set latN=90.
+set latS=-90.
+set lonW=0.
+set lonE=360.
+set pmax=110000.
+set pmin=0.
+set norm=twe
+set ctest=F
+if ( ! -e /discover/nobackup/rerrico/WORK/CEwork.31177 ) mkdir -p /discover/nobackup/rerrico/WORK/CEwork.31177
+mkdir -p /discover/nobackup/rerrico/WORK/CEwork.31177
+cd /discover/nobackup/rerrico/WORK/CEwork.31177
+/bin/rm: No match.
+cp /discover/home/rerrico/GOWASP_3/AnaAdj/enorm.x prog.x
+cp /discover/home/rerrico/GOWASP_3/addtime.x addtime.x
+cp /discover/home/rerrico/GOWASP_3/Rcfiles/eta_akbk_g5nr_1.txt akbk_file
+cp /discover/nobackup/rerrico/Fsens/fsens.tmpl.nc4 fsens_in
+set result=`addtime.x $datetime1 00`
+addtime.x 2006070100 00
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 01 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 01 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 01 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 01 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+if ( ! -e /discover/nobackup/rerrico/G514osse/asens ) mkdir -p /discover/nobackup/rerrico/G514osse/asens
+@ i = 1
+@ ilast = 14
+while ( 1 < = 14 )
+if ( 1 == 1 ) then
+set add_period=0
+set datetime=2006070100
+else
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070100 0
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 01 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 01 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 01 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 01 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070100
+set datetimeA=20060701_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070100 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 06 30 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 06 30 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 06 30 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 06 30 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060630_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070100 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 06 30 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 06 30 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 06 30 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 06 30 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060630_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070100 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 01 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 01 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 01 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 01 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060701_06z
+set time_ana=20060630_21z+20060701_06z-20060701_00z
+set time_bkg=20060630_15z+20060701_06z-20060701_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060701_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060630_21z+20060701_06z-20060701_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060630_15z+20060701_06z-20060701_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060701_00z.nc4 fsens_in 20060701000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.6219E+00
+enorm ps     3.6343E-01
+enorm sphu   1.8892E+00
+enorm tv     1.2460E+00
+enorm u      2.2922E+00
+enorm v      1.8311E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060630_21z+20060701_06z-20060701_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060701_00z.nc4 fsens_in 20060701000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060701_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 701_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.0549E+00
+enorm ps     3.6630E-01
+enorm sphu   2.0007E+00
+enorm tv     1.3466E+00
+enorm u      2.3879E+00
+enorm v      1.9533E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060630_15z+20060701_06z-20060701_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 2 < = 14 )
+if ( 2 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070100 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 02 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 02 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 02 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 02 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070200
+set datetimeA=20060702_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070200 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 01 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 01 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 01 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 01 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060701_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070200 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 01 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 01 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 01 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 01 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060701_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070200 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 02 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 02 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 02 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 02 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060702_06z
+set time_ana=20060701_21z+20060702_06z-20060702_00z
+set time_bkg=20060701_15z+20060702_06z-20060702_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060702_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060701_21z+20060702_06z-20060702_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060701_15z+20060702_06z-20060702_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060702_00z.nc4 fsens_in 20060702000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.6862E+00
+enorm ps     3.6357E-01
+enorm sphu   1.8695E+00
+enorm tv     1.2368E+00
+enorm u      2.3443E+00
+enorm v      1.8719E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060701_21z+20060702_06z-20060702_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060702_00z.nc4 fsens_in 20060702000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060702_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 702_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.1266E+00
+enorm ps     3.6653E-01
+enorm sphu   1.9671E+00
+enorm tv     1.3397E+00
+enorm u      2.4614E+00
+enorm v      1.9919E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060701_15z+20060702_06z-20060702_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 3 < = 14 )
+if ( 3 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070200 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 03 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 03 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 03 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 03 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070300
+set datetimeA=20060703_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070300 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 02 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 02 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 02 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 02 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060702_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070300 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 02 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 02 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 02 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 02 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060702_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070300 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 03 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 03 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 03 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 03 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060703_06z
+set time_ana=20060702_21z+20060703_06z-20060703_00z
+set time_bkg=20060702_15z+20060703_06z-20060703_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060703_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060702_21z+20060703_06z-20060703_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060702_15z+20060703_06z-20060703_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060703_00z.nc4 fsens_in 20060703000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.9841E+00
+enorm ps     3.6395E-01
+enorm sphu   1.9273E+00
+enorm tv     1.2696E+00
+enorm u      2.4047E+00
+enorm v      2.0185E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060702_21z+20060703_06z-20060703_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060703_00z.nc4 fsens_in 20060703000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060703_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 703_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.4547E+00
+enorm ps     3.6682E-01
+enorm sphu   2.0350E+00
+enorm tv     1.3864E+00
+enorm u      2.5063E+00
+enorm v      2.1601E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060702_15z+20060703_06z-20060703_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 4 < = 14 )
+if ( 4 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070300 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 04 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 04 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 04 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 04 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070400
+set datetimeA=20060704_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070400 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 03 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 03 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 03 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 03 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060703_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070400 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 03 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 03 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 03 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 03 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060703_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070400 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 04 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 04 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 04 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 04 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060704_06z
+set time_ana=20060703_21z+20060704_06z-20060704_00z
+set time_bkg=20060703_15z+20060704_06z-20060704_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060704_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060703_21z+20060704_06z-20060704_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060703_15z+20060704_06z-20060704_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060704_00z.nc4 fsens_in 20060704000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.1093E+00
+enorm ps     3.6289E-01
+enorm sphu   1.9169E+00
+enorm tv     1.2784E+00
+enorm u      2.4771E+00
+enorm v      2.0741E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060703_21z+20060704_06z-20060704_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060704_00z.nc4 fsens_in 20060704000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060704_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 704_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.5982E+00
+enorm ps     3.6634E-01
+enorm sphu   2.0211E+00
+enorm tv     1.3956E+00
+enorm u      2.6061E+00
+enorm v      2.2090E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060703_15z+20060704_06z-20060704_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 5 < = 14 )
+if ( 5 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070400 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 05 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 05 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 05 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 05 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070500
+set datetimeA=20060705_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070500 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 04 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 04 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 04 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 04 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060704_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070500 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 04 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 04 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 04 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 04 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060704_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070500 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 05 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 05 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 05 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 05 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060705_06z
+set time_ana=20060704_21z+20060705_06z-20060705_00z
+set time_bkg=20060704_15z+20060705_06z-20060705_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060705_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060704_21z+20060705_06z-20060705_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060704_15z+20060705_06z-20060705_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060705_00z.nc4 fsens_in 20060705000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.9861E+00
+enorm ps     3.6385E-01
+enorm sphu   1.8870E+00
+enorm tv     1.2400E+00
+enorm u      2.4662E+00
+enorm v      2.0290E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060704_21z+20060705_06z-20060705_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060705_00z.nc4 fsens_in 20060705000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060705_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 705_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.4368E+00
+enorm ps     3.6673E-01
+enorm sphu   1.9741E+00
+enorm tv     1.3627E+00
+enorm u      2.5722E+00
+enorm v      2.1611E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060704_15z+20060705_06z-20060705_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 6 < = 14 )
+if ( 6 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070500 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 06 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 06 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 06 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 06 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070600
+set datetimeA=20060706_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070600 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 05 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 05 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 05 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 05 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060705_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070600 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 05 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 05 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 05 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 05 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060705_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070600 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 06 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 06 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 06 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 06 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060706_06z
+set time_ana=20060705_21z+20060706_06z-20060706_00z
+set time_bkg=20060705_15z+20060706_06z-20060706_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060706_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060705_21z+20060706_06z-20060706_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060705_15z+20060706_06z-20060706_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060706_00z.nc4 fsens_in 20060706000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.8350E+00
+enorm ps     3.6357E-01
+enorm sphu   1.8397E+00
+enorm tv     1.2217E+00
+enorm u      2.3664E+00
+enorm v      2.0436E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060705_21z+20060706_06z-20060706_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060706_00z.nc4 fsens_in 20060706000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060706_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 706_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.3037E+00
+enorm ps     3.6725E-01
+enorm sphu   1.9367E+00
+enorm tv     1.3370E+00
+enorm u      2.4799E+00
+enorm v      2.1828E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060705_15z+20060706_06z-20060706_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 7 < = 14 )
+if ( 7 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070600 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 07 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 07 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 07 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 07 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070700
+set datetimeA=20060707_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070700 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 06 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 06 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 06 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 06 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060706_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070700 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 06 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 06 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 06 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 06 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060706_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070700 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 07 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 07 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 07 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 07 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060707_06z
+set time_ana=20060706_21z+20060707_06z-20060707_00z
+set time_bkg=20060706_15z+20060707_06z-20060707_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060707_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060706_21z+20060707_06z-20060707_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060706_15z+20060707_06z-20060707_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060707_00z.nc4 fsens_in 20060707000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.8365E+00
+enorm ps     3.6339E-01
+enorm sphu   1.8361E+00
+enorm tv     1.2286E+00
+enorm u      2.4026E+00
+enorm v      2.0059E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060706_21z+20060707_06z-20060707_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060707_00z.nc4 fsens_in 20060707000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060707_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 707_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.2705E+00
+enorm ps     3.6571E-01
+enorm sphu   1.9385E+00
+enorm tv     1.3364E+00
+enorm u      2.4915E+00
+enorm v      2.1385E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060706_15z+20060707_06z-20060707_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 8 < = 14 )
+if ( 8 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070700 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 08 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 08 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 08 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 08 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070800
+set datetimeA=20060708_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070800 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 07 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 07 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 07 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 07 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060707_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070800 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 07 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 07 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 07 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 07 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060707_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070800 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 08 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 08 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 08 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 08 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060708_06z
+set time_ana=20060707_21z+20060708_06z-20060708_00z
+set time_bkg=20060707_15z+20060708_06z-20060708_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060708_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060707_21z+20060708_06z-20060708_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060707_15z+20060708_06z-20060708_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060708_00z.nc4 fsens_in 20060708000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.9985E+00
+enorm ps     3.6369E-01
+enorm sphu   1.8604E+00
+enorm tv     1.2720E+00
+enorm u      2.4757E+00
+enorm v      2.0267E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060707_21z+20060708_06z-20060708_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060708_00z.nc4 fsens_in 20060708000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060708_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 708_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.4652E+00
+enorm ps     3.6605E-01
+enorm sphu   1.9595E+00
+enorm tv     1.3817E+00
+enorm u      2.5943E+00
+enorm v      2.1636E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060707_15z+20060708_06z-20060708_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 9 < = 14 )
+if ( 9 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070800 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 09 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 09 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 09 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 09 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006070900
+set datetimeA=20060709_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006070900 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 08 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 08 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 08 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 08 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060708_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006070900 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 08 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 08 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 08 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 08 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060708_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006070900 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 09 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 09 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 09 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 09 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060709_06z
+set time_ana=20060708_21z+20060709_06z-20060709_00z
+set time_bkg=20060708_15z+20060709_06z-20060709_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060709_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060708_21z+20060709_06z-20060709_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060708_15z+20060709_06z-20060709_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060709_00z.nc4 fsens_in 20060709000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.9120E+00
+enorm ps     3.6214E-01
+enorm sphu   1.8581E+00
+enorm tv     1.2523E+00
+enorm u      2.4213E+00
+enorm v      2.0181E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060708_21z+20060709_06z-20060709_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060709_00z.nc4 fsens_in 20060709000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060709_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 709_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.3334E+00
+enorm ps     3.6515E-01
+enorm sphu   1.9490E+00
+enorm tv     1.3578E+00
+enorm u      2.5118E+00
+enorm v      2.1495E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060708_15z+20060709_06z-20060709_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 10 < = 14 )
+if ( 10 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006070900 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 10 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 10 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 10 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 10 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006071000
+set datetimeA=20060710_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006071000 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 09 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 09 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 09 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 09 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060709_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006071000 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 09 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 09 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 09 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 09 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060709_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006071000 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 10 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 10 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 10 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 10 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060710_06z
+set time_ana=20060709_21z+20060710_06z-20060710_00z
+set time_bkg=20060709_15z+20060710_06z-20060710_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060710_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060709_21z+20060710_06z-20060710_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060709_15z+20060710_06z-20060710_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060710_00z.nc4 fsens_in 20060710000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.7708E+00
+enorm ps     3.6320E-01
+enorm sphu   1.8860E+00
+enorm tv     1.2422E+00
+enorm u      2.3298E+00
+enorm v      1.9496E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060709_21z+20060710_06z-20060710_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060710_00z.nc4 fsens_in 20060710000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060710_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 710_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.1745E+00
+enorm ps     3.6540E-01
+enorm sphu   1.9779E+00
+enorm tv     1.3376E+00
+enorm u      2.4248E+00
+enorm v      2.0687E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060709_15z+20060710_06z-20060710_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 11 < = 14 )
+if ( 11 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006071000 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 11 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 11 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 11 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 11 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006071100
+set datetimeA=20060711_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006071100 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 10 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 10 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 10 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 10 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060710_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006071100 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 10 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 10 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 10 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 10 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060710_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006071100 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 11 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 11 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 11 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 11 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060711_06z
+set time_ana=20060710_21z+20060711_06z-20060711_00z
+set time_bkg=20060710_15z+20060711_06z-20060711_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060711_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060710_21z+20060711_06z-20060711_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060710_15z+20060711_06z-20060711_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060711_00z.nc4 fsens_in 20060711000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.7896E+00
+enorm ps     3.6187E-01
+enorm sphu   1.9065E+00
+enorm tv     1.2432E+00
+enorm u      2.3315E+00
+enorm v      1.9464E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060710_21z+20060711_06z-20060711_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060711_00z.nc4 fsens_in 20060711000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060711_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 711_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.1700E+00
+enorm ps     3.6528E-01
+enorm sphu   1.9917E+00
+enorm tv     1.3465E+00
+enorm u      2.4079E+00
+enorm v      2.0587E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060710_15z+20060711_06z-20060711_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 12 < = 14 )
+if ( 12 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006071100 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 12 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 12 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 12 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 12 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006071200
+set datetimeA=20060712_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006071200 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 11 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 11 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 11 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 11 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060711_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006071200 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 11 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 11 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 11 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 11 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060711_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006071200 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 12 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 12 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 12 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 12 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060712_06z
+set time_ana=20060711_21z+20060712_06z-20060712_00z
+set time_bkg=20060711_15z+20060712_06z-20060712_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060712_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060711_21z+20060712_06z-20060712_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060711_15z+20060712_06z-20060712_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060712_00z.nc4 fsens_in 20060712000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.7197E+00
+enorm ps     3.6283E-01
+enorm sphu   1.8779E+00
+enorm tv     1.2436E+00
+enorm u      2.3038E+00
+enorm v      1.9317E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060711_21z+20060712_06z-20060712_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060712_00z.nc4 fsens_in 20060712000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060712_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 712_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.1784E+00
+enorm ps     3.6585E-01
+enorm sphu   1.9696E+00
+enorm tv     1.3513E+00
+enorm u      2.4367E+00
+enorm v      2.0549E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060711_15z+20060712_06z-20060712_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 13 < = 14 )
+if ( 13 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006071200 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 13 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 13 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 13 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 13 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006071300
+set datetimeA=20060713_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006071300 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 12 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 12 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 12 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 12 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060712_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006071300 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 12 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 12 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 12 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 12 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060712_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006071300 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 13 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 13 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 13 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 13 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060713_06z
+set time_ana=20060712_21z+20060713_06z-20060713_00z
+set time_bkg=20060712_15z+20060713_06z-20060713_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060713_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060712_21z+20060713_06z-20060713_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060712_15z+20060713_06z-20060713_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060713_00z.nc4 fsens_in 20060713000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.8252E+00
+enorm ps     3.6414E-01
+enorm sphu   1.9264E+00
+enorm tv     1.2385E+00
+enorm u      2.3563E+00
+enorm v      1.9399E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060712_21z+20060713_06z-20060713_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060713_00z.nc4 fsens_in 20060713000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060713_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 713_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.2744E+00
+enorm ps     3.6667E-01
+enorm sphu   2.0065E+00
+enorm tv     1.3436E+00
+enorm u      2.4831E+00
+enorm v      2.0745E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060712_15z+20060713_06z-20060713_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 14 < = 14 )
+if ( 14 == 1 ) then
+set add_period=24
+endif
+set result=`addtime.x $datetime $add_period`
+addtime.x 2006071300 24
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 14 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 14 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 14 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 14 00
+cut -d  -f4
+set yy=`echo $yyyy | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetime=2006071400
+set datetimeA=20060714_00z
+set result=`addtime.x $datetime -9`
+addtime.x 2006071400 -9
+set yyyy2=`echo $result | cut -d" " -f1`
+echo 2006 07 13 15
+cut -d  -f1
+set mm2=`echo $result | cut -d" " -f2`
+echo 2006 07 13 15
+cut -d  -f2
+set dd2=`echo $result | cut -d" " -f3`
+echo 2006 07 13 15
+cut -d  -f3
+set hh2=`echo $result | cut -d" " -f4`
+echo 2006 07 13 15
+cut -d  -f4
+set yy2=`echo $yyyy2 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeB=20060713_15z
+set result=`addtime.x $datetime -3`
+addtime.x 2006071400 -3
+set yyyy3=`echo $result | cut -d" " -f1`
+echo 2006 07 13 21
+cut -d  -f1
+set mm3=`echo $result | cut -d" " -f2`
+echo 2006 07 13 21
+cut -d  -f2
+set dd3=`echo $result | cut -d" " -f3`
+echo 2006 07 13 21
+cut -d  -f3
+set hh3=`echo $result | cut -d" " -f4`
+echo 2006 07 13 21
+cut -d  -f4
+set yy3=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeC=20060713_21z
+set result=`addtime.x $datetime  6`
+addtime.x 2006071400 6
+set yyyy4=`echo $result | cut -d" " -f1`
+echo 2006 07 14 06
+cut -d  -f1
+set mm4=`echo $result | cut -d" " -f2`
+echo 2006 07 14 06
+cut -d  -f2
+set dd4=`echo $result | cut -d" " -f3`
+echo 2006 07 14 06
+cut -d  -f3
+set hh4=`echo $result | cut -d" " -f4`
+echo 2006 07 14 06
+cut -d  -f4
+set yy4=`echo $yyyy3 | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set datetimeD=20060714_06z
+set time_ana=20060713_21z+20060714_06z-20060714_00z
+set time_bkg=20060713_15z+20060714_06z-20060714_00z
+set ana_file=/discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+set bkg_file=/discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+set nr_file=/discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060714_00z.nc4
+set fsens_out_ana=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060713_21z+20060714_06z-20060714_00z.nc4
+set fsens_out_bkg=/discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060713_15z+20060714_06z-20060714_00z.nc4
+if ( F == T ) then
+touch file_enorms1
+touch file_prnt1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060714_00z.nc4 fsens_in 20060714000000 90. -90. 0. 360. 110000. 0. twe F ana
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.ana.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   7.8636E+00
+enorm ps     3.6446E-01
+enorm sphu   1.9805E+00
+enorm tv     1.2487E+00
+enorm u      2.3307E+00
+enorm v      1.9392E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060713_21z+20060714_06z-20060714_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+./prog.x /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4 /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060714_00z.nc4 fsens_in 20060714000000 90. -90. 0. 360. 110000. 0. twe F bkg
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+im,jm,km,lon_first=  576  361   72   -180.00
+ Reading file to get grid info fsens_in
+im,jm,km,lon_first=  576  361   72   -180.00
+  
+latN,latS,lonW,lonE =   90.00  -90.00    0.00  360.00
+pmax,pmin = 110000.00      0.00
+imax,jmax,kmax,lon_first =  576  361   72   -180.0000
+norm,scaleT,scaleQ,scaleW,scaleP = twe    1.8604E+00    3.4851E+06    5.0000E-01    3.8750E-06
+File of akbk read:  values= 73  file name=akbk_file
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write ps to file=fsens_in
+ 2d field written for ps to netcdf file
+ Attempting to write delp to file=fsens_in
+ 3d field written for delp to netcdf file
+ processing nf,field=           2 sphu
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ processing nf,field=           3 tv  
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write sphu to file=fsens_in
+ 3d field written for sphu to netcdf file
+ Attempting to write tv to file=fsens_in
+ 3d field written for tv to netcdf file
+ processing nf,field=           4 u   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write u to file=fsens_in
+ 3d field written for u to netcdf file
+ processing nf,field=           5 v   
+ Reading file 
+ /discover/nobackup/rerrico/ABfiles/G514osse.bkg.eta.20060714_00z.nc4
+ Reading file 
+ /discover/nobackup/rerrico/ComGrid2/GMAONR_ana/Y2006/M07/comgrid.true.eta.20060
+ 714_00z.nc4
+ Attempting to write v to file=fsens_in
+ 3d field written for v to netcdf file
+ Attempting to write ts to file=fsens_in
+ 2d field written for ts to netcdf file
+ Attempting to write ozone to file=fsens_in
+ 3d field written for ozone to netcdf file
+ Attempting to write qitot to file=fsens_in
+ 3d field written for qitot to netcdf file
+ Attempting to write qltot to file=fsens_in
+ 3d field written for qltot to netcdf file
+ Attempting to write qrtot to file=fsens_in
+ 3d field written for qrtot to netcdf file
+ Attempting to write qstot to file=fsens_in
+ 3d field written for qstot to netcdf file
+  
+ file_out written: fsens_in
+  
+enorm sum =   8.3048E+00
+enorm ps     3.6691E-01
+enorm sphu   2.0609E+00
+enorm tv     1.3643E+00
+enorm u      2.4408E+00
+enorm v      2.0719E+00
+  
+ Program Done
+if ( F == T ) then
+cp fsens_in /discover/nobackup/rerrico/G514osse/asens/G514osse.fsens_twe.eta.20060713_15z+20060714_06z-20060714_00z.nc4
+endif
+cat file_enorms1 file_norms.txt
+/bin/mv file_enorms2 file_enorms1
+@ i++
+end
+while ( 15 < = 14 )
+if ( F == T ) then
+/bin/mv file_enorms1 /discover/home/rerrico/GOWASP_3/AnaAdj/file_norms_twe.txt
+echo Script complete
+Script complete
+exit 0
+________________________________________________________________
+Job Resource Usage Summary for 16023175 
+Note: SLURM doesn't account for the exact same resource types as PBS.  
+      Also, you may see some values missing or zero, typically for 
+      very short jobs.  However, please do contact NCCS USG if you 
+      think the values below are in error.
+
+  CPU Time Used		: 01:22:36
+  Memory Used		: 366300K
+  Virtual Memory Used	: 418560K
+  Walltime Used		: 00:02:57
+
+  Memory Requested	: 0n (n=per node; c=per core)
+  CPUs Requested / Allocated : 1 / 28
+  Walltime Requested	: 00:10:00
+
+  Execution Queue	: compute
+  Head Node		: borgo154
+  Charged to		: s0911
+
+  Job Stopped		: Wed Jun  7 12:38:40 EDT 2017
+_____________________________________________________________________
+

@@ -1,0 +1,16 @@
+chcorr_get.o: chcorr_get.f90 
+chcorr_sumods.o: chcorr_sumods.f90
+chcorr_tables.o: chcorr_tables.f90
+hcorr_sumods.o: hcorr_sumods.f90
+hcorr_tables.o: hcorr_tables.f90
+vcorr_sumods.o: vcorr_sumods.f90
+vcorr_tables.o: vcorr_tables.f90
+prog1_corr.o: prog1_corr.f90
+prog1_vcorr.o: prog1_vcorr.f90 
+countobs_sum.o: countobs_sum.f90
+countobs_tables.o: countobs_tables.f90
+impacts_rad.o: impacts_rad.f90
+impacts_conv.o: impacts_conv.f90
+impacts_tables.o: impacts_tables.f90
+read_j_value.o: read_j_value.f90
+jo_tables.o: jo_tables.f90

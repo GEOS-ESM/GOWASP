@@ -1,0 +1,6 @@
+m_sat_info_table.o: m_sat_info_table.f90
+rad_ods2txt.o: rad_ods2txt.f90 m_sat_info_table.o 
+
+
+
+

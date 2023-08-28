@@ -1,0 +1,4 @@
+In order to run an OSSE with obs only at locations, and channels, that were
+simulated for a real obs OSSE, it is necessary to make changes to the DAS QC.
+Also, simply inflating simulated radiances or BT to remove them may not work 
+because bias correction may be affected.  

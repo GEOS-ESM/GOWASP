@@ -1,0 +1,66 @@
+A. Making the sizes of added errors depend on how strong clouds are affecting
+rallsky adiances
+
+The weights defined for allsky channels in GSI (i.e., the standard deviations
+of obs errors) are functions of the difference between allsky and clearksy
+brightness temperatures. I think the functions are piecewise linear based on 2
+values read from the satwind error tables for that channel.  In GOWASP_3 as of
+Oct 2021 the errors added to the error-free obs are independent of the
+allsky-clearsky BT values. That version of GOWASP_3, however does have some of
+the software code to incorporate error functions that depend on that
+difference of BT values.
+
+First, the program Sim_rad/create_rad_bufr.F90 reads in a suffix (as an
+argument) to add to its usual output BUFR file name of radiances to create a
+separate, but corresponding, binary file of clear sky BT. The suffix is set as
+the value CLEAR_SKY in the script create_rad_bufr.j or more usually
+create_rad_bufr_QR.j. If the value is missing from the program input list or
+its value is set to “none” then no additional file is output. Otherwise, the
+CRTM will be called twice. First it calculates radiances as specified in the
+rad_prob_....rc file (i.e., like in the rad_prob_..._QR.rc file with
+list_cloud_nums > 0 specified) to create allsky values, and second to create
+clear sky values with the cloud_nums reset to 0 input to the CRTM. Output of
+allsky rads as BUFR data will be in the same order as clear sky rads in the
+binary file. Only a subset of the rad obs header information is included in
+the latter. Just enough to identify the data.  This double call to the CRTM
+and subsequent writing to the binary file is only invoked if list_cloud_nums
+>0 was specified in the rad_prob….rc file. 
+
+Second, the Sim_error/create_error.F90 code will read in the corresponding
+binary file of clear-sky radiances if the create_error.j script has the
+CLEAR_SKY present and not specified as “none”. This should be specified the
+same as in the script used to create the allsky radiances and this run of
+create_error.j script should only be applied to those data types for which
+both the allsky BUFR and clear sky binary pairs have been created. If the
+value of CLEAR_SKY input to create_error.F90 is other than “none”, this code
+will attempt to read the BUFR and binary pair. 
+As it considers errors for each radiance location it will read both clear sky
+and allsky values and check that the obs locations are the same (within 0.02
+degrees of both lat and lon; i.e., check that the orders of obs on the 2 files
+are identical). They should always be since the code that writes those data
+puts them in the identical order. This is a check nonetheless. Note that there
+is no check on the obs time. At this point, an array of clear-sky obs values
+is present in the subroutine  pert_loop_do. 
+
+All these additions to the code have been checked. What remains to add are:
+(1) an algorithm that determines a standard deviation of error to be added
+that is a function (e.g., like in GSI) of the allsky-clearsky BT; (2) a
+routine to read params required for that function; (3) a passing of the
+modified error to the obs_pert routine. The last is easy, simply replacing the
+present error values that are in the error_table array by values in another
+array. For (2) you can either read a new file with those parameters or replace
+the existing sat_error file by one with a format like the GSI sat_error file
+that includes an additional column (so 2 error params). The latter has the
+advantage of making the file more like the present GSI one; they used to have
+identical formats except for data type headers until the GSI format
+changed. If the sat_error file format is changed, the error arrays and how
+they are used will have to change as well as the codes that makes the eparams
+est_files and also the one that uses them to make an updated tuned  sat_error
+file. The new error params also will require tuning and the estimates produced
+by eparams_rad will no longer work because the statistics of the error added
+now depend on the obs values themselves, but the tuning algorithm assumes they
+are identical for all.    
+
+--------------------
+
+B. 

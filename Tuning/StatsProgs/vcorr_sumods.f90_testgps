@@ -1,0 +1,529 @@
+      program vcorr_sumods
+!
+! Augment pre-computed sums of ods data for previous times by adding 
+! contributions for a new time for subsequent computation of vertical 
+! correlations and covariances.
+!
+! nlook is the number of sonde or gpsro obs saved from 1 ods file to examine
+! If nlook > 1.5M then no vertical correlations will be determined because the 
+! matching of obs in the same profile becomes very costly. Note that profile 
+! matching only looks spatially (must be close horizontally) but not temporally. 
+!
+      use m_ods_RE
+!
+      implicit none
+!
+      integer, parameter :: rkinds=8
+      integer, parameter :: ikinds=8
+      integer, parameter :: nlook=1000000
+      integer, parameter :: n_p_select=14
+      integer, parameter :: n_fields=5
+      integer(ikinds), allocatable :: iaccept(:,:,:)
+      integer(ikinds), allocatable :: ibins(:,:,:,:)
+      integer :: ib1, ib2, id1
+      integer :: ks1, ns
+      integer :: i,iii
+      integer :: nsavemax
+      integer :: i_list(n_p_select)
+      integer :: i_list_last
+      integer :: i_values(n_p_select)
+      integer :: ksave(nlook,n_fields)
+      integer :: iqc
+      integer :: ifield, itype
+      integer :: n, n1, n2
+      integer :: nsave(n_fields)
+      integer :: n_bins,  n_bins2
+      integer :: n_count, n_count2
+      integer :: n_date,  n_date2
+      integer :: n_time,  n_time2
+      integer :: n_fields2
+      integer :: n_obs
+      integer :: argc
+      integer :: inumloop
+!
+      logical :: same_profile
+      logical :: lon_range1, lon_range2
+!
+      real(rkinds), parameter :: zero=0._rkinds
+      real(rkinds) :: latN, latS, lonW, lonE
+      real(rkinds) :: latN2, latS2, lonW2, lonE2
+      real(rkinds) :: p_list(n_p_select)
+      real(rkinds) :: p
+      real(rkinds) :: xlon
+      real(rkinds) :: xa, xb, xm1, xm2, xs1, xs2
+      real(rkinds) :: xlog1, xlog2, xlog12, xlog22
+      real(rkinds) :: xbin,  xbin2
+      real(rkinds) :: x_values(15)
+      real(rkinds) :: dsave(nlook,n_fields)
+      real(rkinds) :: psave(nlook,n_fields)
+      real(rkinds) :: lsave(2,nlook,n_fields)
+      real(rkinds) :: p_select(n_p_select)
+      real(rkinds) :: z_select(n_p_select)
+      real(rkinds) :: z_gps(5)
+      real(rkinds), allocatable :: xsum(:,:,:)
+      real(rkinds), allocatable :: xsumsq(:,:,:)
+      real(rkinds), allocatable :: xmean(:,:)
+      real(rkinds), allocatable :: xmsqr(:,:)
+      real(rkinds), allocatable :: xstdv(:,:)
+      real(rkinds), allocatable :: xbins(:,:,:,:,:)
+!
+      character(len=3) :: c_count
+      character(len=3) :: c_comp, c_comp2
+      character(len=3) :: c_nbins
+      character(len=8) :: c_date
+      character(len=6) :: c_time
+      character(len=6) :: c_latN, c_latS, c_lonW, c_lonE
+      character(len=220) :: c_file, c_file2
+      character(len=11), parameter :: file_in='input_stats'
+      character(len=12), parameter :: file_out='output_stats'
+!
+      type (ods_vect) :: ods
+      character (len=30) :: type
+      integer :: ierr
+!
+! Specify a subset of levels for which tables will be printed
+! The first and last values also specify the range of p and bin widths
+! over which correlations are computed and averaged.
+      data p_select/10., 20., 50., 100., 200., 300., 400., 500., 600., 700., &
+                    800., 850., 925., 1000./
+!       
+! Read and check arguments
+      argc = iargc()
+      if (argc .lt. 10) then
+        print *,' usage must be: vcorr_sumods.x ncount nbins', &
+                ' date time latN latS lonW lonE comp filename'
+        stop
+      endif
+      call GetArg( 1_4, c_count)
+      call GetArg( 2_4, c_nbins)
+      call GetArg( 3_4, c_date)
+      call GetArg( 4_4, c_time)
+      call GetArg( 5_4, c_latN)
+      call GetArg( 6_4, c_latS)
+      call GetArg( 7_4, c_lonW)
+      call GetArg( 8_4, c_lonE)
+      call GetArg( 9_4, c_comp)
+      call GetArg(10_4, c_file)
+!
+      read (c_count,'(i3)') n_count
+      read (c_nbins,'(i3)') n_bins
+      read (c_date, '(i8)') n_date
+      read (c_time, '(i6)') n_time
+
+      read (c_latN, '(f6.1)') latN  
+      read (c_latS, '(f6.1)') latS  
+      read (c_lonW, '(f6.1)') lonW
+      read (c_lonE, '(f6.1)') lonE
+!
+! Determine direction of longitude range
+      if (lonW < 0.) then
+        lonW=lonW+360.
+      endif
+      if (lonE < 0.) then
+        lonE=lonE+360.
+      endif
+      if (lonW < lonE) then
+        lon_range1=.true.
+      else
+        lon_range1=.false.
+      endif
+!
+      print *,' '
+      print ('(2i5,2i10)'),n_count,n_bins,n_date,n_time
+      print ('(4f8.1,2x,a3)'),latN,latS,lonW,lonE,c_comp
+      print ('(a)'),trim(c_file)
+!
+! Check that lats requested are OK
+      if (latN <= latS) then
+        print *,'ERROR: latN=',latN,' must be > latS=',latS
+        stop
+      endif
+!
+! Check that c_comp has acceptable value
+      if ( (c_comp /= 'omf') .and. (c_comp /= 'oma') .and. &
+           (c_comp /= 'amb') .and. (c_comp /= 'obs') ) then
+        print *,'ERROR: c_comp is not one of omf, oma, amb, or obs'
+        print *,'       c_comp=',c_comp
+        stop
+      endif
+!
+! Read ods file for 1 time
+      call ods_get_RE (.true.,trim(c_file),n_time,n_obs,ods,ierr)
+      print *,'n_obs, ierr=',n_obs,ierr
+      if (n_obs == 0) then
+        print *,'Job stopping since no accepted obs found on file'
+        stop
+      endif 
+!
+! allocate all arrays
+      allocate (xsum(n_bins,n_fields,2))
+      allocate (xsumsq(n_bins,n_fields,2))
+      allocate (xmean(n_bins,n_fields))
+      allocate (xmsqr(n_bins,n_fields))
+      allocate (xstdv(n_bins,n_fields))
+      allocate (xbins(n_bins,n_bins,5,n_fields,2))
+      allocate (iaccept(n_bins,n_fields,2))
+      allocate (ibins(n_bins,n_bins,n_fields,2))
+!
+! initialize arrays
+      ibins(:,:,:,1)=0
+      iaccept(:,:,1)=0
+      xsum(:,:,1)=zero
+      xsumsq(:,:,1)=zero
+      xmean(:,:)=zero
+      xmsqr(:,:)=zero
+      xstdv(:,:)=zero
+      xbins(:,:,:,:,1)=zero
+      xlog2=log(p_select(n_p_select))
+      xlog1=log(p_select(1))
+      xbin=(xlog2-xlog1)/n_bins
+!
+      z_gps(1)=6.37e6     ! min. radius of curvature of earth considered (m)
+      z_gps(2)=6.0e4      ! max. height of obs. considered (m)
+      z_gps(3)=z_gps(2)/n_bins     
+      z_gps(4)=z_gps(2)/n_p_select    
+      do n=1,n_p_select
+        z_select(n)=n*z_gps(4)/1.0e3
+      enddo
+!
+! save obs in regional subset
+      nsave(1:n_fields)=0
+      nsavemax=0
+
+
+!QQQQQ
+          open (78,file='/discover/nobackup/rerrico/vcorr_OUT_all.txt')
+          iii=0  
+
+      do n=1,n_obs
+!
+! reset longitude so that it is in the rang 0-360 
+        xlon=mod(ods%data%lon(n),360.)
+        if (xlon < zero)  xlon=xlon+360.
+        if (xlon >= 360.) xlon=zero       ! accounts for round off
+!
+! Determine if obs longitude in desired range
+        lon_range2=(lon_range1 .and. xlon >= lonW .and. xlon <= lonE) .or. & 
+           ((.not. lon_range1) .and. (xlon >= lonW .or. xlon <= lonE)) 
+!
+! check that location of obs is n specified region and QC is OK
+        if ( (nsavemax < nlook)           .and. & 
+             (ods%data%qcexcl(n) > -9999.)    .and. &
+             (ods%data%qcexcl(n) == 0)    .and. &
+             (ods%data%lat(n) > latS)     .and. &
+             (ods%data%lat(n) < latN)     .and. &
+             lon_range2                  ) then
+!  
+! determine type of obs          
+          ifield=ods%data%kt(n)
+          itype=ods%data%kx(n)
+!
+          id1=0
+          if      ((ifield==44) .and. (itype== 120)) then  ! raob T
+            id1=1    
+          elseif  ((ifield==11) .and. (itype== 120)) then  ! raob q
+            id1=2
+          elseif  ((ifield== 4) .and. (itype== 220)) then  ! raob u
+            id1=3
+          elseif  ((ifield== 5) .and. (itype== 220)) then  ! raob v
+            id1=4
+          elseif  (ifield== 89) then                       ! gpsro
+            id1=5
+          endif
+!
+          if (id1 /= 0) then 
+            nsave(id1)=nsave(id1)+1
+            ns=nsave(id1)
+            nsavemax=max(nsavemax,ns)
+            ksave(ns,id1)=ods%data%ks(n)
+            lsave(1,ns,id1)=ods%data%lat(n)
+            lsave(2,ns,id1)=xlon
+            if (id1<5) then   ! conventional field
+              psave(ns,id1)=log(ods%data%lev(n)) ! ln(p)
+            else              ! gpsro 
+              psave(ns,id1)=ods%data%xm(n)       ! impact parameter (height) 
+            endif
+            if (c_comp == 'omf') then
+              dsave(ns,id1)=ods%data%omf(n)
+            elseif (c_comp == 'oma') then
+              dsave(ns,id1)=ods%data%oma(n)
+            elseif (c_comp == 'amb') then
+              dsave(ns,id1)=ods%data%oma(n) - ods%data%omf(n)   ! a-b
+            else 
+              dsave(ns,id1)=ods%data%obs(n)
+            endif 
+          endif
+!QQQQods%data%oma(n) - ods%data%omf(n)   ! a-b
+!QQQ            if (id1==5 .and. abs(ods%data%lat(n)+50.2)<.3 .and.  abs(ods%data%lon(n)-159.4)<.3) then
+            if (id1==5) then
+!            if (id1==5 .and. iii<1000) then 
+               iii=iii+1
+
+              write (78,'(i7,2f10.4,1p4e15.6 )'),n,ods%data%lat(n),ods%data%lon(n),ods%data%xm(n), &
+ods%data%obs(n),ods%data%omf(n),ods%data%obs(n)-ods%data%omf(n)
+              endif  !QQQQQ
+!
+        endif  ! check on location and QC flag
+      enddo    ! loop over all obs
+!
+      do id1=1,n_fields
+        if (nsave(id1) > 0) then
+!
+! If nlook set very large, then do not compute correlations within profiles, 
+! because the matching of obs within the same profile becomes very costly.
+          if (nlook > 1500000) then
+            inumloop=-1   ! matching will not be attempted
+          else
+            inumloop=nsave(id1)
+          endif
+
+
+          do n1=1,nsave(id1)
+            ks1=ksave(n1,id1)
+            if (id1<5) then 
+              ib1=1+int((psave(n1,id1)-xlog1)/xbin)
+            else  !GPSRO
+              ib1=1+int(psave(n1,id1)/z_gps(3))
+            endif  
+            ib1=min(ib1,n_bins)
+            ib1=max(ib1,1)
+            iaccept(ib1,id1,1)=iaccept(ib1,id1,1)+1
+            xsum(ib1,id1,1)=xsum(ib1,id1,1)+dsave(n1,id1)
+            xsumsq(ib1,id1,1)=xsumsq(ib1,id1,1)+dsave(n1,id1)*dsave(n1,id1)
+!
+            do n2=1,inumloop
+!
+! See if same ks value. ks is either the profile identifier in case of 
+! a raob obs or a satellite receiver identifier in case of gpsro obs.  
+! In the latter case it must also be confirmed that pairs of values 
+! are in close geographic proximity (here 2 degrees of lat and 5 degrees 
+! of lon) since the same satellite receiver can be involved in
+! multiple occulations within a 6-hour period, Note that no special check 
+! of longitudes near 360 degrees is performed to ensure that profiles 
+! crossing the prime meridian are retained in these calculations. 
+!
+              same_profile=.false.      ! default value            
+              if (ksave(n2,id1)==ks1) then
+                if (id1<5) then             
+                  same_profile=.true.   ! same raob profile
+                elseif (id1>4 .and. &
+                        abs(lsave(1,n1,id1)-lsave(1,n2,id1))<2. .and. &
+                        abs(lsave(2,n1,id1)-lsave(2,n2,id1))<5. ) then 
+                  same_profile=.true.   ! same gpsro profile
+                endif
+              endif
+!
+              if (same_profile) then
+!                  
+                if (id1<5) then 
+                  ib2=1+int((psave(n2,id1)-xlog1)/xbin)
+                else  !GPSRO
+                  ib2=1+int(psave(n2,id1)/z_gps(3))
+                endif  
+                ib2=min(ib2,n_bins)
+                ib2=max(ib2,1)
+                xbins(ib1,ib2,1,id1,1)=xbins(ib1,ib2,1,id1,1) + &
+                                       dsave(n1,id1)*dsave(n2,id1)
+                xbins(ib1,ib2,2,id1,1)=xbins(ib1,ib2,2,id1,1) + dsave(n1,id1)
+                xbins(ib1,ib2,3,id1,1)=xbins(ib1,ib2,3,id1,1) + &
+                                       dsave(n1,id1)*dsave(n1,id1)
+                xbins(ib1,ib2,4,id1,1)=xbins(ib1,ib2,4,id1,1) + dsave(n2,id1)
+                xbins(ib1,ib2,5,id1,1)=xbins(ib1,ib2,5,id1,1) + &
+                                       dsave(n2,id1)*dsave(n2,id1)
+                ibins(ib1,ib2,id1,1)=ibins(ib1,ib2,id1,1)+1
+              endif 
+            enddo
+          enddo    
+        endif   ! check on whether such obs exist
+      enddo     ! loop over field index 
+!
+! compute means and standard deviations
+      do id1=1,n_fields
+        do ib1=1,n_bins
+          if (iaccept(ib1,id1,1) > 0) then
+            xmean(ib1,id1)=xsum(ib1,id1,1)/iaccept(ib1,id1,1)
+            xmsqr(ib1,id1)=xsumsq(ib1,id1,1)/iaccept(ib1,id1,1) -  & 
+                           xmean(ib1,id1)*xmean(ib1,id1)
+            if (xmsqr(ib1,id1) > zero) then
+              xstdv(ib1,id1)=sqrt(xmsqr(ib1,id1))
+            endif
+          endif
+        enddo 
+      enddo 
+!
+! print table of means and standard deviations
+      do id1=1,n_fields
+        print *,' '
+        print *,'Table 1: counts, means, stdvs for id=',id1
+        do ib1=1,n_bins
+          if (id1<5) then 
+            p=exp(xlog1+xbin*(ib1-1))
+          else  ! GPSRO
+            p=z_gps(3)*(ib1-1)/1.0e3   ! z above surface in km
+          endif
+          print ('(i8,f6.0,i8,2f12.6)'),ib1,p,iaccept(ib1,id1,1), &
+                                        xmean(ib1,id1),xstdv(ib1,id1)
+        enddo
+      enddo
+!
+! Print a subset of box counts
+      do id1=1,n_fields
+!
+! Determine parameters for printing a subset of distributions
+        i=1
+        do ib1=1,n_bins
+          if (id1<5) then 
+            p=exp(xlog1+xbin*(ib1-1))
+            if ( (p > p_select(i)+0.001) .and. (i < n_p_select) ) then
+              i=i+1  
+            endif
+          else     !GPSRO
+            p=z_gps(3)*(ib1-1)/1.0e3   ! z above surface in km
+            if ( (p > z_select(i)+0.001) .and. (i < n_p_select) ) then
+              i=i+1  
+            endif
+          endif
+          i_list(i)=ib1
+          p_list(i)=p
+        enddo
+        i_list_last=i
+!
+        print *,' '
+        print *,'Table 2: sample of counts for boxes for id=',id1
+        print ('(6x,a,15i6)  '),'bin    =',i_list(1:i_list_last)
+        print ('(6x,a,15f6.0)'),'x(bin) =',p_list(1:i_list_last)
+        do i=1,i_list_last
+          i_values(i)=iaccept(i_list(i),id1,1)
+        enddo 
+        print ('(6x,a,15i6)'),'iaccept=',i_values(1:i_list_last)
+        print *,' '
+        do ib1=1,n_bins
+          do i=1,i_list_last
+            i_values(i)=ibins(ib1,i_list(i),id1,1)
+          enddo 
+          if (id1<5) then 
+            p=exp(xlog1+xbin*(ib1-1))
+          else     !GPSRO
+            p=z_gps(3)*(ib1-1)/1.0e3   ! z above surface in km
+          endif
+          print ('(i4,f10.0,15i6)'),ib1,p,i_values(1:i_list_last)
+        enddo
+      enddo
+!
+! Print a subset of correlations
+      do id1=1,n_fields
+!
+! Determine parameters for printing a subset of distributions
+        i=1
+        do ib1=1,n_bins
+          if (id1<5) then 
+            p=exp(xlog1+xbin*(ib1-1))
+            if ( (p > p_select(i)+0.001) .and. (i < n_p_select) ) then
+              i=i+1  
+            endif
+          else     !GPSRO
+            p=z_gps(3)*(ib1-1)/1.0e3   ! z above surface in km
+            if ( (p > z_select(i)+0.001) .and. (i < n_p_select) ) then
+              i=i+1  
+            endif
+          endif
+          i_list(i)=ib1
+          p_list(i)=p
+        enddo
+        i_list_last=i
+!
+        print *,' '
+        print *,'Table 3: sample of correlations for boxes for id=',id1
+        print ('(6x,a,15i6)  '),'bin    =',i_list(1:i_list_last)
+        print ('(6x,a,15f6.0)'),'x(bin) =',p_list(1:i_list_last)
+        do i=1,i_list_last
+          i_values(i)=iaccept(i_list(i),id1,1)
+        enddo 
+        print ('(6x,a,15i6)'),'iaccept=',i_values(1:i_list_last)
+        print *,' '
+        do ib1=1,n_bins
+          do i=1,i_list_last
+            n=i_list(i)
+            if (ibins(ib1,n,id1,1) > 0) then
+              xm1=xbins(ib1,n,2,id1,1)/ibins(ib1,n,id1,1)
+              xm2=xbins(ib1,n,4,id1,1)/ibins(ib1,n,id1,1)
+              xs1=xbins(ib1,n,3,id1,1)/ibins(ib1,n,id1,1)
+              xs2=xbins(ib1,n,5,id1,1)/ibins(ib1,n,id1,1)
+              xa=(xs1-xm1*xm1)*(xs2-xm2*xm2)
+              if (xa > zero) then   
+                xb=xbins(ib1,n,1,id1,1)/ibins(ib1,n,id1,1)-xm1*xm2
+                x_values(i)=xb/sqrt(xa)
+              else
+                x_values(i)=zero
+              endif
+            endif
+          enddo 
+          if (id1<5) then 
+            p=exp(xlog1+xbin*(ib1-1))
+          else     !GPSRO
+            p=z_gps(3)*(ib1-1)/1.0e3   ! z above surface in km
+          endif
+          print ('(i4,f10.0,15f6.3)'),ib1,p,x_values(1:i_list_last)
+        enddo
+      enddo
+!
+! read file pf previously accumulated values
+      if (n_count > 1) then
+        open (unit=10,file=file_in,form='unformatted')
+        read (10) n_count2,n_date2,n_time2,n_bins2,xlog12,xlog22,  &
+                  xbin2,latN2,latS2,lonW2,lonE2,c_comp2,n_fields2, &
+                  z_gps(5),c_file2
+        read (10) iaccept(:,:,2),xsum(:,:,2),xsumsq(:,:,2)
+        read (10) ibins(:,:,:,2) 
+        read (10) xbins(:,:,:,:,2) 
+        close (10)     
+        print *,'File read'      
+!
+! check that parameters on accumulation file to be updated agree with program
+        if ( (n_bins2 /= n_bins)     .or. &
+             (xlog12 /= xlog1)       .or. &
+             (xlog22 /= xlog2)       .or. & 
+             (latN2 /= latN)         .or. &
+             (latS2 /= latS)         .or. &
+             (lonW2 /= lonW)         .or. &
+             (lonE2 /= lonE)         .or. &
+             (n_fields2 /= n_fields) .or. &
+             (z_gps(2) /= z_gps(5))  .or. &
+             (c_comp2 /= c_comp) ) then
+          print *,' '
+          print *,'WRONG FILE ACCESSED X X X X X' 
+          print *,'Parameters on file are: '
+          print *,'n_bins,xlog1,xlog2=',n_bins2,xlog12,xlog22
+          print *,'latN,latS,lonW,lonE=',latN2,latS2,lonW2,lonE2
+          print *,'n_fields,z_gps,c_comp=',n_fields2,z_gps(5),c_comp2
+          print *,'Parameters specified in current program are: '
+          print *,'n_bins,xlog1,xlog2=',n_bins,xlog1,xlog2
+          print *,'latN,latS,lonW,lonE=',latN,latS,lonW,lonE
+          print *,'n_fields,z_gps,c_comp=',n_fields,z_gps(2),c_comp
+          stop
+        endif
+!
+! update accumulations
+        iaccept(:,:,1)=iaccept(:,:,1)+iaccept(:,:,2)
+        xsum(:,:,1)=xsum(:,:,1)+xsum(:,:,2)
+        xsumsq(:,:,1)=xsumsq(:,:,1)+xsumsq(:,:,2)
+        ibins(:,:,:,1)=ibins(:,:,:,1)+ibins(:,:,:,2)
+        xbins(:,:,:,:,1)=xbins(:,:,:,:,1)+xbins(:,:,:,:,2)
+!
+      endif
+!
+! write file of updated accumulated values
+      open (unit=10,file=file_out,form='unformatted')
+      write (10) n_count,n_date,n_time,n_bins,xlog1,xlog2,xbin, &
+                 latN,latS,lonW,lonE,c_comp,n_fields,z_gps(2),c_file
+      write (10) iaccept(:,:,1),xsum(:,:,1),xsumsq(:,:,1)
+      write (10) ibins(:,:,:,1) 
+      write (10) xbins(:,:,:,:,1) 
+      close (10)     
+!
+      call ods_clean_RE (ods)
+      print *,'Program end for time=',n_count,n_date,n_time
+!QQQQQ
+   close (78)
+!
+      end program vcorr_sumods

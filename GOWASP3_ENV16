@@ -1,0 +1,33 @@
+# set NOBACKUP to your own NOBACKUP dir
+# set GOWASP_PATH to the GOWASP dir containing src for the program versions desired
+# set GOWASP_BUFR_DATA to the dir of original (real) BUFR data
+# set GOWASP_BUFRBIN to the dir containing the executable "reblock"
+# set GOWASP_RMSHMKEY to the directory containing scripts to clean EMSF shmem  
+# set GOWASP_G5MODS to the ececutable that sets "g5_modules"
+# set GSI_TAG to the dir of GSI that contains netcdf modules (only used
+#             by GOWASP when computing diagnostic files of analysis or 
+#             forecast errors 
+# set GOWASP_CRTM_COEFS to the dir containing CRTM spec, tau, and other coefs
+#
+
+setenv GOWASP_ENV        /home/mkim1/GOWASP3_ENV16
+setenv NOBACKUP        /discover/nobackup/mkim1
+setenv GOWASP_PATH       /discover/nobackup/mkim1/GOWASP_3
+setenv GOWASP_EXTRA_PATH /discover/nobackup/mkim1/OSSEextra
+setenv GOWASP_BUFR_DATA  /discover/nobackup/projects/gmao/nwposse/develop/BUFRDATA
+setenv GOWASP_GSIPATH    /discover/nobackup/projects/gmao/nwposse/GEOSadas
+setenv GOWASP_BUFRBIN     ${GOWASP_GSIPATH}/Linux/bin
+setenv GOWASP_RMSHMKEY   /home/mkim1/bin 
+setenv GOWASP_G5MODS      ${GOWASP_GSIPATH}/Linux/bin/g5_modules
+setenv GSI_TAG         G525
+setenv GOWASP_CRTM_COEF_DIR /gpfsm/dnb52/projects/p10/gmao_ops/fvInput_4dvar/gsi/etc/fix_ncep20200513/REL-2.2.3-r60152_local-rev_4/CRTM_Coeffs/Little_Endian/
+# setenv GOWASP_CRTM_COEF_DIR /gpfsm/dnb52/projects/p10/gmao_ops/fvInput_4dvar/gsi/etc/fix_ncep20151116/REL-2.2.3-r60152/CRTM_Coeffs/Little_Endian/
+source $GOWASP_G5MODS
+setenv SIMPROGS   $GOWASP_PATH
+setenv BASEDIR1 ${basedir}
+setenv GEOSPATH1 $GOWASP_GSIPATH
+setenv SRCDIR $SIMPROGS
+umask 022
+echo "GOWASP environment set"
+
+

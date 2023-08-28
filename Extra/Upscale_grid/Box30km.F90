@@ -1,0 +1,636 @@
+  program NR2Egrid
+!
+! Create lower resolution fields from NR fields.  Both are assumed to be 
+! on lat-lon grids that include poles.  The change in resolution is 
+! accomplished through integration over over-lapping grid boxes. Values in 
+! a box are assumed to be uniform. 
+! 
+! (Shmem framework provided through Arlinda DaSilva)
+! Initial Code: Ronald Errico  August 15 2014
+!
+   use MAPL_ShmemMod    ! The SHMEM infrastructure
+   use netcdf           ! for reading the NR files
+!
+   use m_kinds, only : rkind1
+   use m_write_nc4, only : write_nc4_setup
+   use m_write_nc4, only : write_nc4_2dfld
+   use m_write_nc4, only : write_nc4_3dfld
+   use m_write_nc4, only : write_nc4_close
+!
+! Use module for printing info when aborting jobs
+   use m_die, only : mpi_die
+   use m_die, only : die_proc_id
+!
+   implicit none
+   include "mpif.h"
+   integer, parameter :: nlon1=5760
+   integer, parameter :: nlat1=2881
+   integer, parameter :: nlon2=1152
+   integer, parameter :: nlat2=721
+   integer, parameter :: nlevs=72
+   integer, parameter :: nfields=6
+   logical, parameter :: logps=.false.  ! integrate lop(ps) rather than ps  
+!
+!  Global arrays to be allocated using SHMEM
+!  ---------------------------------------------
+   real(rkind1), pointer :: qr(:,:,:) => null()
+   real(rkind1), pointer :: qs(:,:,:) => null()
+   real(rkind1), pointer :: ql(:,:,:) => null()
+   real(rkind1), pointer :: qi(:,:,:) => null()
+   real(rkind1), pointer :: snodp(:,:,:) => null()
+   real(rkind1), pointer :: weights(:,:,:) => null()
+   real(rkind1), pointer :: weights_id(:,:,:) => null()
+! 
+!
+   integer :: ip,jp,kp
+   integer :: ierr, ierr_read ! error flags
+   integer :: myid          ! processor id number 0, ... ,npet
+   integer :: npet          ! number of processors used
+   integer :: CoresPerNode
+   integer :: ntime         ! time slot index
+   integer :: nfield1
+   integer :: nfield2
+   integer :: nread   
+   integer :: field_imax, field_jmax, field_kmax
+   integer :: dim2(3)
+   integer :: dim3(3)
+   integer :: dim4(3)
+   integer :: argc
+   integer(4) :: iargc
+!
+   logical :: ltest
+   logical :: lprint
+!
+   real(rkind1), parameter :: qfac=0.622 ! ratio water vapor/dry air
+!
+   character(len=240) :: common_path
+   character(len=240) :: file_name_2d, file_name_3d, file_name_phis
+   character(len=240) :: file_name
+   character(len=240) :: file1
+   character(len=240) :: file_name_out
+   character(len=8)   :: field_name(nfields)   ! input field names
+   character(len=8)   :: field_name_out(nfields)   ! output field names
+   character(len=14)  :: cdatetime    ! yyyymmddhh
+   character(len=1)   :: c_test       ! T or F indicates whether to print more
+   character(len=*), parameter :: my_name='main_program'
+!                                       ---
+!  Initialize MPI
+!  --------------
+   call MPI_INIT(ierr)
+   call MPI_COMM_RANK(MPI_COMM_WORLD,myid,ierr)
+   die_proc_id=myid
+   call MPI_COMM_SIZE(MPI_COMM_WORLD,npet,ierr)
+   if (myid == 0) write(*,'(A,I4,A)')'Starting MPI on ',npet, ' processors'
+!
+!  ---------------------------------------------------------
+!  Initialize SHMEM
+!  ----------------
+   CoresPerNode = MAPL_CoresPerNodeGet(MPI_COMM_WORLD,rc=ierr) ! a must
+   if (ierr /= 0) call mpi_die ('main:CoresPerNode',ierr)
+   call MAPL_InitializeShmem(rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:InitializeShem',ierr)
+!
+!  Only ask for printing when myid=0
+   if (myid == 0) then
+     lprint=.true. 
+   else  
+     lprint=.false.
+   endif   
+!
+! Read arguments
+   argc = iargc()
+   if (lprint .and. argc /= 3) then
+     print *,' usage must be: create_rad_profs.x ', &
+             ' cdatetime file_name_out c_test'
+     call mpi_die (my_name,77)
+   endif
+   call GetArg( 1_4, cdatetime)
+   call GetArg( 2_4, file_name_out)
+   call GetArg( 3_4, c_test)
+!
+! Indicate that some extra info will be printed
+   if (lprint .and. c_test == 'T') then
+     ltest=.true.
+   else 
+     ltest=.false. 
+   endif
+!
+! Determine names of i/o files for each data type requested
+!    
+! Get file names
+!
+
+field_common_path
+/discover/nobackup/projects/gmao/osse2/pub/Ganymed/7km/c1440_NR/DATA/0.0625_deg
+field_dimensions 5760 2881 72
+
+SNODP       SNODP         1  /inst/inst30mn_2d_met1_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_2d_met1_Nx.$yyyymmdd_hhmm#z.nc4
+SFMC        SFMC          3  /tavg/tavg30mn_2d_met2_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.tavg30mn_2d_met2_Nx.$yyyymmdd_hhmm#z.nc4
+QR          QR            1  /inst/inst30mn_3d_QR_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_QR_Nv.$yyyymmdd_hhmm#z.nc4
+QS          QS            1  /inst/inst30mn_3d_QS_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_QS_Nv.$yyyymmdd_hhmm#z.nc4
+QL          QL            1  /inst/inst30mn_3d_QL_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_QL_Nv.$yyyymmdd_hhmm#z.nc4
+QI          QI            1  /inst/inst30mn_3d_QI_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_QI_Nv.$yyyymmdd_hhmm#z.nc4
+
+  common_path='/discover/nobackup/projects/gmao/osse2/pub/Ganymed/7km/c1440_NR/DATA/0.0625_deg'
+  file_name_2d='/inst/inst30mn_2d_met1_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_2d_met1_Nx.$yyyymmdd_hhmm#z.nc4'
+  file_name_3d='/inst/inst30mn_3d_$ffff#_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_$ffff#_Nv.$yyyymmdd_hhmm#z.nc4'    
+  file_name_phis='/const/const_2d_asm_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.const_2d_asm_Nx.$yyyymmdd#.nc4'
+!
+!  Allocate space for the grid 1 fields using SHMEM
+   field_imax=nlon1
+   field_jmax=nlat1
+   field_kmax=nlevs
+!
+   dim3=(/nlon1,nlat1,nlevs/)
+   call MAPL_AllocNodeArray(qr,dim3,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray qr',ierr)
+   call MAPL_AllocNodeArray(qs,dim3,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray qs',ierr)
+   call MAPL_AllocNodeArray(ql,dim3,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray ql',ierr)
+   call MAPL_AllocNodeArray(qi,dim3,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray qi',ierr)
+   dim2=(/nlon1,nlat1,1/)
+   call MAPL_AllocNodeArray(snodp,dim2,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray snodp',ierr)
+!
+!  Allocate weighting function arrays
+   dim4=(/4,nlon1,nlat1/)
+   call MAPL_AllocNodeArray(weights,dim4,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray wei',ierr)
+   call MAPL_AllocNodeArray(weights_id,dim4,rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:AllocNodeArray wid',ierr)
+!
+! List for GEOS-5 NR files
+  field_name(1)='SNODP'
+  field_name(2)='QR'
+  field_name(3)='QS'
+  field_name(4)='QL'
+  field_name(5)='QI'
+!
+! Read fields for grid 1   
+  if (myid==1) then
+    call read_shem_data (field_name(1),file_name_snodp,common_path, &
+                         cdatetime,2,1,snodp,ierr_read) 
+  else if (myid==3) then
+    call read_shem_data (field_name(2),file_name_3d,common_path, &
+                         cdatetime,3,0,qr,ierr_read) 
+  else if (myid==4) then
+    call read_shem_data (field_name(3),file_name_3d,common_path, &
+                         cdatetime,3,0,qs,ierr_read) 
+  else if (myid==5) then
+    call read_shem_data (field_name(4),file_name_3d,common_path, &
+                         cdatetime,3,0,ql,ierr_read) 
+  else if (myid==6) then
+    call read_shem_data (field_name(5),file_name_3d,common_path, &
+                         cdatetime,3,0,qi,ierr_read) 
+  endif
+!
+! Wait until all processors done thus far
+  call MPI_Barrier(MPI_COMM_WORLD,ierr)                 
+!
+! Interpolate horizontally  
+  if (myid==0) then
+    call intp_horz (ps1,ps2,1)
+  else if (myid==1) then
+    call intp_horz (phis1,phis2,1)
+  else if (myid==2) then
+    call intp_horz (t1,t2,nlevs)
+  else if (myid==3) then
+    call intp_horz (q1,q2,nlevs)
+  else if (myid==4) then
+    call intp_horz (u1,u2,nlevs)
+  else if (myid==5) then
+    call intp_horz (v1,v2,nlevs)
+  endif
+!
+! Wait until all processors done thus far
+  call MPI_Barrier(MPI_COMM_WORLD,ierr)                 
+!
+! Change T to TV 
+  if (myid==0) then
+    do kp=1,nlevs
+      do jp=1,nlat2
+        do ip=1,nlon2
+          t2(ip,jp,kp)=t2(ip,jp,kp)*(1.+qfac*q2(ip,jp,kp))
+        enddo
+      enddo
+    enddo
+  endif  
+!
+! Wait until all processors done thus far
+  call MPI_Barrier(MPI_COMM_WORLD,ierr)                 
+!
+! write nc4 file
+!  
+! Output fields  
+  if (myid == 0) then
+    call write_nc4_setup (nlon2,nlat2,nlevs,file_name_out)
+    call write_nc4_2dfld (nlon2,nlat2,phis2(:,:,1),field_name_out(1))
+    call write_nc4_2dfld (nlon2,nlat2,  ps2(:,:,1),field_name_out(2))
+    call write_nc4_3dfld (nlon2,nlat2,nlevs,t2,field_name_out(3))
+    call write_nc4_3dfld (nlon2,nlat2,nlevs,q2,field_name_out(4))
+    call write_nc4_3dfld (nlon2,nlat2,nlevs,u2,field_name_out(5))
+    call write_nc4_3dfld (nlon2,nlat2,nlevs,v2,field_name_out(6))
+    call write_nc4_close
+    print *,'file_out written: ',file_name_out
+  endif
+!
+! Wait until all processors done thus far
+  call MPI_Barrier(MPI_COMM_WORLD,ierr)                 
+!
+  call shutdown()
+  if (myid==0) then
+    print *,'Program Done'
+  endif
+!
+!
+  contains
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+!
+  subroutine overlap 
+!
+  implicit none
+!
+  integer :: i,j
+  integer :: i1,j1           ! grid 1 indices
+  integer :: i2a,i2b,j2a,j2b ! grid 2 indeces
+  real :: deg2rad            ! (pi/4) radians / 45 degrees 
+  real :: rnlon1             ! 1/nlon1
+  real :: sumw               ! sumed weights for testing (=2)
+  real :: wja,wjb,wia,wib    ! 1-d weighting factors
+  real :: xa,xb,ya,yb        ! lat and lons 
+  real :: dlon1,dlat1,dlon2,dlat2
+  real, allocatable :: lon1(:),lat1(:),sinlat1(:),area1(:)
+  real, allocatable :: lon2(:),lat2(:),sinlat2(:),area2(:)
+  real, allocatable :: test(:,:)
+!
+  allocate (lon1(0:nlon1))
+  allocate (lat1(0:nlat1))
+  allocate (sinlat1(0:nlat1))
+  allocate (area1(nlat1))
+!
+  allocate (lon2(0:nlon2))
+  allocate (lat2(0:nlat2))
+  allocate (sinlat2(0:nlat2))
+  allocate (area2(nlat2))
+!
+  dlon1=360./nlon1
+  dlat1=180./(nlat1-1)
+  dlon2=360./nlon2
+  dlat2=180./(nlat2-1)
+!
+  lat1(0)=-90.-0.5*dlat1
+  do j=1,nlat1-1
+   lat1(j)=lat1(j-1)+dlat1
+  enddo
+  lat1(0)=-90.
+  lat1(nlat1)=90.
+!
+  lat2(0)=-90.-0.5*dlat2
+  do j=1,nlat2-1
+   lat2(j)=lat2(j-1)+dlat2
+  enddo
+  lat2(0)=-90.
+  lat2(nlat2)=90.
+!
+  deg2rad=atan(1.)/45.
+  do j=1,nlat1-1
+    sinlat1(j)=sin(deg2rad*lat1(j))
+  enddo
+  sinlat1(0)=-1.  
+  sinlat1(nlat1)=1.  
+!
+  do j=1,nlat2-1
+    sinlat2(j)=sin(deg2rad*lat2(j))
+  enddo
+  sinlat2(0)=-1.  
+  sinlat2(nlat2)=1.  
+!
+  do j=1,nlat1
+   area1(j)=(sinlat1(j)-sinlat1(j-1))/nlon1
+  enddo
+!
+  do j=1,nlat2
+   area2(j)=(sinlat2(j)-sinlat2(j-1))/nlon2
+  enddo
+!
+  sumw=nlon1*sum(area1(:))
+  print *,'SUM1=',sumw
+  sumw=nlon2*sum(area2(:))
+  print *,'SUM2=',sumw
+!
+  lon1(0)=-0.5*dlon1
+  do i=1,nlon1
+    lon1(i)=lon1(i-1)+dlon1
+  enddo
+  rnlon1=1./real(nlon1)
+!
+  lon2(0)=-0.5*dlon2
+  do i=1,nlon2
+    lon2(i)=lon2(i-1)+dlon2
+  enddo
+!
+  sumw=0.
+!
+  do j1=1,nlat1     ! loop over grid 1 lats
+    ya=lat1(j1-1)   ! S. edge of box on grid 1 
+    yb=lat1(j1)     ! N. edge of box on grid 1 
+    j2a=1+int(0.5+(ya+90.)/dlat2) ! lat index for grid 2 box containing ya
+    j2b=1+int(0.5+(yb+90.)/dlat2) ! lat index for grid 2 box containing yb
+    if (j2a==j2b) then               ! lats of grid 1 box fully in grid 2 box 
+      wja=sinlat1(j1)-sinlat1(j1-1)  ! no need to consider 2 boxes in N-S 
+      wjb=0.                         ! so second box contribution can be 0
+    else                             ! compute N-S distance of part of 
+      wja=sinlat2(j2a)-sinlat1(j1-1) ! grid 1 box j1 in grid 2 box j2a
+      wjb=sinlat1(j1)-sinlat2(j2a)   ! grid 1 box j1 in grid 2 box j2b
+    endif
+!
+    do i1=1,nlon1     ! loop over grid 1 lons 
+      xa=lon1(i1-1)   ! W. edge of box on grid 1      
+      xb=lon1(i1)     ! E. edge of box on grid 1      
+      i2a=1+int(0.5+xa/dlon2)  ! lon index for grid 2 box containing xa
+      i2b=1+int(0.5+xb/dlon2)  ! lon index for grid 2 box containing xb
+      if (i2a>nlon2) i2a=1
+      if (i2b>nlon2) i2b=1
+      if (i2a==i2b) then                ! lons of grid 1 box in grid 2 box 
+        wia=rnlon1                      ! no need to consider 2 boxes in E-W 
+        wib=0.                          ! so second box contribution can be 0
+      else                              ! compute E-W distance of part of 
+        wia=(lon2(i2a)-lon1(i1-1))/360. ! grid 1 box i1 within grid 2 box i2a
+        wib=(lon1(i1)-lon2(i2a))/360.   ! grid 1 box i1 within grid 2 box i2b
+      endif
+!
+! weights_id are the 4 i,j indeces of the 4 possible adjacent grid 2 boxes 
+! overlayed by the grid 1 box i1,j1 
+      weights_id(1,i1,j1)=real(i2a)
+      weights_id(2,i1,j1)=real(i2b)
+      weights_id(3,i1,j1)=real(j2a)
+      weights_id(4,i1,j1)=real(j2b)
+!
+! weights are the fractions of area of grid 1 box i1,j1 that contribute to the 
+! areas of each of the 4 possible grid 2 boxes 1 box (i2a,j2a), (i2b,j2a),  
+! (i2a,j2b), (i2b,j2b)
+!
+      weights(1,i1,j1)=wja*wia/area2(j2a)  
+      weights(2,i1,j1)=wja*wib/area2(j2a)
+      weights(3,i1,j1)=wjb*wia/area2(j2b)
+      weights(4,i1,j1)=wjb*wib/area2(j2b)
+      sumw=sumw+(wja+wjb)*(wia+wib)
+    enddo
+
+  enddo 
+!
+  print ('(a,e15.5)'),'SUM=',sumw
+!
+  if (ltest) then
+    allocate (test(nlon2,nlat2))
+    test(:,:)=0.
+    do j1=1,nlat1
+      do i1=1,nlon1
+        i2a=nint(weights_id(1,i1,j1))
+        i2b=nint(weights_id(2,i1,j1))
+        j2a=nint(weights_id(3,i1,j1))
+        j2b=nint(weights_id(4,i1,j1))
+        test(i2a,j2a)=test(i2a,j2a)+weights(1,i1,j1)
+        test(i2b,j2a)=test(i2b,j2a)+weights(2,i1,j1)
+        test(i2a,j2b)=test(i2a,j2b)+weights(3,i1,j1)
+        test(i2b,j2b)=test(i2b,j2b)+weights(4,i1,j1)
+      enddo
+    enddo
+!
+    print *,'Test sample of weights:  All should equal 1'
+    print ('(a)'),'Lat 1'  
+    print ('(10f10.6)'),test(1:nlon2:nlon2/11,1)
+    print ('(a,i5)'),'Lat',nlat2
+    print ('(10f10.6)'),test(1:nlon2:nlon2/11,nlat2)  
+    print ('(a)'),'Lon 1'  
+    print ('(10f10.6)'),test(1,1:nlat2:nlat2/11)
+    print ('(a,i5)'),'Lon',nlon2
+    print ('(10f10.6)'),test(nlon2,1:nlat2:nlat2/11)  
+    print ('(a,i5)'),'Lat',nlat2/3  
+    print ('(10f10.6)'),test(1:nlon2:nlon2/11,nlat2/3)
+    print ('(a,i5)'),'Lat',3*nlat2/4
+    print ('(10f10.6)'),test(1:nlon2:nlon2/11,3*nlat2/4)  
+    print ('(a,i5)'),'Lon',nlon2/3  
+    print ('(10f10.6)'),test(nlon2/3,1:nlat2:nlat2/11)
+    print ('(a,i5)'),'Lon 2'
+    print ('(10f10.6)'),test(2,1:nlat2:nlat2/11)  
+!
+    deallocate (test)
+  endif ! test on ltest
+!
+  deallocate (lon1,lat1,area1,sinlat1)
+  deallocate (lon2,lat2,area2,sinlat2)
+!
+  end subroutine overlap   
+!
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+!
+  subroutine intp_horz (f1,f2,klevs)
+!
+  implicit none
+  integer :: klevs
+  real :: f1(nlon1,nlat1,klevs) 
+  real :: f2(nlon2,nlat2,klevs) 
+!
+  integer :: i1,j1,k
+  integer :: i2a,i2b,j2a,j2b
+! 
+  do j1=1,nlat1 
+    do i1=1,nlon1
+      i2a=nint(weights_id(1,i1,j1))
+      i2b=nint(weights_id(2,i1,j1))
+      j2a=nint(weights_id(3,i1,j1))
+      j2b=nint(weights_id(4,i1,j1))
+      do k=1,klevs
+        f2(i2a,j2a,k)=f2(i2a,j2a,k)+weights(1,i1,j1)*f1(i1,j1,k)
+        f2(i2b,j2a,k)=f2(i2b,j2a,k)+weights(2,i1,j1)*f1(i1,j1,k)
+        f2(i2a,j2b,k)=f2(i2a,j2b,k)+weights(3,i1,j1)*f1(i1,j1,k)
+        f2(i2b,j2b,k)=f2(i2b,j2b,k)+weights(4,i1,j1)*f1(i1,j1,k)
+      enddo
+    enddo
+  enddo
+! 
+  end subroutine intp_horz 
+!
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+!
+   subroutine check(status, loc, ier)
+!
+     integer, intent(in) :: status
+     integer, intent(inout) :: ier
+     character(len=*), intent(in) :: loc
+!
+     if (status /= NF90_NOERR) then
+       ier=ier+1
+       if (loc /= ' ') then 
+         print *,'Error at ', loc
+         print *,NF90_STRERROR(status)
+       endif
+     endif
+!
+   end subroutine check
+!
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+!
+   subroutine shutdown()
+!
+! shmem must deallocate shared memory arrays
+!
+     call MAPL_DeallocNodeArray(ps1,rc=ierr)
+     call MAPL_DeallocNodeArray(phis1,rc=ierr)
+     call MAPL_DeallocNodeArray(q1,rc=ierr)
+     call MAPL_DeallocNodeArray(u1,rc=ierr)
+     call MAPL_DeallocNodeArray(v1,rc=ierr)
+!
+     call MAPL_DeallocNodeArray(ps2,rc=ierr)
+     call MAPL_DeallocNodeArray(phis2,rc=ierr)
+     call MAPL_DeallocNodeArray(q2,rc=ierr)
+     call MAPL_DeallocNodeArray(u2,rc=ierr)
+     call MAPL_DeallocNodeArray(v2,rc=ierr)
+!
+     call MAPL_DeallocNodeArray(weights,rc=ierr)
+     call MAPL_DeallocNodeArray(weights_id,rc=ierr)
+!
+     call MAPL_FinalizeShmem (rc=ierr)
+     call MPI_Finalize(ierr)
+!
+   end subroutine shutdown
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+!
+   subroutine read_shem_data (f_name,f_file,f_common,cdtime, &
+                              field_dim,k,field_in,iers) 
+!
+!  Read field on netcdf file into shared memory
+!
+     implicit none
+!
+     character(len=*), intent(in) :: cdtime
+     character(len=*), intent(in) :: f_name                
+     character(len=*), intent(in) :: f_file
+     character(len=*), intent(in) :: f_common
+     integer, intent(in) :: field_dim
+     integer, intent(in) :: k
+!
+     integer, intent(out)  :: iers 
+     real(rkind1), intent(out) :: field_in(field_imax,field_jmax,field_kmax)
+!
+     integer :: imx,jmx,kmx
+     integer :: ier, ier1, ier2, ier3
+     integer :: ncid,varid
+     character(len=120) :: c_notice
+     character(len=240) :: file_name
+!
+     call set_field_file_name (f_name,f_file,f_common,cdtime, &
+                               file_name,ier) 
+     iers=ier
+!
+     c_notice='Opening file for f='//trim(f_name)//' t='//cdtime
+     call check (nf90_open(trim(file_name),NF90_NOWRITE,ncid), &
+                trim(c_notice),iers)
+!
+! Get dimension information to check (lon)
+     ier1=0
+     ier2=0 
+     call check (nf90_inq_dimid(ncid,'lon',varid),' ',ier1)
+     if (ier1 /= 0) then 
+       call check (nf90_inq_dimid(ncid,'longitude',varid),' ',ier2)
+     endif
+     if (ier1 == 0 .and. ier2 == 0) then
+       call check (nf90_inquire_dimension(ncid,varid,c_notice,imx), &
+                  'nf90_inq 2',iers)
+     else
+       print *,'Error: cannot find one of lon or longitude on file'
+       print *,'       file=',trim(file_name)
+       print *,'       ier1, ier2, iers = ',ier1,ier2,iers 
+       iers=iers+1
+       imx=0
+     endif
+!
+! Get dimension information to check (lat)
+     ier1=0
+     ier2=0 
+     call check (nf90_inq_dimid(ncid,'lat',varid),' ',ier1)
+     if (ier1 /= 0) then 
+       call check (nf90_inq_dimid(ncid,'latitude',varid),' ',ier2)
+     endif
+     if (ier1 == 0 .and. ier2 == 0) then
+       call check (nf90_inquire_dimension(ncid,varid,c_notice,jmx), &
+                  'nf90_inq 4',iers)
+     else
+       print *,'Error: cannot find one of lat or latitude on file'
+       print *,'       file=',trim(file_name)
+       print *,'       ier1, ier2, iers = ',ier1,ier2,iers 
+       iers=iers+1
+       jmx=0
+     endif
+!
+! Compare grid dimensions on file with those specified in program
+     if (imx /= field_imax .or. jmx /= field_jmax) then 
+       print *,'Grid dimension mismatch in routine : read_shem_data'
+       print *,'file_name=',trim(file_name)
+       print *,'imax, jmax on file = ',imx,jmx
+       print *,'imax, jmax in program = ',field_imax,field_jmax
+       iers=iers+1
+     endif
+!
+     if (field_dim == 3) then   ! check vertical dimension 
+!
+       ier1=0
+       ier2=0 
+       ier3=0       
+       call check (nf90_inq_dimid(ncid,'lev',varid),' ',ier1)
+       if (ier1 /= 0) then 
+         call check (nf90_inq_dimid(ncid,'vertical level',varid),' ',ier2)
+       endif
+       if (ier2 /= 0) then 
+         call check (nf90_inq_dimid(ncid,'index',varid),' ',ier3)
+       endif
+       if (ier1 == 0 .and. ier2 == 0 .and. ier3 == 0) then
+         call check (nf90_inquire_dimension(ncid,varid,c_notice,kmx), &
+                    'nf90_inq 6',iers)
+       else
+         print *,'Error: cannot find one of lev, vertical level, or index ', &
+                 'on file'
+         print *,'       file=',trim(file_name)
+         print *,'       ier1, ier2, ier3, iers = ',ier1,ier2,ier3,iers 
+         iers=iers+1
+         kmx=0
+       endif
+       if (kmx /= field_kmax) then
+         print *,'Grid dimension mismatch in routine : read_shem_data'
+         print *,'file_name=',trim(file_name)
+         print *,'kmax on file=',kmx,'  kmax in program=',field_kmax
+         iers=iers+1
+       endif
+     endif
+!
+     c_notice='Getting vari for f='//trim(f_name)//' t='//cdtime
+     call check (nf90_inq_varid(ncid,trim(f_name),varid),      &
+                trim(c_notice),iers)
+!
+     c_notice='reading field for f='//trim(f_name)//' t='//cdtime
+     if (field_dim == 3) then ! read 3d field
+       call check (nf90_get_var(ncid,varid,field_in),          &
+               trim(c_notice),iers)
+     else                  ! read 2 d field but place in 3d array
+       call check (nf90_get_var(ncid,varid,field_in(:,:,k)),   &
+               trim(c_notice),iers)
+     endif
+!
+     c_notice='Closing file for f='//trim(f_name)//' t='//cdtime
+     call check (nf90_close(ncid),trim(c_notice),iers)
+!
+   end subroutine read_shem_data 
+!
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x
+!
+!      
+ end program NR2Egrid

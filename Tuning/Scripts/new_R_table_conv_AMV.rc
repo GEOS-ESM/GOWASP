@@ -1,0 +1,56 @@
+ngroups= 13    nheader= 2                          
+synch_SATW_with_HC_SETUP                                                       
+Grouped_using_517osse_results
+luvavg= .true.
+#
+SAT1 wind   nkx= 1                                                         
+est_517osse_conv_242_u.txt                                         
+  242  
+#
+SAT2 wind   nkx= 1                                                         
+est_517osse_conv_243_u.txt                                         
+  243
+#
+SAT3 wind   nkx= 1                                                         
+est_517osse_conv_244_u.txt                                         
+  244
+#
+SAT4 wind   nkx= 1                                                         
+est_517osse_conv_245_u.txt                                         
+  245  
+#
+SAT5 wind   nkx= 1                                                         
+est_517osse_conv_246_u.txt                                         
+  246
+#
+SAT6 wind   nkx= 1                                                         
+est_517osse_conv_247_u.txt                                         
+  247
+#
+SAT7 wind   nkx= 1                                                         
+est_517osse_conv_250_u.txt                                         
+  250  
+#
+SAT8 wind   nkx= 1                                                         
+est_517osse_conv_252_u.txt                                         
+  252
+#
+SAT9 wind   nkx= 1                                                         
+est_517osse_conv_253_u.txt                                         
+  253
+#
+SATA wind   nkx= 1                                                         
+est_517osse_conv_254_u.txt                                         
+  254
+#
+SATB wind   nkx= 1                                                         
+est_517osse_conv_257_u.txt                                         
+  257  
+#
+SATC wind   nkx= 1                                                         
+est_517osse_conv_258_u.txt                                         
+  258  
+#
+SATD wind   nkx= 1                                                         
+est_517osse_conv_259_u.txt                                         
+  259  

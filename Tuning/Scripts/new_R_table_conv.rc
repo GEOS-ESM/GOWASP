@@ -1,0 +1,104 @@
+ngroups= 25    nheader= 2                          
+synch_SATW_with_HC_SETUP                                                       
+Grouped_using_ctl529_results
+luvavg= .true.
+#
+RAOB T      nkx= 2                                                         
+est_ctl529_conv_120_T.txt                                         
+  120  132 
+#
+AIR1 T      nkx= 2                                                         
+est_ctl529_conv_130_T.txt                                         
+  130  131   
+#
+AIR2 T      nkx= 2                                                         
+est_ctl529_conv_133_T.txt                                         
+  133  135  
+#
+SHIP T      nkx= 1                                                         
+est_ctl529_conv_180_T.txt                                          
+  180
+#
+RAOB wind   nkx= 3                                                         
+est_ctl529_conv_220_u.txt                                         
+  220  221  232 
+#
+PROF wind   nkx= 1                                                         
+est_ctl529_conv_223_u.txt                                         
+  223
+#
+VADW wind   nkx= 1                                                         
+est_ctl529_conv_224_u.txt                                         
+  224
+#
+AIR1 wind   nkx= 1                                                         
+est_ctl529_conv_230_u.txt                                         
+  230
+#
+AIR2 wind   nkx= 3                                                         
+est_ctl529_conv_231_u.txt                                         
+  231 233 235
+#
+SAT1 wind   nkx= 1                                                         
+est_ctl529_conv_242_u.txt                                         
+  242  
+#
+SAT2 wind   nkx= 1                                                         
+est_ctl529_conv_243_u.txt                                         
+  243
+#
+SAT3 wind   nkx= 1                                                         
+est_ctl529_conv_244_u.txt                                         
+  244
+#
+SAT4 wind   nkx= 1                                                         
+est_ctl529_conv_245_u.txt                                         
+  245  
+#
+SAT5 wind   nkx= 1                                                         
+est_ctl529_conv_246_u.txt                                         
+  246
+#
+SAT6 wind   nkx= 1                                                         
+est_ctl529_conv_247_u.txt                                         
+  247
+#
+SAT7 wind   nkx= 1                                                         
+est_ctl529_conv_250_u.txt                                         
+  250  
+#
+SAT8 wind   nkx= 1                                                         
+est_ctl529_conv_252_u.txt                                         
+  252
+#
+SAT9 wind   nkx= 1                                                         
+est_ctl529_conv_253_u.txt                                         
+  253
+#
+SATA wind   nkx= 1                                                         
+est_ctl529_conv_254_u.txt                                         
+  254
+#
+SATB wind   nkx= 1                                                         
+est_ctl529_conv_257_u.txt                                         
+  257  
+#
+SATC wind   nkx= 1                                                         
+est_ctl529_conv_258_u.txt                                         
+  258  
+#
+SATD wind   nkx= 1                                                         
+est_ctl529_conv_259_u.txt                                         
+  259  
+#
+SFC1 wind   nkx= 1                                                         
+est_ctl529_conv_280_u.txt                                         
+  280
+#
+SFC2 wind   nkx= 1                                                         
+est_ctl529_conv_282_u.txt                                         
+  282
+#
+SFC2 wind   nkx= 1                                                         
+est_ctl529_conv_290_u.txt                                         
+  290

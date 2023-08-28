@@ -1,0 +1,15 @@
+compute_lon_stride.o: compute_lon_stride.f90 m_kinds.o
+find_name_subs.o: find_name_subs.f90
+read_akbk.o: read_akbk.f90 m_kinds.o
+interpolate_subs.o: m_kinds.o m_parameters.o interpolate_subs.f90
+set_file_name.o: set_file_name.f90 
+sub_zensun.o: sub_zensun.f90 m_kinds.o
+m_kinds.o: m_kinds.f90
+m_parameters.o: m_parameters.f90 m_kinds.o
+m_time_compute.o: m_time_compute.f90 m_kinds.o 
+m_sat_info_table.o: m_sat_info_table.f90 m_kinds.o
+m_nr_fields_info.o: m_nr_fields_info.f90 m_kinds.o read_akbk.o 
+m_obs_error_table.o: m_obs_error_table.f90 m_sat_info_table.o m_kinds.o
+smooth_prof.o: smooth_prof.f90 m_kinds.o
+
+

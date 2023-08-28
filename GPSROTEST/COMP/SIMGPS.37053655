@@ -1,0 +1,646 @@
+setenv NBRPROCS 16
+echo NBRPROCS = 16
+NBRPROCS = 16
+source ~/GOWASP_3/GOWASP_ENV
+setenv GOWASP_ENV /discover/home/rerrico/GOWASP_3/GOWASP_ENV
+setenv NOBACKUP /discover/nobackup/rerrico
+setenv GOWASP_PATH /discover/home/rerrico/GOWASP_3
+setenv GOWASP_EXTRA_PATH /discover/home/rerrico/OSSEextra
+setenv GOWASP_BUFR_DATA /discover/nobackup/rerrico/BUFRDATA
+setenv GOWASP_GSIPATH /gpfsm/dhome/dao_ops/GEOSadas-5_17/GEOSadas
+setenv GOWASP_BUFRBIN /gpfsm/dhome/dao_ops/GEOSadas-5_17/GEOSadas/Linux/bin
+setenv GOWASP_RMSHMKEY /discover/home/rerrico/bin
+setenv GOWASP_G5MODS /gpfsm/dhome/dao_ops/GEOSadas-5_17/GEOSadas/Linux/bin/g5_modules
+setenv GSI_TAG G517
+setenv GOWASP_CRTM_COEF_DIR /gpfsm/dnb52/projects/p10/gmao_ops/fvInput_4dvar/gsi/etc/fix_ncep20151116/REL-2.2.3-r60152/CRTM_Coeffs/Little_Endian/
+source /gpfsm/dhome/dao_ops/GEOSadas-5_17/GEOSadas/Linux/bin/g5_modules
+set scriptname = g5_modules
+if ( g5_modules == slurm_script ) then
+set sourced = 1
+endif
+if ( ! 1 && ! 0 ) goto usage
+if ( 1 && 0 ) goto usage
+set arch = `uname -s`
+uname -s
+set mach = `uname -m`
+uname -m
+set node = `uname -n`
+uname -n
+if ( ( borgq156 =~ discover* ) || ( borgq156 =~ borg* ) || ( borgq156 =~ dali* ) || ( borgq156 =~ warp* ) ) then
+set site = NCCS
+else if ( ( borgq156 =~ jibb* ) || ( borgq156 =~ jcc01* ) ) then
+alias echo2 echo !* > /dev/stderr
+if ( x86_64 == x86_64 ) goto X86_64
+goto X86_64
+set modinit = DUMMY
+set loadmodules = 0
+set usemodules = 0
+if ( NCCS == NCCS || NCCS == JIBB ) then
+set mod1 = comp/intel-15.0.2.164
+set basedir = /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16
+set mod2 = mpi/sgi-mpt-2.16
+set mod3 = lib/mkl-15.0.2.164
+set mod4 = other/comp/gcc-4.6.3-sp1
+set mod5 = other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+set mods = ( comp/intel-15.0.2.164 mpi/sgi-mpt-2.16 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+set modinit = /usr/share/modules/init/csh
+set loadmodules = 0
+set usemodules = 0
+else if ( NCCS == NAS ) then
+goto ACTION
+set wrapper = 0
+if ( 0 > 0 ) then
+SETVALUES:
+if ( 1 ) then
+if ( ! 0 ) echo -n g5_modules: Setting BASEDIR
+echo -n g5_modules: Setting BASEDIR
+g5_modules: Setting BASEDIRsetenv BASEDIR /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16
+else if ( 1 ) then
+if ( 1 ) then
+echo /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+grep /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+if ( 0 ) then
+else
+if ( 0 ) then
+if ( 0 ) then
+if ( -e /usr/share/modules/init/csh ) then
+if ( ! 0 ) echo -n  and modules
+echo -n  and modules
+ and modulessource /usr/share/modules/init/csh
+if ( 1 ) then
+set modules_shell=tcsh
+else
+if ( 1 ) then
+setenv MODULE_VERSION_STACK 3.2.10
+else
+set exec_prefix=/usr/share/modules/bin
+set prefix=
+set postfix=
+if ( 0 ) then
+set histchar = !
+endif
+if ( 0 ) then
+if ( 0 ) then
+set postfix = set _exit=$status; ; /usr/bin/test 0 = $_exit;
+alias module eval `/usr/share/modules/bin/modulecmd tcsh !*`; set _exit=$status; ; /usr/bin/test 0 = $_exit;
+unset exec_prefix
+unset prefix
+unset postfix
+setenv MODULESHOME /usr/share/modules
+if ( ! 1 ) then
+if ( ! 1 ) then
+eval `/usr/share/modules/bin/modulecmd tcsh purge`
+/usr/share/modules/bin/modulecmd tcsh purge
+setenv LD_LIBRARY_PATH /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+setenv MANPATH /usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man:/usr/share/catman:/usr/catman:/usr/man
+setenv PATH .:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+unsetenv CC
+unsetenv CCC
+unsetenv COMPILER
+unsetenv COMPILER_VER
+unsetenv CPATH
+unsetenv CXX
+unsetenv DEFAULT_CC
+unsetenv DEFAULT_CPP
+unsetenv DEFAULT_F77
+unsetenv DEFAULT_F90
+unsetenv F77
+unsetenv F90
+unsetenv FC
+unsetenv FPATH
+unsetenv GDBSERVER_MIC
+unsetenv GDB_CROSS
+unsetenv INCLUDE
+unsetenv INTEL_LICENSE_FILE
+unsetenv IPPROOT
+unsetenv LIBRARY_PATH
+unsetenv LOADEDMODULES
+unsetenv MALLOC_MMAP_MAX_
+unsetenv MIC_LD_LIBRARY_PATH
+unsetenv MIC_LIBRARY_PATH
+unsetenv MKLPATH
+unsetenv MKLROOT
+unsetenv MPICH_CC
+unsetenv MPICH_CCC
+unsetenv MPICH_CCLINKER
+unsetenv MPICH_CLINKER
+unsetenv MPICH_F77
+unsetenv MPICH_F90
+unsetenv MPICH_F90LINKER
+unsetenv MPICH_FLINKER
+unsetenv MPI_MEMMAP_OFF
+unsetenv MPI_NUM_MEMORY_REGIONS
+unsetenv MPI_ROOT
+unsetenv MPI_SYSLOG_COPY
+unsetenv MPT_VERSION
+unsetenv NLSPATH
+unsetenv SLURM_MPI_TYPE
+unsetenv SUPPRESS_XPMEM_TRIM_THRESH
+unsetenv TBBROOT
+unsetenv _LMFILES_
+set _exit=0
+/usr/bin/test 0 = 0
+if ( 0 ) module load modules
+if ( 0 ) then
+foreach mod ( comp/intel-15.0.2.164 mpi/sgi-mpt-2.16 lib/mkl-15.0.2.164 other/comp/gcc-4.6.3-sp1 other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090 )
+eval `/usr/share/modules/bin/modulecmd tcsh load $mod`
+/usr/share/modules/bin/modulecmd tcsh load comp/intel-15.0.2.164
+setenv CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv COMPILER intel
+setenv COMPILER_VER 15.0.2.164
+setenv CPATH /usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv CXX /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv DEFAULT_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv DEFAULT_CPP /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv DEFAULT_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv DEFAULT_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv FC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv FPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv GDBSERVER_MIC /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/target/mic/bin/gdbserver
+setenv GDB_CROSS /usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin/gdb-mic
+setenv INCLUDE /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv INTEL_LICENSE_FILE /usr/local/intel/licenses
+setenv IPPROOT /usr/local/intel/Composer/composer_xe_2015.2.164/ipp
+setenv LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+setenv LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv LOADEDMODULES comp/intel-15.0.2.164
+setenv MANPATH /usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man:/usr/share/catman:/usr/catman:/usr/man
+setenv MIC_LD_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/mic:/opt/intel/mic/coi/device-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/mic:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv MIC_LIBRARY_PATH /usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/mic
+setenv MKLPATH /usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64
+setenv MKLROOT /usr/local/intel/Composer/composer_xe_2015.2.164/mkl
+setenv MPICH_CC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MPICH_CCC /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv MPICH_CCLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icpc
+setenv MPICH_CLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/icc
+setenv MPICH_F77 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MPICH_F90 /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MPICH_F90LINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv MPICH_FLINKER /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64/ifort
+setenv NLSPATH /usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64/locale/en_US/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/share/locale/%l_%t/%N:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/intel64/locale/%l_%t/%N
+setenv PATH /usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv TBBROOT /usr/local/intel/Composer/composer_xe_2015.2.164/tbb
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164
+set _exit=0
+/usr/bin/test 0 = 0
+end
+eval `/usr/share/modules/bin/modulecmd tcsh load $mod`
+/usr/share/modules/bin/modulecmd tcsh load mpi/sgi-mpt-2.16
+setenv CPATH /usr/local/sgi/mpi/mpt-2.16/include:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/include
+setenv FPATH /usr/local/sgi/mpi/mpt-2.16/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+setenv LIBRARY_PATH /usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/sgi-mpt-2.16
+setenv MALLOC_MMAP_MAX_ 1
+setenv MANPATH /usr/local/sgi/mpi/mpt-2.16/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man:/usr/share/catman:/usr/catman:/usr/man
+setenv MPI_MEMMAP_OFF 1
+setenv MPI_NUM_MEMORY_REGIONS 0
+setenv MPI_ROOT /usr/local/sgi/mpi/mpt-2.16
+setenv MPI_SYSLOG_COPY 2
+setenv MPT_VERSION 2.16
+setenv PATH /usr/local/sgi/mpi/mpt-2.16/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv SLURM_MPI_TYPE pmi2
+setenv SUPPRESS_XPMEM_TRIM_THRESH 1
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/sgi-mpt-2.16
+set _exit=0
+/usr/bin/test 0 = 0
+end
+eval `/usr/share/modules/bin/modulecmd tcsh load $mod`
+/usr/share/modules/bin/modulecmd tcsh load lib/mkl-15.0.2.164
+setenv INTEL_LICENSE_FILE /usr/local/intel/license
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/sgi-mpt-2.16:lib/mkl-15.0.2.164
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/sgi-mpt-2.16:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164
+set _exit=0
+/usr/bin/test 0 = 0
+end
+eval `/usr/share/modules/bin/modulecmd tcsh load $mod`
+/usr/share/modules/bin/modulecmd tcsh load other/comp/gcc-4.6.3-sp1
+setenv INCLUDE /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+setenv LIBRARY_PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/sgi-mpt-2.16:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1
+setenv MANPATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/sgi/mpi/mpt-2.16/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man:/usr/share/catman:/usr/catman:/usr/man
+setenv PATH /gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/sgi/mpi/mpt-2.16/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/sgi-mpt-2.16:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1
+set _exit=0
+/usr/bin/test 0 = 0
+end
+eval `/usr/share/modules/bin/modulecmd tcsh load $mod`
+/usr/share/modules/bin/modulecmd tcsh load other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv INCLUDE /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/include:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/include:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/include:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/include
+setenv LD_LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/opt/intel/mic/coi/host-linux-release/lib:/opt/intel/mic/myo/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1:/discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16/Linux/lib
+setenv LIBRARY_PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/lib:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/lib64:/usr/local/sgi/mpi/mpt-2.16/lib:/usr/local/intel/Composer/composer_xe_2015.2.164/compiler/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/ipp/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mkl/lib/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/tbb/lib/intel64/gcc4.1
+setenv LOADEDMODULES comp/intel-15.0.2.164:mpi/sgi-mpt-2.16:lib/mkl-15.0.2.164:other/comp/gcc-4.6.3-sp1:other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+setenv MANPATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/man:/usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/share/man:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/share/man:/usr/local/sgi/mpi/mpt-2.16/man:/usr/local/intel/Composer/composer_xe_2015.2.164/man/en_US:/usr/share/man:/usr/local/man:/usr/local/share/man:/usr/nlocal/slurm/14.03.10/share/man:/usr/share/catman:/usr/catman:/usr/man
+setenv PATH /usr/local/other/SLES11/SIVO-PyD/1.20.0_gcc4.6.3-sp1_mkl15.0.0.090/bin:/gpfsm/dnb32/mbhat/GCC/install/gcc-4.6.3/bin:/usr/local/sgi/mpi/mpt-2.16/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/mpirt/bin/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/bin/intel64_mic:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gui/intel64:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64/py26/bin:/usr/local/intel/Composer/composer_xe_2015.2.164/debugger/gdb/intel64_mic/py26/bin:.:/home/rerrico/bin:/usr/local/bin:/home/rerrico/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/kde3/bin:/opt/ibutils/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/usr/slurm/bin:/ford1/local/bin
+setenv _LMFILES_ /usr/local/share/modules/modulefiles.slurm/comp/intel-15.0.2.164:/usr/local/share/modules/modulefiles.slurm/mpi/sgi-mpt-2.16:/usr/local/share/modules/modulefiles.slurm/lib/mkl-15.0.2.164:/usr/local/other/modules/modulefiles/other/comp/gcc-4.6.3-sp1:/usr/local/other/modules/modulefiles/other/SIVO-PyD/spd_1.20.0_gcc-4.6.3-sp1_mkl-15.0.0.090
+set _exit=0
+/usr/bin/test 0 = 0
+end
+endif
+if ( ! 0 ) echo  for borgq156
+echo  for borgq156
+ for borgq156
+if ( 0 ) then
+exit
+setenv SIMPROGS /discover/home/rerrico/GOWASP_3
+setenv BASEDIR1 /discover/nobackup/projects/gmao/share/gmao_ops/Baselibs/v4.0.6_build1/x86_64-unknown-linux-gnu/ifort_15.0.2.164-mpt_2.16
+setenv GEOSPATH1 /gpfsm/dhome/dao_ops/GEOSadas-5_17/GEOSadas
+setenv SRCDIR /discover/home/rerrico/GOWASP_3
+umask 022
+echo GOWASP environment set
+GOWASP environment set
+setenv SIMHOME /discover/home/rerrico/GOWASP_3/GPSROTEST
+setenv ADDTIME /discover/home/rerrico/GOWASP_3/addtime.x
+setenv RMSHMKEY /discover/home/rerrico/bin
+setenv SIMWORK /discover/nobackup/rerrico/WORK/SimCVwork.5100
+setenv RC_FILE /discover/home/rerrico/GOWASP_3/GPSROTEST/field_list_gpsro.rc
+setenv BUFR_IN /discover/nobackup/rerrico/OSSEobs/N009/GPSRO
+setenv BUFR_OUT /discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1
+set datetimeN=2006071100
+set datetimeB=2006071100
+@ ntimes = 1
+set test_print=T
+umask 022
+set add6h=+06
+if ( ! -e /discover/nobackup/rerrico/WORK/SimCVwork.5100 ) mkdir -p /discover/nobackup/rerrico/WORK/SimCVwork.5100
+mkdir -p /discover/nobackup/rerrico/WORK/SimCVwork.5100
+cd /discover/nobackup/rerrico/WORK/SimCVwork.5100
+/bin/rm: No match.
+cp /discover/home/rerrico/GOWASP_3/GPSROTEST/create_gpsro.x prog.x
+cp /discover/home/rerrico/GOWASP_3/addtime.x addtime.x
+@ ierr_input = 0
+@ ierr_output = 0
+@ i = 1
+@ ilast = 1
+while ( 1 < = 1 )
+if ( 1 == 1 ) then
+set addh=000
+else
+set result=`./addtime.x $datetimeN $addh`
+./addtime.x 2006071100 000
+set yyyy=`echo $result | cut -d" " -f1`
+echo 2006 07 11 00
+cut -d  -f1
+set mm=`echo $result | cut -d" " -f2`
+echo 2006 07 11 00
+cut -d  -f2
+set dd=`echo $result | cut -d" " -f3`
+echo 2006 07 11 00
+cut -d  -f3
+set hh=`echo $result | cut -d" " -f4`
+echo 2006 07 11 00
+cut -d  -f4
+set datetimeN=2006071100
+@ yy = 2006 % 10
+set yy=`printf "%2.2d\n" $yy`
+printf %2.2d\n 6
+set datetimeNP=060711.t00z
+set cdtime_new=20060711000000
+set result=`./addtime.x $datetimeB $addh`
+./addtime.x 2006071100 000
+set yyyyB=`echo $result | cut -d" " -f1`
+echo 2006 07 11 00
+cut -d  -f1
+set yyB=`echo $yyyyB | cut -c 3-4`
+echo 2006
+cut -c 3-4
+set mmB=`echo $result | cut -d" " -f2`
+echo 2006 07 11 00
+cut -d  -f2
+set ddB=`echo $result | cut -d" " -f3`
+echo 2006 07 11 00
+cut -d  -f3
+set hhB=`echo $result | cut -d" " -f4`
+echo 2006 07 11 00
+cut -d  -f4
+set datetimeB=2006071100
+set datetimeBP=060711.t00z
+set cdtime_old=20060711000000
+echo Simulation i= 1 uses NR time 2006071100 & Obs time 2006071100
+Simulation i= 1 uses NR time 2006071100 & Obs time 2006071100
+set BF_input_path=/discover/nobackup/rerrico/OSSEobs/N009/GPSRO/Y2006/M07
+set BF_output_path=/discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1/GPSRO/Y2006/M07
+if ( ! -e /discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1/GPSRO/Y2006/M07 ) mkdir -p /discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1/GPSRO/Y2006/M07
+mkdir -p /discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1/GPSRO/Y2006/M07
+set BF_TAIL=gpsro.tm00.bufr_d
+set BF_file_in=/discover/nobackup/rerrico/OSSEobs/N009/GPSRO/Y2006/M07/gdas1.060711.t00z.gpsro.tm00.bufr_d
+set BF_file_out=/discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1/GPSRO/Y2006/M07/gdas1.060711.t00z.gpsro.tm00.bufr_d
+if ( -e /discover/nobackup/rerrico/OSSEobs/N009/GPSRO/Y2006/M07/gdas1.060711.t00z.gpsro.tm00.bufr_d ) then
+/bin/rm -f data_out
+/discover/home/rerrico/bin/RmShmKeys
+[1] 5182
+No shared memory segments to remove.
+[1]    Done                          ssh -oNumberOfPasswordPrompts=0 -q borgq156 rmshmkeyhere
+mpirun -np 16 ./prog.x GPSRO 20060711000000 20060711000000 /discover/home/rerrico/GOWASP_3/GPSROTEST/field_list_gpsro.rc /discover/nobackup/rerrico/OSSEobs/N009/GPSRO/Y2006/M07/gdas1.060711.t00z.gpsro.tm00.bufr_d data_out T
+Starting MPI on   16 processors
+ 
+ In MAPL_Shmem:
+     NumCores per Node =           16
+     NumNodes in use   =            1
+     Total PEs         =           16
+ 
+ 
+ In MAPL_InitializeShmem (NodeRootsComm):
+     NumNodes in use   =            1
+ 
+  
+ Rc file=/discover/home/rerrico/GOWASP_3/GPSROTEST/field_list_gpsro.rc opened on unit=  10
+  
+ field_top not found in common portion of header
+Default value set as field_top(Pa)=    0.0
+  
+ tavg_offset not found in common portion of header
+Default value set as field_tavg_offset=    0.0
+File of akbk read:  values= 73  file name=/discover/home/rerrico/GOWASP_3/Rcfiles/eta_akbk_g5nr_1.txt
+  
+Information regarding required fields: m_nr_fields_info::nr_fields_setup
+(-99 indicates a non-used variable for this data type)
+(non-specified required variables may be set to default)
+Grid dimensions:  5760  2881    72  first longitude on grid =   -180.0000
+field_stride_i,j =   1   1
+field_lev_first=  1  field_top=      0.
+Time slots: number, delta, and time-first = 13    0.50   -3.00
+field_tavg_offset=    0.00  (0.=default)
+field_common_path=/discover/nobackup/projects/gmao/osse2/pub/Ganymed/7km/c1440_NR/DATA/0.0625_deg
+  
+Info for 2d fields in profiles:
+ 1          PHIS          PHIS   1  /const/const_2d_asm_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.const_2d_asm_Nx.$yyyymmdd#.nc4
+ 2            PS            PS   1  /inst/inst30mn_2d_met1_Nx/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_2d_met1_Nx.$yyyymmdd_hhmm#z.nc4
+Info for 3d fields in profiles:
+ 1            QV            QV  72  /inst/inst30mn_3d_QV_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_QV_Nv.$yyyymmdd_hhmm#z.nc4
+ 2             T             T  72  /inst/inst30mn_3d_T_Nv/Y$yyyy#/M$mm#/D$dd#/c1440_NR.inst30mn_3d_T_Nv.$yyyymmdd_hhmm#z.nc4
+  
+ bufr input file=/discover/nobackup/rerrico/OSSEobs/N009/GPSRO/Y2006/M07/gdas1.060711.t00z.gpsro.tm00.bufr_d opened on unit= 20
+  
+ bufr output file=data_out opened on unit= 21
+ ++++++++++++++BUFR ARCHIVE LIBRARY+++++++++++++++++
+ BUFRLIB: MAXOUT - THE RECORD LENGTH OF ALL BUFR MESSAGES CREATED FROM THIS POINT ON IS BEING CHANGED FROM   10000 TO  200000    
+ ++++++++++++++BUFR ARCHIVE LIBRARY+++++++++++++++++
+  
+ Number of obs locations of requested types found =         475
+ Number of messages for requested types found =         449
+ PHIS field read
+ run times: 125757.041 125757.779
+ PS, T, and QV fields read for time1=20060710210000
+ run times: 125757.779 125847.347
+ZZZ    1.28045E+04    6.39350E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.29810E+04    6.39368E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.31595E+04    6.39386E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.33390E+04    6.39404E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.35195E+04    6.39422E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.37020E+04    6.39440E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.38845E+04    6.39458E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.40690E+04    6.39477E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.42550E+04    6.39496E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.44420E+04    6.39514E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.46295E+04    6.39533E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.48185E+04    6.39552E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.50105E+04    6.39571E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.52015E+04    6.39590E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.53955E+04    6.39610E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.55910E+04    6.39629E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.57865E+04    6.39649E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.59845E+04    6.39668E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.61825E+04    6.39688E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.63840E+04    6.39708E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.65860E+04    6.39729E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.67890E+04    6.39749E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.69945E+04    6.39770E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.72010E+04    6.39790E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.74085E+04    6.39811E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.76180E+04    6.39832E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.78285E+04    6.39853E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.80410E+04    6.39874E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.82555E+04    6.39896E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.84710E+04    6.39917E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.86890E+04    6.39939E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.89080E+04    6.39961E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.91290E+04    6.39983E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.93500E+04    6.40005E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.95745E+04    6.40028E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    1.98005E+04    6.40050E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.00275E+04    6.40073E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.02570E+04    6.40096E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.04870E+04    6.40119E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.07190E+04    6.40142E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.09530E+04    6.40165E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.11895E+04    6.40189E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.14265E+04    6.40213E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.16650E+04    6.40237E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.19060E+04    6.40261E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.21495E+04    6.40285E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.23935E+04    6.40309E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.26395E+04    6.40334E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.28880E+04    6.40359E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.31370E+04    6.40384E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.33890E+04    6.40409E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.36420E+04    6.40434E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.38970E+04    6.40460E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.41535E+04    6.40485E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.44120E+04    6.40511E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.46720E+04    6.40537E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.49330E+04    6.40563E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.51970E+04    6.40590E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.54625E+04    6.40616E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.57285E+04    6.40643E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.59975E+04    6.40670E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.62670E+04    6.40697E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.65390E+04    6.40724E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.68130E+04    6.40751E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.70885E+04    6.40779E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.73650E+04    6.40807E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.76430E+04    6.40834E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.79225E+04    6.40862E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.82035E+04    6.40890E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.84865E+04    6.40919E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.87700E+04    6.40947E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.90565E+04    6.40976E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.93430E+04    6.41004E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.96320E+04    6.41033E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    2.99215E+04    6.41062E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.02125E+04    6.41091E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.05040E+04    6.41120E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.07975E+04    6.41150E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.10930E+04    6.41179E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.13880E+04    6.41209E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.16845E+04    6.41238E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.19825E+04    6.41268E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.22815E+04    6.41298E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.25810E+04    6.41328E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.28815E+04    6.41358E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.31825E+04    6.41388E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.34850E+04    6.41419E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.37875E+04    6.41449E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.40915E+04    6.41479E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.43960E+04    6.41510E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.47010E+04    6.41540E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.50060E+04    6.41571E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.53110E+04    6.41601E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.56180E+04    6.41632E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.59235E+04    6.41662E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.62300E+04    6.41693E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.65375E+04    6.41724E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.68440E+04    6.41754E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.71510E+04    6.41785E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.74585E+04    6.41816E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.77650E+04    6.41847E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.80725E+04    6.41877E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.83795E+04    6.41908E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.86870E+04    6.41939E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.89945E+04    6.41970E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.93015E+04    6.42000E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.96085E+04    6.42031E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    3.99155E+04    6.42062E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.02230E+04    6.42092E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.05310E+04    6.42123E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.08370E+04    6.42154E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.11445E+04    6.42184E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.14520E+04    6.42215E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.17590E+04    6.42246E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.20660E+04    6.42277E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.23735E+04    6.42307E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.26815E+04    6.42338E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.29885E+04    6.42369E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.32955E+04    6.42400E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.36030E+04    6.42430E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.39105E+04    6.42461E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.42185E+04    6.42492E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.45245E+04    6.42522E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.48320E+04    6.42553E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.51395E+04    6.42584E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.54475E+04    6.42615E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.57545E+04    6.42646E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.60615E+04    6.42676E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.63690E+04    6.42707E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.66770E+04    6.42738E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.69840E+04    6.42768E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.72915E+04    6.42799E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.75990E+04    6.42830E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.79070E+04    6.42861E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.82145E+04    6.42892E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.85205E+04    6.42922E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.88280E+04    6.42953E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.91360E+04    6.42984E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.94435E+04    6.43014E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    4.97505E+04    6.43045E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.00580E+04    6.43076E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.03660E+04    6.43107E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.06735E+04    6.43137E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.09805E+04    6.43168E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.12880E+04    6.43199E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.15960E+04    6.43230E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.19035E+04    6.43260E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.22100E+04    6.43291E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.25175E+04    6.43322E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.28255E+04    6.43353E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.31330E+04    6.43383E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.34400E+04    6.43414E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.37475E+04    6.43445E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.40555E+04    6.43476E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.43630E+04    6.43506E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.46700E+04    6.43537E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.49775E+04    6.43568E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.52855E+04    6.43599E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.55930E+04    6.43629E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.59000E+04    6.43660E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.62075E+04    6.43691E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.65150E+04    6.43722E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.68230E+04    6.43752E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.71300E+04    6.43783E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.74375E+04    6.43814E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.77450E+04    6.43845E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.80530E+04    6.43875E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.83605E+04    6.43906E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.86675E+04    6.43937E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.89750E+04    6.43968E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.92830E+04    6.43998E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.95905E+04    6.44029E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ZZZ    5.98965E+04    6.44060E+06    6.38070E+06   -1.48100E+01    0.00000E+00
+ PS, T, and QV fields read for time1=20060710213000
+ run times: 125852.235 125940.099
+ PS, T, and QV fields read for time1=20060710220000
+ run times: 125946.421 130034.963
+ PS, T, and QV fields read for time1=20060710223000
+ run times: 130040.674 130128.886
+ PS, T, and QV fields read for time1=20060710230000
+ run times: 130134.138 130222.160
+ PS, T, and QV fields read for time1=20060710233000
+ run times: 130227.274 130315.329
+ PS, T, and QV fields read for time1=20060711000000
+ run times: 130320.108 130408.487
+ PS, T, and QV fields read for time1=20060711003000
+ run times: 130413.267 130501.142
+ PS, T, and QV fields read for time1=20060711010000
+ run times: 130505.398 130553.503
+ PS, T, and QV fields read for time1=20060711013000
+ run times: 130558.862 130647.431
+ PS, T, and QV fields read for time1=20060711020000
+ run times: 130653.207 130741.256
+ PS, T, and QV fields read for time1=20060711023000
+ run times: 130747.102 130835.269
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=      114096
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+ M_COUNTER_93=           0
+/discover/home/rerrico/bin/RmShmKeys
+[1] 5665
+No shared memory segments to remove.
+[1]    Done                          ssh -oNumberOfPasswordPrompts=0 -q borgq156 rmshmkeyhere
+if ( -e data_out ) then
+/bin/cp data_out /discover/nobackup/rerrico/TEST_GPS6/BUFR_NR1/GPSRO/Y2006/M07/gdas1.060711.t00z.gpsro.tm00.bufr_d
+else
+else
+@ i++
+end
+while ( 2 < = 1 )
+mv /discover/nobackup/rerrico/xxgg45SH.txt /discover/nobackup/rerrico/TEST_GPS_517/allNR1p.txt
+echo  
+ 
+echo Number of nonexisting input files= 0
+Number of nonexisting input files= 0
+echo Number of output files not created = 0
+Number of output files not created = 0
+echo end script
+end script
+date
+Sun Jan 26 13:08:46 EST 2020
+exit 0
+________________________________________________________________
+Job Resource Usage Summary for 37053655 
+Note: SLURM doesn't account for the exact same resource types as PBS.  
+      Also, you may see some values missing or zero, typically for 
+      very short jobs.  However, please do contact NCCS USG if you 
+      think the values below are in error.
+
+  CPU Time Used		: 05:03:48
+  Memory Used		: 31251084K
+  Virtual Memory Used	: 319918020K
+  Walltime Used		: 00:10:51
+
+  Memory Requested	: 0n (n=per node; c=per core)
+  CPUs Requested / Allocated : 1 / 28
+  Walltime Requested	: 00:59:00
+
+  Execution Queue	: compute
+  Head Node		: borgq156
+  Charged to		: s0911
+
+  Job Stopped		: Sun Jan 26 13:08:46 EST 2020
+_____________________________________________________________________
+

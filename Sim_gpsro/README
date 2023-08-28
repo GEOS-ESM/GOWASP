@@ -1,0 +1,21 @@
+n ropp_fm_bangle
+
+calculate arrays:
+  refrac(:,:) refractivity  at all points in plane grid
+  z(:,:)      geometric height above surface (don't understand formual
+          z(:,i) =  z_geop(:,i)/ (g_ratio - z_geop(:,i)/rad_eff)
+  rad(:,:) = z(:,:) + y%r_curve + y%undulation  
+  impact(:,:) = (1.0_wp + 1.e-6_wp*refrac(:,:)) * rad(:,:)
+
+In  ropp_fm_alpha2drk.f90
+
+   in_2d is level in plane data that indicates that levs above use 1-d calc
+       rather than 2-d calc
+      But this looks at n*r-roc  when it should look at rad-rad_sfc
+   j_bot should always be 1 ????
+   i_kbot should always be 1 (unless super-refractive layer encountered)
+   then, j_bot =1 unless super-refrac
+   if (nr below bottom layer allowed or above top) don't consider
+   ibot = level just below impact level 
+
+NOTE METOP OR GRAS OBS NOT USED BELOW 8 KM   

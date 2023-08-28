@@ -1,0 +1,593 @@
+To build this code:
+
+In the GOWASP_3 dir, 
+1. execute: source /discover/home/rerrico/GOWASP_3/GOWASP_ENV
+2. execute: make install_all
+
+See Record of major code changes below
+
+ Explanation of Codes follows here:
+
+Compiling: In the Newcode directory, run compile_all.j 
+Note that for some codes, links to the following are required
+CRTM library, BUFR library, NETCDF library, ESMF/MAPL libraries,
+lapack libraries (for eigen solve routines).
+
+Directories for programs that make obs 
+Lib_basic1     library for some common basic routines
+Lib_obsrw1     library for interfacing with BUFR lib commands
+Lib_shmem1     library for some Shmem and MPI interfaces
+Sim_conv       codes for making "conventional" obs
+Sim_error      adds errors to obs in BUFR files
+Sim_gpsro      codes for making GPSRO
+Sim_rad        codes for making radiance obs
+Sim_satwind    codes for making satwind obs
+Rcfiles        contains all required run-time resource files 
+Scripts    scripts for running all codes
+Tuning     programs and scripts used for error tuning and compting O-F stats
+Gridpt_obs code for making raobs at every n-th grid point
+BufrCheck  codes for comparing 2 BUFR files (e.g. w/wo error added)
+ComGrid    code to put low resol GEOS5-NR data onto common grid 
+
+Modification history
+
+Sept 2015 Changed the way create_rad_profs is run such that obs of all
+          rad data types can be processed in one execution, such that the 
+          expensive read of the NR fields needs only be done one time, rather
+          separate runs for each data type such that the same read must be   
+          performed for each type. Files read/written are the same. 
+          This is a computational savings of more than 6 times!
+
+Oct 15 2015  Modified the Error code such that random fields with several 
+          types of user-specified shapes can be produced. More importantly, 
+          random vector wind fields are now produced properly near the poles 
+          for such shapes, whereas previously the sign of the perturbation 
+          would not change as a pole is crossed over as it should. 
+
+Oct 28 2015 Added code for data types ATMS (needed ability to do no data
+thinning in create_rad_obs_list) and GMI.  Note that at this time, error for
+GMI has not yet been tested, and neither simulated obs have been ingested into
+the GSI or error params tuned.   Also, GMI does not yet consider scattering in
+the crtm.
+
+Nov 10 2015 Added CRIS and SSMI.  SSMI is missing the setting of the rain flag
+based on NR precip. Error code with these not yet tested. 
+
+Nov 13 SSMIS now has rain flag set (although it should be tuned somehow).
+Error code for new obs tested and corrected (Nov 10 version does not work 
+properly for GMI).  Snow and rain scalletering partical sizes added to CRTM
+specifications.   Note that these tests were not run with the latest
+radiance coefficient files that should be use by the CRTM. 
+
+Dec 22 Some corrections to codes, particularly the error codes, to properly
+treat newest data dypes.
+
+Feb 22 Obs Simulation codes now share 2 common libraries, one for common .f90
+files and the other for common .F90 ones. This includes 
+common interpolation_subs.  Conventional and satwind results not changed by 
+this, but GPSRO is changed since in the new code dat level p are determined
+using the equivalence of theta and T integrals over layers while the former
+GPSRO calc used simple averages of interface p.  This version of the
+sim software also uses a common routine to read non-radiance .rc files.     
+
+Feb 26 For CRIS, the QC flag for the obs header was improperly set such that
+the QC value was instead the original value in the real data. This is
+corrected by setting the value of nc_fcph to the header position for QMRKH.
+A suspect obs is indicated if sigma<0.7 in the rad_prob routine.
+
+Mar 4 2016: Corrected some errors in Rad_all and Error:
+1. In Error: fix so that metop-a/b CRTM coefs are used to transform between Rad
+and BT when isiasi is on metop-a/b (It had been using metop-a coefs for both).
+2. In Rad_all and Error: Fix so that SAID is used properly (value for F17 was
+incrrectly identified as for F18).
+3. In Error: a README was added to explain meanings of parametered specified
+vertical correlation ditances for RAOBS and GPSRO.
+
+March 9 2016: New Satwind code created:
+1. It uses locations for polar-orbitor observations determined from a real
+satwind bufr file to define times, types, and locations of polar orbitow
+satwinds to simulate.  This replaces the former "modis_swath" routine that
+used a crude climatology of observation locations. 
+2. When skipping longitudes to consider, the number of skipped points is a
+function of cosine latitude, i.e., a skipping roughly in terms of distance
+rather than indexes.
+3. When considering multiple time windows of observations within each 6-hour 
+synoptic period, the beginning values for i and j (lon and lat) are altered
+for each window, reducing or eliminating overlap of considered points within
+each 6 hours.
+4. A fomatted file containing the satwind_count table is output if desired. 
+
+March 9 2016: Add counter of non-exisisting input and output files in scripts
+so that summary is printed in log file at end.
+
+March 15 2016: Fixed some bugs in New satwind code. The new code works but the
+probability parameters are not yet tuned.  
+
+March 22 2016: Made new GPSRO code that accounts for "tangent point drift" of
+observations. This new code uses the lat, lon, and bearing for each impact
+parameter. The planes are computed separately for each impact angle.  The
+width of the plane is also reduced from 3000 to 500 km. The bending angles are
+computed for one tangent point at a time. The bufr read and write for gpsro is
+also changed for the error code: m_bufr_gpsro_E and m_gpsro_names replaced.
+
+March 23 2016: 
+1. Fixed so that SSMIS scan angle is 53 rather than 0. Fix calculation of
+solar zenith and azimuth (previous code had rad2deg set to its inverse!).
+2. Fixed so that CRIS uses FORN value for scan angle index in crtm interface 
+rather than FOVN.  Also, reject obs that do not have QRMKH close to zero. 
+3. In crtm_interface, set ifov=nint(prof_info(nf_fovn)) rather than int. 
+
+March 31 2016: Modify Satwind code to also compute a table of counts for
+individual geostationary sta obs within time slots and then to produce obs
+for only those times and sats that were used in reality then. 
+
+April 6 2016: Fix m_crtm_interface so that wind speed properly computed
+(It was off by 180 deg). This changes the surface emmisivity for MW channels. 
+
+April 8 2016: Changed threshold in m_satwind for geost sat counts OK from 1000
+to 200.  Correct bugs in m_satwind that mislabled meteo and polar WV-tracked
+winds as from GOES.
+
+May 9 2016: Fixed error in computation of dhours in call to
+time_compute_dhours in satwind/m_satwind_locations.f90 and
+Rad_all/m_rad_thin.f90. The time arguments were reverse of what they should
+have been so that dhours had the opposite sign of what it should have. 
+ 
+May 18 2016: Speed up of m_random_fields.F90: Now, random spectral
+coefficients for for different levels/channels are computed on different
+processors.  Also, previously the linear transform from values coefs of EOFS
+of level/channel cov matrix to coefs for levels/channels was applied to each
+individually to each observation, with all those computations being on a
+single processor.  Now instead, the transform is applied to the random
+spectral coeffiocients, with the work performed distributed over multiple
+processors.  This is much quicker if there are many observations (compared to
+spectral coefficients) and the number of levels or channels is large. For the
+way this is presently applied, the new cost is 30% of the former cost.
+Results are identical to former results, within roundoff, if the second call
+to random_fields_synch_ranf is removed.
+
+June 8 2016: Change how random seed is set in all program in which it is used.
+The setting is now the ifort standard procedure, using a int*4 integer array
+1-d array with size 2 instead of a single int*8 1-d array with size 1.  Also, 
+the scripts rmshmemkeys is now run before and after any mpirun that uses
+shmem. This cleans shmem instructions that can otherwise persist in memory,
+aftecting subsequequent calls to mpirun. The MAPL_SHmem module has also been
+updated from a more recent library. Also, create_error.j now also checks
+that input files have non-zero sizes.
+
+July 19 2016: Change parameters set in m_satwind.f90 that specify conditional
+probabilities that determine if trackable features are present. Also, improve 
+comments in that module.
+
+Aug 12 2016: Change sub-directory names. Reorganize m_bufr_* modules so that
+all applications use the same library of modules. The a(k) and b(k) values
+specifying the eta-coordinates are now provided in a separate file with a
+separate read routine, not in the field.rc files. Modified Sim_rad routines so
+that they use the m_nr_fields_info that other simulation types use. This
+required changing all simulation .rc files and and changing the order of
+indexes in field_names(:,:,:) in the Sim_rad directory
+routines. m_rad_fields_info is no longer used.  In m_crtm_interface, values of
+scan parameters for AMSUA, MHS changed so that they are specified values
+(e.g., 49.333333 ) rather than computed values (e.g., 49 + 1./3.), but this
+makes no difference in the sample of values printed. The table of sat/instr
+parameters is no read from a file, rather than specified in a subroutine in
+m_crtm_interface using the new subroutine read_sat_params.  This will allow
+the code to eventually run for new rad instrument data types without
+modification of the software by just including the new information in a
+sat_params.rc file.
+
+Sept 1 2016: Fixed error in m_obs_list:obs_list_types_get_setup: the wrong
+dimension was passed to obs_list_header_allocate that would casue a fatal
+error if the number of named variables in the sat header records were more
+than the max number of obs in a time slot for any obs type. In practice, this
+would be highly unlikely but likely not happen but in testing with only 2 obs
+present, it did. Also, have modified all radiance routines to handle a new
+generic radiance type that uses text rather than BUFR files (modifications to
+the GSI also now allow this). Corrected a bug that printed the wrong obs
+number in sample testing printout in create_rad_prof. For radiances, the open
+obs file is now in a single subroutine in Lib_obsrw. 
+
+Sept 8 2016: Fixed problem with creating conventional obs. Previously, if a
+obs data value had a bad QC mark associated with it (e.g., as so flagged in
+the file read), then it was written as a missing value. However, when the new
+file was subsequently read, as in the create_error job, the data record could
+be flagged as invalid, resulting in no corresponding record being written.
+This resulted in a mismatch of input and output reports in the create error
+job but also calls to routines attempting to set input array dimensions to
+nlevs=0.  In the new code, only data values missing on input are set to missing 
+output values.  When some other code reads the files, it must consider the 
+QC flags explicitly rather than rely on missing values. 
+
+Sept 9 2016: GOSP is changed to GOWASP in the scripts. The GSI 5.15 libraries
+for CRTM and BUFRlib are used. So, the unblocking program does not need to be
+applied to the BUFR files before using them.  The CRTM uses a different
+emmisivity package and yields different values, partlcularly for MW radiances
+affected by the surface emmisivity.
+
+Sept 12 2016: In create_rad_prof, changed "shem" to "shmem".  Set Shmem_test
+to use Lib_shmem. 
+
+Oct 11 2016: This is the code to make N007. 
+
+Nov 18 2016:  Added or corrected many comments in routines, 
+especially routine descriptions.  These do not change any results. Two 
+correction wer made, however, that do change some results:  (a) Corrected 
+rad2bt_setup so that the metop-b iasi CRTM coefs are used for 
+transforming between metop-b rad and TB in create_error (it was using metop-a
+coefs for both metop-a and metop-b). (b) In m_rad_prob, the setting of the
+quality flag for CRIS was changes so that all obs are declared as flag=0,
+indicating no problem. Apparently, this flag is not like for IASI that
+depends on cloud errors. 
+
+Jan 6 2017: Made several 0-diff changes to code to add subdirectory for obs
+error Tuning. This includes replacing Sim_rad/read_sat_params by
+Lib_basic1/m_sat_info and moving and modifying m_obs_error_table.f90. 
+Software to assist tuning is now included, simplified, and generalized. 
+
+Jan 24 2017: Corrected some errors in the Tuning codes. Replaced m_satwind.f90
+to be David's code for determining probabilities of opacacity in successive
+cloud lower layers based on max overlap within clouds but random overlap
+between distinct layers.  Also changed satwinds so that kx=242 or 243 do not
+occur at night, based on local solar elevation. 
+
+Feb 9 2017: Error table for conv u,v obs now has option to average variances
+of u and v components to create new values. The treatment of channel
+correlated radiance errors is now changed so that the resulting error
+covariance at horizontal separation 0 now matches the prescribed covariance. 
+
+Feb 10 2017: The satwind probability function and parameters have been changed
+and now include consideration of day/night. 
+
+Feb 20 2017 Tuning/Statsprogs and Scripts now includes obs impacts. Fix bad
+bug in m_obs_pert/pert_rad_chcorr plus some minor bugs in eparams_rad_chcorr.
+
+Feb 25 2017 Fix error in comput of satwind errors. For correlated errors, it
+computed the pressure layer index wrong (et_pmax,min were in mb not Pa) such
+that level 1 (1000 mb) of the random fields was always chosen to pull the
+errors from. 
+
+Mar 14 2017 Use new tuning for satwind counts. Change Tuning/StatsProg
+programs to allow all longitude ranges. Fix Tuning/Scripts impact scripts to 
+properly handle missing or size 0 files.  Add directory with program and
+scripts for computing E norm for ana error and adjoint fields.   
+
+March 30 2017 Fix quality flags on eparams_* tables. Fix printout of quality
+flag in eparams_rad_chcorr.f90. Fix eparams_conv_hcorr.f90 so that use of
+count stats files as inputs works. Fix bugs in initial enorm.f90, add a test
+program for it, and create script.  Fix bug in impacts_tables.f90 (divide by
+ntimes specified in .rc file.  Previously, this divide was by a group
+dependendent value that was determined as the sum of the number of files read
+for each obs group, e.g. for amsua ntimes*num satellites, if all files were
+present.  This is the tag used to make the first new control run.
+
+May 9 2017 Change printout of enorm.f90. Add check to m_crtm_interface for
+snow Temp in proper range.  In vcorr_sumods.f90 change max height of gps obs
+to 60km.  In vcorr_tables.f90 change format of table 1 (e-format for obs
+stats) so that no scaling by 100 occurs for gps and more precision in gps
+height (correlation bins now different than earlier). Fixed bugs in sim_gpsro:
+Change create_gpsro.f90 and m_gpsro_fields.F90 so that if virtual T, rather
+than T, read it is changed to T.  Correct dhours for GPSRO: earlier, it was
+using the correct dhours for temporal interpolations but was writing out the
+center time to the bufr file. Correct error in m_sat_info_table where serach
+over table names had wrong number of variables. This codes was also modified
+to use a subroutine sat_info_table_find_name to renove redundant code.  Also
+changed crtm_interface_set_clouds to agree with what Min-Jeong Kim currently
+uses for her all-sky uses. An error in m_gpsro_fields:horiz_interp_2dfld that
+referenced the pressure in one corner of the surrounding points at the wrong
+time was corrected.
+
+June 3 2017 New m_satwind.f90 it better match counts of real obs in level,
+latitude, and land vs. sea. New code gps_var.f90 to tune gpsro error table. 
+
+June 9 Slight, 0-diff changes to Scripts/get_realbufr.j and
+Tuning/Scrpts/impacts_conv.j.
+
+Aug 17 2017: 
+   (a) In m_pert_loop.f90:pert_loop_copy_values: 
+       For GPSRO, obs_levs(n)=gpsro_values(bbimpp,n)-gpsro_info(bbcurve) 
+       so that gpsro errors are specified as function of height*n above the 
+       local radius of curvature specified for this location in the data 
+       header. Before they were specified in terms of gpsro_values(bbimpp,n) 
+       but that confused height in the atmosphere with variations in radius 
+       at the earth's surface.  
+   (b) Compressibility now considered by GPSRO (i.e., a non-ideal gas is 
+       assumed).  This done by add the sbroutine ropp_fm_compress_2d and 
+       its call and specifying non_ideal= .TRUE. in 2 places in 
+       ropp_fm_types.f90.  
+   (c) In m_gpsro_ropp.f90:gpsro_ropp_plan_values 
+            nr_plane(j1)%pres_sfc(i)=ps 
+            nr_plane(j1)%geop_sfc(i)=phis/grav 
+       Earlier all locations in the plane were assigned the same values of 
+       these sfc fields (that of the last location in the plane arry of lats &
+       lons, so that the wrong topographic height was specified: BUT pres_sfc 
+       and geop_sfc(i) ARE NOT USED BY THE CODE!
+       Also in this module in gpsro_ropp_sequence, call ropp_fm_bangle_2d
+       (nr_plane(j1),obs_set1(j1)) Now specifies that this refers
+       specifically to set j1. Since the arrray has span 1, however, this
+       does not change anything, 
+    (d) the number of entries in the error_gps_table has been changed to 101, 
+       so that each level differs by 1km, from 0 to 100 km.  
+    (e) Cpdryair, Rdryair, and grav in m_parameters.f90 are changed to
+        values used in ROPP 
+    (f) changes to Sim_satwind: 
+        (f.1) in create_satwind.F90: An oprional file of binary output is 
+            now written to facilatite tuning.  
+        (f,2) in m_satwind.f90: Some obs probability  parameters are changed. 
+            Others are made a fubction of latitude to obtain better sagreement 
+            with location distributions of real observations.  
+    (g) Changed BufrCheck:m_comp_stats.f90 and m_read_loop.f90 so that the 
+        GPSRO stats are stratified in 30 levels of a-rcurve where a is 
+        the impact parameter and rcurve is the local radius of curvature in 
+        the bufr filea
+
+Oct 12 2017:
+        (a) Fix bug in m_rad_thin_flds: In rad_thin_flds_read, the second loop
+        over index nf should have been from 1 to fld_num_tvar, not
+        fld_num_tcon. This worked properly when both limits were equal, as
+        used in all the tests and apps until now.
+        (b) Fix bug in create_rad_prof:read_shmem_data: .and. changed to .or. 
+        in tests on whether lat, lon, and lev varid found. (This bug did 
+        not impact any previous applications or tests.)  
+        (c) added code in directory Vegfile to create lower resolution data
+        sets from the 2881x5760 dataset. 
+
+Oct 19 2017:
+       In m_pert_loop.f90, the "Count the number of obs for each separate obs
+       typ" mistakingly added 1 to account for a ps obs when no ps obs was 
+       present rather than when it was, so counts actual individual obs were 
+       off. Counts of reports and messages are correct. 
+       In m_bufr_rad.f90, the read and write of AIRS data was modified so that 
+       the AIRS BUFR table variable SCBTSEQN is used in place of AIRSCHAN. 
+       This requires that a new irs_bufr_table be used. Otherwise, the 
+       observations are not readable in GEOS-5.17+.  In the same subroutine,
+       if AMSUAAQU is being read, the value of (SCBTSEQN) is defined to be the 
+       number of AMSUA channels, not airs channels. 
+
+Feb 8 2018:
+       Replaced the Sim_satwind code to now include the new algorithm with
+       automated tuning, for which obs location distributions in space are
+       much more realistic. Also changed the error code so that the table of 
+       GPSRO error factors is now read and written backwards (previously, it
+       had the effect of assigning the error factor specified for height 0km
+       to all levels. Also note that in previous experiments, vertical
+       correlations were not applied to GPSRO or Raobs since the number of
+       correlation lengths to be read was set to 0 in the error.rc file.  
+ 
+Feb 26 2018:
+       Modified m_gpsro_obs so that if more than 1/3 of obs in a profile fo
+       not have a valid viewing azimuth, the azimuth is set to 90 and ROPP is
+       instructed to do a 1-d calculation at all levels. Without a valid
+       azimuth, the obs at those levels were not determined and set to
+       missing, resulting in poor counts below 20 km or so. since the 1-d calc
+       uses the center of the view-plane only, the actual value of the azimuth
+       here does not matter unless the GSI code also uses a 2-d calc, which it
+       does not yet. 
+  
+Mar 20 2018: Modified Sim_satwind so that only the portion of the kx table
+       file that must be read is read, so that when preparing the initial 
+       file for input, only the variable and first table need to be written.
+
+Mar 23 2018: Modified scripts in Tuning/Scripts so that the files of partial
+       sums are save to be used as restarts if desired. By this means, if
+       some times are processed, the statistics can be later augmented by only
+       processing the new times to be added for consideration. Results are 0
+       diff with reprocessing of the entire set together. A file
+       read_j_value.f90 was added to Tuning/StatsProgs to read the number 
+       of existing times for that data type in the set of previously
+       considered times. 
+
+April 24 2018;  Modified satwind code so that there is now an option to print
+       the file of histograms created by compute_params. The script
+       create_amv.j is also modified to add the month, day, and hour to the 
+       output table text file.  Also, the satwind input table should
+       distinguish that kx=242,243 are VIS obs and kx=252,253 are IR obs.
+
+June 4 2018: Fixed bug in some routines reading 3-d netcdf files. Some of
+       these routines had 2 open statements but only 1 close, so that a file
+       remained open, causing a memory leak. Except for the new satwind code
+       that loops over many synoptic times, this would not be a problem. 
+
+August 16 2018: Made several changes to the satwind files and programs: 
+       count_amv now produces a file of output which can be input into a
+       program where histograms of distances between nearest neighbors of 
+       obs of each distinct NR time period and obs type/subtype can be
+       determined for specifying the stawind table values of "dx". The 
+       format of the kx table is also changed. The satwind scripts are now
+       placed with all the other scripts and the satwind tables are now 
+       under the Rcfiles directory (before, they were there and also under the
+       Sim_satwind directory, which could cause confusion). The earlier
+       satwind obs cannot be recreated. At some point therefore, the satwind
+       and prepbufr files will be recreated. 
+ 
+August 28 2018: Added print of number of missing ODS files when running
+       count_amv.j.  Change format of kx_histogram file. 
+
+September 14 2018: Modified impacts_rad.f90 and impacts_rad.j so that it 
+       processes an empty or non-existant input .ods file, filling all 
+       stats with 0.  This will change the time-mean results computed by 
+       impacts_tables.f90 but not the mean impact per obs. 
+
+September 27 2018: changed format of printed diagnostic file of kx_histograms
+
+November 2 2018: changed minimum lat for polar AMVS from 60 to 65 degrees.
+
+November 9 2018: Modified sim rad and sim satwind codes and scripts to include
+the possibility of using locations of real observations that were used after
+passing thinning and QC checks during a real assimilations. For radiances,
+onl;y channels actually used at each location will be properly created. This 
+uses corresponding *.ods files that indicate which obs and channels were
+actually used. This option is selected in the scripts by setting a runtime
+environment variable.
+
+December 5 2018: Corrected a bug in the satwind code (m_amv_view.f90) that 
+tunes probability function parameters: as part of the algorithm, a test was
+performed to ensure that the probability function was bounded by 1. This check
+was performed improperly such that the check never failed. 
+
+December 17 2018: Test20 now for dtime 2006070600. Also kx_table_in_02.txt 
+now tuned for making obs as in satwind paper. 
+
+February 1 2019: Replaced satwind codes with new version that allows use of a 
+grid different from that of the NR (horizontally, vertically, and
+temporally). The new satwind scripts have the satoc file specified in the
+kx_table.rc files along with the start time and number of analysis periods
+used to compute the probability parameters, thereby maintaining a record of
+how they were produced. If the NR grid is used, with no interpolations, then 
+compared to the earlier code, results from count_amv are identical, results for 
+compute_amv_params are identical if the time at hour -3 is used to set the
+random seed (as opposed to using the central analysis time as done now). 
+Also note that the field_list.rc files now point to a different directory for
+the GEOS-5 NR data.
+
+February 26 2019: Fixed bugs in code to create radiances at real assimilated 
+locations. In m_realloc_bad.f90, the file read was not closed after
+reading for each requested sat subset, that caused an end-of-file to be
+reached and some subtypes not processed. Also changed m_realloc_get.f90 so
+that any near duplicates in locations are now discarded, so that the final
+numbers of obs locations processed for each sub type match the numbers of
+those flagged as used in the ods file.  Also changed comments or printed
+messages in some routines.
+
+March 24 2019: In the satwind code, added another table in the kx_table file 
+that holds computed lat/lon ranges of obs based on real obs locs. Updated
+Scripts/Test20 files.
+
+April 22 2019: In m_realloc_bad, changed set of "bad" values to 115% of
+correct rad or Tb, except for AIRS that instead now sets a flag to indicate a
+"bad" value.  Also, the cloud-free fraction for IASI is now set to 99% if
+these are to be real locations.  If an obs is not found in the list considered
+by m_realloc_bad, all the channels are set to bad values. The longitude to
+mtach there is first reset to the range 0-360.
+
+April 25 2019:  More corrections to codes for creating rads at real locs.
+It is now noted in the script create_rad_bufr.j that datetimeB must match the 
+time used for the corresponding .ods file time. The m_realloc_bad now counts
+the numbers of mismatches and prints them at the end. Also it sets the 
+lot/lon precision for matching based on the BUFR value precision, although 
+the latter was just guessed, not checked. The GSI still, however, does not 
+include all the real locs/channels in the real .ods files since the GSI QC 
+eliminates whole groups of channels if it detects a problem with one; e.g. due
+to the emissivity being suspicious. 
+
+May 3 2019: Add program to Sim_gpsro that will merge profiles from multiple
+GPSRO BUFR files, changing date/times, adding lower levels, and identifying
+original data set. A script to use this and then simulate obs has also been
+added.
+
+March 4 2020: Add option in GPSRO simulator to vertically smooth a portion of
+the temperature field. It was added because the structure of T in the G5NR
+stratosphere has noise due to a then-uncorrected problem in the vertical
+remapping in FVcore (later GDAS versions do not have this problem). An option
+also allows choice of GPSRO scheme to create obs: ROPP 1D only, ROPP 2D or 1D
+as appropropriate, unmodified GSI GPSRO schem. or a modified GSI scheme. These
+are controlled by setting gpsro smoothing and algoithm parameterts in the
+field_gpsro.rc file. With smoothing off and GPSRO 2D chosen (option 0),
+results are identical to previous ones. Also, changes were made throughout
+GOWASP so that now the status of file openning instructions are checked and if
+not successful, an ERROR explanation is printed and execution terminates.
+
+July 25 2020: This is successful run of SLES12. 
+Made some corrections to m_bufr_rad.f90: In read_write_obs_rad,
+leof was not set except for rad obs type genradtxt although its value is
+output and used in create_rad_obs_list.f90. In SLES11 this had no effect but
+in SLES12, the value was determined randomly and sometimes no obs of a particular
+type was found (now a default value of false is set). In read_write_obs_tovs,
+obs_info was referenced before it was set (only occuring when the first obs
+record was read). It is now set before this reference, as it was for all other
+obs types. For some IASI observation records, values of cscale(3,n) for some n
+are read as indeterminate values. FGor such values, a maximum value of 100. is
+now used, with the intention that for those sets of obs, the scaling will be
+wrong and GSI will discard those channels for those obs.   
+
+Dec 8 2020: Two large changes: (1) new obs types added and (2) gpsro error
+table now varies with latitude. The new types are CRIS-FSR, AVHRR, and AMSR,
+as well as additional satellite platforms for previous types. The new gpsro
+error table is created from O-F statistics computed for selected
+(user-specified) latitude bins. Then these table values are used to interpolate 
+standard deviations to each observation latitude. This archived version does
+not include tuned rad_prof....rc and rad_thin....rc or error tables for the
+new obs types. 
+
+March 22 2021: One bug fix and one large change: (1) In the process of testing
+the new large change, a bug was found that probably had been in the code for 10
+years. In subroutine rad_thin_flds_interp in module m_rad_thin_flds,
+references to the variable fld_tvar had their last 2 indexes reversed. They
+should have had fld_tvar(?,?,nt,k) rather than fld_tvar(?,?,k,nt). The effect
+of the wrong indexes was that either the wrong field or the wrong time was
+used to assign these values at the obs loction. Given the way these variables
+have been used thus far, the error would have only impacted which obs thinning
+by GOWASP (e.g., which specific obs remained after thinning) and to which obs 
+create_rad_bufr would create gross errors by elevating the radiative surface, 
+affecting QC rejection by the GSI. No error would be introducd to other obs
+(although of course any contamination by elevating the surface that is too
+small for the GSI to recognize it as a gross error, would be retained). This
+error did mean, however, that obs rejection by GOWASP thinning or GSI QC was
+less correlated with the cloud or precip fields than intended by GOWASP design.
+(2) The code now includes an option for using horizontally averaged fields
+when making profiles for computing radiances. All points within a circle of
+specified diameter centered on the obs location are included in the averaging.
+Points are simply weighted by the areas represented by those grid values. At
+high latititudes, only longitudes spaced apart about 1/2 the spacing of grid 
+lats (to account for convergence of the meridians) are included. If only 4 
+points are averaged or the area is too small to cover multiple grid points. 
+the ususal bilinear interpolation to the obs point is used. This new option 
+is controlled by an optional new parameter added to the field_list_rad.rc or 
+rad_thin.rc files, called "area_average" in units of km. A user should check
+the printed output that this is indeed being used by looking at the printed 
+list of fields and files read; it is the real-valued variable printed before 
+each file name template is listed when echoing the .rc file input in the
+printed output file.  
+
+1 May 2021 There still was a missing initialization of the variable "leof" 
+in create_rad_obs_list.f90 that caused a random misread of input GENRADTXT
+data. Also, Two related changes: create_rad_bufr and m_crtm_interface changed so
+that, if desired and if all-sky obs to be created, the crtm is called a second
+time to create corresponding clear-sky BT values. These are then saved in a
+separate .bin file for use by the sim_error code that can then sim errors
+based on the clear vs all-sky differences. The second change is therefore to
+the create_error, m_pert_loop, and m_obs_pert codes that are noW designed to
+read an optional clear_sky BT .bi file, checking that the lats, lon, and time
+of the obs are the same as read from the all-sky BUFR file.  
+
+28 May 2021
+A problem occurred when using the GMAO_ods routines referenced by programs in the
+Tuning/StatsProgs directory (essentially, for some .ods files an obs count of
+0 was returned when there were obs in the file. Since correcting this using
+those routines would have required substantial help by others, a new GOWASP
+lib routine was written as a simplified replacement of the GMAO_ods ones. This
+is more hardwired than the original routines that are much more
+generalized. For this reason, the new routine may fail if it encounters .ods
+file formats that it does not expect, particularly regarding the FORTRAN types of
+values to be read and which values are scaled or offset.  The new rooutine 
+may also be a less efficient reader. Unlike previously when very different 
+GNUmakefiles were required to properly interface the GMAO-ods routines, the
+new GNUmakefiles have the same structures as those for compiling other
+programs. Note that the separate directory Sim_satwind/Satwind_ods has been
+removed since the routines previosuly there could now be compiled correctly
+with all the other Sim_satwind routines (previously, the required linkeages 
+to GMAO-ods created conflicts for the other routines comppiled in the
+Sim_satwind directory. 
+ 
+13 June 2021 : Add option to use vertically smoothed T profiles when creating
+raob obs, similar to the smoothing for GPSRO. It uses the same algorithm (with
+the smooting subroutine now moved to Lib_basic1 so it could be used by both
+Sim_conv and Sim_gpsro. Note that for raobs and dropsondes, only T used for
+the reports is smoothed, not the T used for computing the hysrostatic height. 
+
+20 June 2021: Changed some read GMI bufr issues: (1) change default scan angle
+to 52.74 (from 52.8) for channels 1-9 (used only if value is missing; this
+change made in m_crtm_interface). Also changed some AMSR2 bufr issues (ALFR is 
+now set and passed as a mean of ALFR over read channels).
+
+12 July 2021: Changed from single AVHRR to pair AVCSAM and AVCSPM.
+
+17 Sept 2021: Created 2nd iterate of tuned obs for E010 using allsky. New
+error tables generated for error param version 04.1. Compared
+to the last saved source, when opening some files, no conversions from little
+to big Endian are required, so some Fortran open statemments have been
+changed. The Scripts/Test26 create_error test code now uses a copy of error param
+version 04.1. There may have been some other minor code changes. Note that the 
+source codes archived on this date fail to properly read GENRADTXT in the 
+Test26 test program, so that obs type has been temporaily removed from the
+test. Also, at for a few analysis periods, codes crash when attempting to
+process HIRS4. It is not clear what the problem is there either.  

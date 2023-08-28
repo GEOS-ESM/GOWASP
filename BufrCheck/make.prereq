@@ -1,0 +1,13 @@
+m_comp_stats.o: m_comp_stats.f90 m_saved_data.o 
+m_count_types.o: m_count_types.f90 
+m_iasi_radiance.o: m_iasi_radiance.f90 
+m_read_loop.o: m_read_loop.f90 m_iasi_radiance.o m_count_types.o m_saved_data.o
+m_saved_data.o: m_saved_data.f90 
+check_bufr.o: check_bufr.f90 m_count_types.o m_iasi_radiance.o m_read_loop.o m_comp_stats.o m_saved_data.o 
+
+  
+
+
+ 
+
+

@@ -1,0 +1,6 @@
+The subdirectory BufrCheck creates an executable designed to compare the data
+in 2 BUFR files, especially a file of created obs and corresponding obs with
+errors added. It computes statistics of those differences, including means,
+variances, and correlations horizontally, vertically, or between channesl.
+These statistics can then be compared with what was specified in the
+error-parameter files used to create the error added observations.

@@ -1,0 +1,14 @@
+read_nc4_file.o: read_nc4_file.f90
+set_file_name.o: set_file_name.f90
+m_sft.o: m_sft.f90
+m_write_nc4_file.o: m_write_nc4_file.f90
+m_write_ana_file.o: m_write_ana_file.f90
+common_grid.o: common_grid.f90 read_nc4_file.o set_file_name.o m_write_nc4_file.o m_sft.o
+common_grid_ana.o: common_grid_ana.f90 read_nc4_file.o set_file_name.o m_write_ana_file.o m_sft.o
+bkg_fields.o: bkg_fields.f90 read_nc4_file.o
+  
+
+
+ 
+
+

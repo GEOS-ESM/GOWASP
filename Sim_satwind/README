@@ -1,0 +1,21 @@
+The programs satwind_txt2bufr.f90 and Satwind_ods/satwind_ods2txt.f90 are used
+by Sim_conv.F90 when making satwind obs at locations in a .ods file. 
+
+count_amv.f90: 
+ Compute counts of assimilated satwind obs (as indicated in ODS files)
+! at each NR time, p-layer, lat band, lon band, and sea/land region.
+! Also compute 6-hr avearge of such such counts for each region/layer.
+! Also, optionally, save location data in a formatted file for post-processing
+! to detmine distributions of closest neighbors to each obs for each obs type
+! (for this application, the number of considered times should be small; e.g.,
+! only 1 day).
+!
+! NOTE: count_amv.f90 does not work properly when using .ods files created from
+! an OSSE experiment, presumably because for those, the obs are read in using
+! read_prepbufr.f90 rather than read_satwind.f90. The problem is, the ks
+! values in the .ods files for the OSSE do not indicate the particular
+! satellite, unlike for those generated from experiments using real data. Thus, unless
+! the ks_subtype  values in Table 2 of the the kx_table_in file are 0, the data
+! will not be considered. Thus, when determining results from OSSE files, data from all
+! satellites corresponding to a particular kx can only be considered
+! together.

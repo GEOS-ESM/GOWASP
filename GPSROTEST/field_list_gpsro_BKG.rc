@@ -1,0 +1,24 @@
+format_types 1 1
+! Info for required fields for simulating conventional data
+! List for the 7 km GMAO NR
+#
+field_common_path /discover/nobackup/rerrico/BKG11/3DVAR
+field_dimensions  576  361 72
+lon_first -180.
+field_time_slots    3
+field_time_delta  3.0
+field_time_first -3.0
+akbk_filename /discover/home/rerrico/GOWASP_3/Rcfiles/eta_akbk_g5nr_1.txt
+#
+Lists of required field and file names (format=2a12,i3,2x,a)
+#
+GPSRO
+number_of_2d_fields 2  
+PHIS        phis          1  /517osse.bkg_eta_rst.$yyyymmdd_hh#z.nc4    
+PS          ps            1  /517osse.bkg_eta_rst.$yyyymmdd_hh#z.nc4    
+#
+number_of_3d_fields 2
+QV          sphu         72  /517osse.bkg_eta_rst.$yyyymmdd_hh#z.nc4    
+T           tv           72  /517osse.bkg_eta_rst.$yyyymmdd_hh#z.nc4    
+----------
+EOF

@@ -1,0 +1,7 @@
+sub_fit_cov.o: sub_fit_cov.f90 
+sub_read_stats.o: sub_read_stats.f90 
+eparams_rad_hcorr.o: eparams_rad_hcorr.f90 sub_fit_cov.o sub_read_stats.o
+eparams_conv_hcorr.o: eparams_conv_hcorr.f90 sub_fit_cov.o sub_read_stats.o
+eparams_rad_chcorr.o: eparams_rad_chcorr.f90 sub_fit_cov.o sub_read_stats.o
+new_corr_err_params.o: new_corr_err_params.f90
+gps_vars.o: gps_vars.f90 

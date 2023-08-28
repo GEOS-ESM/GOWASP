@@ -1,0 +1,204 @@
+
+Instructions for adding a new  radiance observation type (class) to the OSSE obs
+generation software.
+
+0A. There are two general approaches. One is to attempt to fully construct a 
+BUFR file. This can requires saving much more information than required,
+besides the generation of some values that are difficult to simulate.  
+The other is to only construct what is actally used in the GSI
+code.  This has the potential problem of GSI changes or other users
+discovering that something expected in the BUFR files is not there.
+Nonetheless, this second approach has been used here because it is both
+simpler and requires less specific knowledge about the data sets.  
+
+0B. If the new data type requires different spec and tau files for the CRTM,
+these must be created by someone within the CRTM community.  This amy take a
+few months. Otherwise, the new instrument may have to be simulated to be like
+an existing one. 
+
+1. First, look at the subroutine that reads this radiance type or a similar
+obs type in the GSI (subroutines called read_???.f90).  Especially look at all
+the information read from the BUFR file and note which of those variables are
+actually used.  These GSI routines also include code for some QC and data
+selection/thinning. These aspects should be perused for any unusual
+treatment compared to other obs classes to discern if anything special will be
+required by the simulation code (The OSSE sim code does check some obs record
+header info such as reasonable time and location, and thinning is optionally
+performed using criteria based on user-specified NR conditions.) 
+
+The radiance simulation code is in 3 distinct programs, consecutively run. The
+only information passed between succcessive parts are (1) channel-independent
+header information in the form of a set of scalar real variables; (2) obs
+channel-dependent but location-independent information, such as channel number
+or, for some data types, channel frequency, represented by vector real values;
+and (3) for some obs types, information that does vary with location and
+channel but is limited in the number of variables (see IASI for an example
+that contains scaling and quality information for a few subsets of
+channels). So in the current OSSE sim codes. information that varies with both
+location and all channels is not passed.  So, it does not allow, for example,
+passing of channel and location dependent callibration information that is
+found in SSMIS BUFR files. Since these are not (currently) used by the GSI,
+this is a non-issue.  Otherwise some way to either pass or fake (i.e.,
+simulate) them would be required when the new simulated obs BUFR files are
+written. This faking should not be done in the write porion of the read/write
+BUFR subroutines, since these same codes will be used by the create_error
+program, where presumably such information should not be altered.
+
+
+2. In the OSSE Rad_all directory, change  m_bufr_rad.f90:
+
+  a) An existing routine (e.g., read_write_obs_tovs) can be used or modified
+if the same information is to be read, otherwise copy a subroutine that is
+similar and can be most easily modified.
+
+  b) Add new Obs type to call the new read_write_obs_??? from subroutine
+read_write_obs_rad
+
+  c) modify the new read_write_obs_???:  Within this new routine:
+   
+     i) modify nhead# and hdstr#.  Note that the call to the BUFR routines to
+read the header severly restricts the size of these strings to at most 80
+characters, necessitating multiple calls using subsets of the full header
+string.
+
+    ii) modify what follows "read (hdstr1,*) obs_info_names(1:nhead1)", "call
+ufbint(lunit,hdr(1:nhead1),nhead1,1,khead,hdstr1)" and "call
+ufbint(lunit,hdr(1:nhead1),nhead1,1,khead,hdstr1)" if the header is to be
+read/written in mutiple calls. This provides the rest of the codes with 
+information about where required portions of the header data are to be found
+within the header records.
+
+   iii) modify code around
+"obs_info_extra(1:obs_n_channels,1)=obs_channels(1:obs_n_channels,1)" if
+required. This array is intended to hold any information about
+the obs that are the same for all obs of this type that are independent of
+location and too numerous to want to repeat for every observation (that
+otherwise could be placed in the saved header).
+
+    iv) change "myname_sub=myname//'::read_write_obs_???'. This is for
+identifying this routine when errors in it are detected. 
+
+     v) make other changes so that the information is read and written
+properly using the appropriate BUFR library routines. Note that the real_kind
+of the variable arguments passed to these routines should be real*8 but the
+arrays with the input and output information/data here are likely
+r_kind1=real*4, necessitating the copying here.
+
+    vi) after this routine checks OK, copy it to the Error directory also. For
+it to pass this test, the datasets should orginal (real data) BUFR files
+should be read, new ones written, and then those new ones read. A further
+required test is to check that those new files are also properly read by the
+GSI.
+
+  d) modify routine m_bufr_rad:check_rad_type to include the new data type.
+The NC# for this type can be found in the BUFR table for this type.  Note that 
+a subtype "ALL" is also inclded for each obs type.
+
+  e) if the size of any of the arrays in m_rad_obs_arrays:rad_obs_arrays_setup
+needs to be increased, these must be reset in the call from the main routines
+(create_???,?90).  They can be made larger than required.
+
+3. In the OSSE Rad_all directory, change  m_rad_index.f90 if necessary:
+m_rad_index associates the names of variables in the bufr obs header arrays 
+with variables required by the CRTM.  So, for example, 'SOLAZI' is the name of
+the variable read from TOVs datasets that contains the solar zenith angle, but
+within GMI data, it is labeled as SZA.  For that reason, the existence and 
+position of both names must be checked. The same need would exist if new
+data sets use names not already checked in this routine. Of course, if a new 
+variable is required by the CRTM, that must be included here too, with the 
+a suitble index nf_??? added as a public variable.  It would then have to be
+referenced in m_crtm_interface.f90 to ensure that it is properly ingested 
+by the CRTM.  Especially check the ened of rad_index_setup where extra_names 
+are extracted.  
+
+If the channels numbers are not simply indexes from 1 to n_channels, then 
+check that the index nf_chnm is set like for CRIS, AIRS, IASI, etc.
+
+4. If there is an obs quality flag to specify based on the NR fields (such as
+the presence of clouds or precip) then this must be set somehow. Currently,
+this is accomplished in m_rad_prob:rad_prob_compute. This works for a scalar
+here, based on the particular field values passed through the array
+obs_list_r. The possible fields are limited to those 2-d fields listed in
+rad_thin.rc and chosen in rad_prob.rc. Additional coding and arguments would
+be required if a quality flag was to be a function of channel. The location of
+the single scalar quality flag within the obs record header is specified by
+the index nf_fcph, that is set in m_rad_index:rad_index_setup.
+
+5. In m_crtm_interface.f90:
+
+  a) In subroutine crtm_interface_table: must set values for csat and
+file_prefix. These are used to specify the spec and tau coef files for this
+dtype that are need by the CRTM.
+
+  b) In subroutine crtm_interface_table alse set ifov_0, fov_step, fov_start,
+and fov_rato. These are generally (but not always) used to determine the scan
+angle based on the scan index. In the GMAO version of GSI, some of these
+settings may be found in the file gmao_global_scaninfo.rc residing in a GSI
+experiment's run directory. Even so, the instruction flow for in
+m_crtm_interface:crtm_interface_comp_rad specifying the CRTM viewing geometry
+should be carefully compared with the geometry specification appearing in the
+GSI routine read_???.f90 to make sure these angles are created
+identically. These angles include those stored in the GSI read_???.f90 array
+data_all for indexes 5-10.
+
+  c) Other changes, particularly to subroutine crtm_interface_comp_rad may be
+required if anything very different is done compared to other dtypes.
+ 
+6. Check m_copy_rad_obs.f90 to see if anything peculiar is required here. 
+Generally, something will if required information stored in obs_info_extra
+includes more than channel number and spectral frequency (particularly more
+than 2 types of values) or if obs_values has more than 2 types of information
+that must be passed.
+
+7. In the Error directory (for the adding obs error codes):
+
+  a) In create_error.F90: add the new dat type to the allowed obs_classes list
+ 
+  b) In m_pert_loop.f90: check use of the variable dtype there to see if any
+   additional code is required (if a new radiance or new ks in prepbufr data, 
+   no change is likely required here).
+
+  c) In m_obs_error_table:error_table_read_var set err_itype(ic) to the satID
+index.  
+
+  d) If the BUFR data is in units of radiances rather than brightness
+  temperatures, then the conditionals that determine whether to call 
+  rad2bt_setup and rad2bt_transforms (the latter in 2 places) must be
+  modified, as wel  as the routine rad2bt_setup.
+
+8. Changes will be required in some scripts regarding the proper naming of 
+bufr files for the new data type.  
+
+9. The new data type must be added to the .rc files and error table files.
+
+
+-----------------
+Lib_obsrw1/m_bufr_rad.f90
+  read_write_obs_rad
+  read_write_obs_xxx
+  check_rad_type
+
+Sim_rad/m_crtm_interface.f90
+
+Sim_rad/Rad_ods/rad_ods2txt.f90 : needs modification if numbers of either obs
+ locations or channels for this rad pbs type are very large, as shown e.g. for
+ ATMS or CRISFSR in the present code
+
+Sim_error/create_error.f90: just the list of dtypes to check
+
+Rcfiles/sat_info.rc: add new data types/satellites to list with their information
+Rcfiles/rad_thin_???.rc: 
+Rcfiles/rad_prob_???.rc
+Rcfiles/field_list_rad.rc
+
+Rcfiles/ErrParams/???
+Rcfiles/ErrParams/???/sat_err_table_???.txt
+Rcfiles/ErrParams/???/error.???.txt
+Rcfiles/ErrParams/???/
+
+Scripts/create_error.j : needs info to construct BUFR file name 
+Scripts/create_rad_list.j : needs info to construct BUFR file name 
+Scripts/create_rad_bufr.j : needs info to construct BUFR file name 
+Scripts/get_realbufr.j : needs file name info to copy real obs data BUFR files
+
+Tuning/ErrProgs/reformat_R_tables.f90: read instructions, set params, compile, run

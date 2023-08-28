@@ -1,0 +1,21 @@
+mean for ana over  31 times
+sum=   7.4159E+00
+ps     3.6385E-01
+sphu   1.8145E+00
+tv     1.1641E+00
+u      2.2309E+00
+v      1.8425E+00
+mean for bkg over  31 times
+sum=   7.7489E+00
+ps     3.6689E-01
+sphu   1.8904E+00
+tv     1.2410E+00
+u      2.3130E+00
+v      1.9376E+00
+mean for ana-bkg over  31 times
+sum=  -3.3304E-01
+ps    -3.0391E-03
+sphu  -7.5903E-02
+tv    -7.6890E-02
+u     -8.2045E-02
+v     -9.5142E-02

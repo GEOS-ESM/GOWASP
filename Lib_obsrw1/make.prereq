@@ -1,0 +1,16 @@
+open_obs_file.o: open_obs_file.f90 m_rad_obs_arrays.o m_bufr_rad.o
+m_conv_names.o: m_conv_names.f90
+m_gpsro_names.o: m_gpsro_names.f90
+m_rad_obs_arrays.o: m_rad_obs_arrays.f90
+m_bufr_conv.o: m_bufr_conv.f90 m_conv_names.o
+m_bufr_gpsro.o: m_bufr_gpsro.f90 m_gpsro_names.o
+m_bufr_rad.o: m_bufr_rad.f90 m_rad_obs_arrays.o 
+
+
+  
+
+
+
+ 
+
+

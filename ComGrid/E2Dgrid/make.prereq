@@ -1,0 +1,5 @@
+m_write_nc4_file.o: m_write_nc4_file.f90
+NR2Egrid.o: NR2Egrid.F90 m_write_nc4_file.o
+
+
+

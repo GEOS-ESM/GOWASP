@@ -1,0 +1,822 @@
+!
+   module m_crtm_interface
+!
+! Module that interfaces the OSSE obs simulation software with the CRTM
+! Includes calls to CRTM initialization routines
+!
+!  Code History:
+!  Ronald Errico      Oct 1 2016  Initial GOWASP-3 code
+!
+   use m_kinds, only: rkind1
+   use m_rad_index  ! use all public routines and variables in module
+   use crtm_module
+
+  ! ------------
+  ! Module usage
+  ! ------------
+
+  ! -- Utility modules
+
+  ! -- CRTM module
+   use CRTM_SpcCoeff
+   use SpcCoeff_Define
+   use CRTM_Module
+   use CRTM_Atmosphere_Define
+   use CRTM_Atmosphere
+   use CRTM_Parameters 
+   use CRTM_Surface_Define
+   use CRTM_SensorInfo
+   use CRTM_ChannelInfo_Define
+   use CRTM_Aerosol_Define
+   use CRTM_Geometry_Define
+   use CRTM_Options_Define
+!
+   implicit none
+   private
+   public :: crtm_interface_init
+   public :: crtm_interface_comp_rad
+!
+   TYPE( CRTM_ChannelInfo_type )             :: ChannelInfo(1)
+   TYPE( CRTM_Atmosphere_type )              :: Atmosphere(1)
+   TYPE( CRTM_Surface_type )                 :: Surface(1)
+   TYPE( CRTM_Geometry_type )                :: Geometry(1)
+   TYPE( CRTM_RTSolution_type ), allocatable :: RTSolution(:,:)
+   TYPE( CRTM_Options_type )                 :: Options(1)
+!
+! fov_rato  is satellite distance to earth's center / earth's radius
+! ifov_0    is fov index for nadir view
+! fov_start is scan angle for fov index =1 
+! fov_step  is angle step between scaning views.
+   integer :: ifov_0
+   real(rkind1) :: fov_start,fov_step,fov_rato,fov_adjust
+   real(rkind1) :: deg2rad,rad2deg
+   character(len=*), parameter :: myname="m_crtm_interface"
+!
+   contains
+!
+!
+!  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+!
+   subroutine crtm_interface_init (dtype,lcrtm_init,subtype,lprint, &
+                                   nchan,crtm_coef_dir,ier)
+!
+! Initalize the JCSDA CRTM for a particular radiance instrument on a 
+! particular satellite
+!
+   use crtm_lifecycle, only : crtm_destroy
+   use m_sat_info_table, only : sat_info_table_get_1c 
+   use m_sat_info_table, only : sat_info_table_get_2c 
+   use m_sat_info_table, only : sat_info_table_get_ic 
+   use m_sat_info_table, only : sat_info_table_get_1r
+   use m_sat_info_table, only : sat_info_table_get_1i
+!
+   implicit none
+!
+   logical, intent(in) :: lprint
+   logical, intent(in) :: lcrtm_init
+   integer, intent(in) :: subtype
+   integer, intent(in) :: nchan
+   integer, intent(out) :: ier
+   character(len=*), intent(in) :: dtype
+   character(len=*), intent(in) :: crtm_coef_dir
+!
+   logical :: lquiet
+   integer :: ierr
+   real(rkind1) :: pi_fac
+   character(len=20) :: sat_name
+   character(len=256) :: sensor_id(1)
+   character(len=*), parameter :: mysub=myname//'::crtm_interface_init'
+!
+   pi_fac=atan(1.)
+   deg2rad = pi_fac/45.
+   rad2deg = 1./deg2rad
+   lquiet=(.not. lprint)
+!
+! Get part of name for spectral coefficient files unique to requested sat
+! and some viewing geometry parameters for this instrument
+   if (nf_said /= 0) then  ! subtype is id for sat name
+     call sat_info_table_get_ic ('said','sat',subtype,sat_name,ier)
+   else                    ! subtype is id for unique inst name 
+     if (trim(dtype) == 'AMSUAAQUA') then
+       call sat_info_table_get_1c ('dtype','sat',dtype,sat_name,ier)
+     else
+       call sat_info_table_get_ic ('siid','sat',subtype,sat_name,ier)
+     endif
+   endif
+!
+   call sat_info_table_get_1i ('dtype','ifov0',dtype,ifov_0,ier)
+   call sat_info_table_get_1r ('dtype','fovstep',dtype,fov_step,ier)
+   call sat_info_table_get_1r ('dtype','fovstart',dtype,fov_start,ier)
+   call sat_info_table_get_1r ('dtype','fovrato',dtype,fov_rato,ier)
+   call sat_info_table_get_1r ('dtype','fovadjust',dtype,fov_adjust,ier)
+   call sat_info_table_get_2c ('dtype','sat','spec_file_name', &
+                               dtype,sat_name,sensor_id(1),ier)
+!
+   if (ier == 0) then  ! only continue if no error found thus far
+!
+     if (lprint) then 
+       print *,'Initializing the CRTM for ',trim(sensor_id(1)) 
+       print *,'Path for crtm coefficient files: ',trim(crtm_coef_dir)
+     endif
+!
+     if (lcrtm_init) then   ! destroy specs if previously initialized
+       ierr=crtm_destroy(channelinfo)
+     endif
+!
+! Note that the IGBP land type specifications are used
+     ierr=CRTM_Init(ChannelInfo=ChannelInfo,Sensor_ID=sensor_id, &
+                    File_Path=crtm_coef_dir,Quiet=lquiet,        &
+                    IRlandCoeff_File='IGBP.IRland.EmisCoeff.bin') 
+     if (ierr /= SUCCESS ) then 
+       ier=2
+       if (lprint) then 
+         print *,' '
+         print *,'Error in initializing crtm: returned error=',ierr
+       endif
+     else
+!
+       if (lprint) then
+         print *,' '
+         print *,'CRTM initialized successfully for ',trim(sensor_id(1))
+       endif 
+!
+! Reset WMO id info for GMI since when this type was added to this CRTM version,
+! these id numbers were not yet established
+       if (trim(dtype) == 'GMI') then 
+         channelinfo(1)%WMO_sensor_id = 519
+         channelinfo(1)%WMO_Satellite_id = 288
+         if (lprint) then
+           print *,'GMI_GPM id numbers changed in crtm_interface_setup'
+         endif 
+       endif
+!
+! Allocate for number of channels
+       call CRTM_Options_Create( Options, ChannelInfo(1)%n_Channels)
+       if (nchan /= ChannelInfo(1)%n_Channels) then
+         ier=ier+10
+         if (lprint) then
+           print *,' '
+           print *,'Mismatch in number of channels in ',mysub
+           print ('(2(a,i4))'),'nchan=',nchan,'  n_Channels=', & 
+                                ChannelInfo(1)%n_Channels
+         endif
+       endif
+     endif    ! check on ierr 
+!
+   endif  ! check on whether sensor_id found
+!
+   end subroutine crtm_interface_init 
+!
+!
+!  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+!
+   subroutine crtm_interface_comp_rad (prof_dim1,prof_dim2,prof_dim3, &
+                 prof_kmax,nchan,effective_ks,effective_ps,dtype,     &
+                 subtype,lprint,prof_info,prof_2d,prof_3d,prof_plevs, &
+                 sfc_type,btchan,ier)
+!
+! Fill JCSDA CRTM input values and arrays and call it to compute 
+! brigtness temperatures or radiances at a single location for all channels 
+! of a single instrument.
+!
+   use m_rad_prob, only : list_cloud_nums, list_aerosol_nums
+!
+   implicit none
+!
+! argument variables
+   logical, intent(in) :: lprint
+   integer, intent(in) :: prof_dim1,prof_dim2,prof_dim3,prof_kmax
+   integer, intent(in) :: effective_ks
+   integer, intent(in) :: nchan
+   integer, intent(in) :: subtype ! id for either satellite or instrument type
+   real(rkind1), intent(in) :: prof_info(prof_dim1)
+   real(rkind1), intent(in) :: prof_plevs(prof_kmax+1,2)
+   real(rkind1), intent(in) :: prof_2d(prof_dim2)
+   real(rkind1), intent(in) :: prof_3d(prof_kmax,prof_dim3)
+   real(rkind1), intent(in) :: effective_ps
+   character(len=*), intent(in) :: dtype
+!
+   integer, intent(out) :: ier
+   integer, intent(out) :: sfc_type   ! flag (1=ocean, 2=ice, 3=ocean)
+   real(rkind1), intent(out) :: btchan(nchan)
+!
+! local variables
+  integer :: ivegtype
+  integer :: n_clouds, n_absorbers, climatology, n_aerosols, n_layers
+  integer :: ifov,ifovmod
+  integer :: i,k
+  integer :: ier_crtm
+  real(rkind1) :: qvap,wvap
+  real(rkind1) :: start_adjust,panglr,lza
+  real(rkind1) :: sktp,u,v,fact10m,windspeed
+  real(rkind1) :: kgkg_kgm2,fv,dp,tem1,tem2,tem3,tem4 
+  real(rkind1) :: frac_land,frac_land_ice,frac_sea_ice,frac_snow
+!
+  INTEGER :: Allocate_Status
+  INTEGER, PARAMETER :: UNSET = 0
+  INTEGER :: CloudType, AerosolType, stype
+
+  character(len=*), parameter :: mysub=myname//'::crtm_interface_comp_rad'
+! 
+   n_absorbers = 1  ! H2O is always an absorber
+   if (nf_o3 > 0) n_absorbers=2  ! consider O3 as 2nd absorber
+   climatology = 3
+   n_layers = effective_ks
+   n_Clouds=list_cloud_nums
+   n_Aerosols=list_aerosol_nums
+!
+   call CRTM_Atmosphere_Create ( Atmosphere(1), &
+                                 n_Layers,      &
+                                 n_Absorbers,   &
+                                 n_Clouds,      &
+                                 n_Aerosols )
+   call CRTM_Surface_Create ( Surface(1), ChannelInfo(1)%n_Channels)
+   allocate (RTSolution(ChannelInfo(1)%n_Channels,1))
+   call CRTM_RTSolution_Create( RTSolution(:,1), Atmosphere(1)%n_Layers )
+!
+! Absorber setup
+   Atmosphere(1)%Absorber_ID(1) = H2O_ID      
+   Atmosphere(1)%Absorber_Units(1) = MASS_MIXING_RATIO_UNITS     
+   if (nf_o3 > 0) then ! consider Ozone as a 2nd absorber
+     Atmosphere(1)%Absorber_ID(2) = O3_ID     
+     Atmosphere(1)%Absorber_Units(2) = VOLUME_MIXING_RATIO_UNITS 
+   endif
+!
+! Extract viewing and solar geometry fro data header. (Note that this 
+! first portion of specifications will be overwritten at the end of this 
+! section for GMI obs.) pangl=satellite scan angle; saza=satellite zenith angle
+! Set index for scan field of view
+   ifov=nint(prof_info(nf_fovn))   
+   if (trim(dtype) == 'HIRS3') then
+     ifovmod=ifov+1  ! account for assymetry due to build error
+   elseif (trim(dtype) == 'IASI') then
+     ifovmod=(ifov-1)/2 + 1  
+   else
+     ifovmod=ifov
+   endif
+   Geometry(1)%ifov=ifovmod
+!
+! Set satellite loook angle (units radians) based on scan index
+!
+! For most satellites, the scan (or look) angle (panglr) is determined from the scan 
+! index and scan instrument properties. For some satellites, the reported angles  
+! incorrect, which accounts for some of the differences in the ways in which the scan 
+! angle and sat zenith angle are set here. Satellite zenith angle and satellite scan 
+! angle are related, becoming identical as the satellite elevation goes to 0. One can
+! be computed from the other. fov_rato is the ratio of the distances between the sat 
+! and earth's center and the surface and earth's center (or for CRIS or AVHRR, the 
+! inverse of this ratio). 
+!
+   if (trim(dtype) == 'IASI'  ) then     ! panglr for IASI
+     if (mod(ifovmod,2) == 1) then  
+       start_adjust=fov_start+fov_adjust
+     else
+       start_adjust=fov_start-fov_adjust
+     endif
+     ifovmod=ifov
+     panglr=(start_adjust+real((ifov-1)/4)*fov_step)*deg2rad  
+   elseif (trim(dtype) == 'GENRADTXT') then  ! get value from file
+     panglr=prof_info(nf_pang)*deg2rad   
+   elseif (trim(dtype) /= 'CRIS' .and. trim(dtype) /= 'CRISFSR' .and. &
+           trim(dtype) /= 'AVHRR')  then 
+!    panglr for all others except CRIS and AVHRR
+     panglr=(fov_start+(ifovmod-1)*fov_step)*deg2rad  
+   endif                                 ! panglr for CRIS computed below
+!
+! Set satellite local zenith angle lza (units degrees)
+   if (trim(dtype) == 'HIRS2' .or. trim(dtype) == 'MSU')  then
+     lza=rad2deg*asin(fov_rato*sin(panglr))  ! compute value from look angle
+   elseif (trim(dtype) == 'AMSR2') then
+     lza=fov_start
+   else 
+     lza=prof_info(nf_saza)                  ! read value in sat_info
+   endif
+!
+   if (ifovmod <= ifov_0) then 
+     lza=-lza
+   endif
+!
+! for CRIS,  compute panglr from relationship with lza
+   if (trim(dtype) == 'CRIS' .or. trim(dtype) == 'CRISFSR' .or. &
+       trim(dtype) == 'AVHRR')  then  
+     panglr=asin(fov_rato*sin(lza*deg2rad))
+   endif  
+!
+!  copy viewing geometry into CRTM input arrays
+!  (azimuth angle seems not in use)
+   Geometry(1)%sensor_zenith_angle  = lza  
+   Geometry(1)%sensor_scan_angle    = panglr*rad2deg ! scan angle
+   if (abs(prof_info(nf_soza)) <= 180.) then       
+     Geometry(1)%source_zenith_angle  = prof_info(nf_soza)     
+   else
+     Geometry(1)%source_zenith_angle  = 180. 
+   endif
+!
+   Geometry(1)%Sensor_Azimuth_Angle = 0.0  ! default value if not present
+   if (nf_satazm > 0) then
+     if (abs(prof_info(nf_satazm)) <= 360.) then   ! sat azimuth angle
+       Geometry(1)%Sensor_Azimuth_Angle=prof_info(nf_satazm)  
+     endif
+   endif
+!
+   Geometry(1)%Source_Azimuth_Angle = 0.0  ! default value if not present
+   if (nf_solazm > 0) then
+     if (abs(prof_info(nf_solazm)) <= 360.) then   ! solar azimuth angle
+       Geometry(1)%Source_Azimuth_Angle=prof_info(nf_solazm)  
+       if (Geometry(1)%Source_Azimuth_Angle < 0.) then
+         Geometry(1)%Source_Azimuth_Angle=Geometry(1)%Source_Azimuth_Angle+360.
+       endif
+     endif
+   endif
+!
+! If GMI, then specify viewing geometry differently (for set 1: chans=1-9) 
+   if (trim(dtype) == 'GMI' ) then
+     call crtm_interface_set_gmi (prof_dim1,prof_info,1)
+   endif
+! 
+! End of section on viewing geometry
+!
+! Retrieve skin temperature and 10m winds from profile 
+   sktp=prof_2d(nf_ts)  
+   u=prof_2d(nf_u10m)     
+   v=prof_2d(nf_v10m)
+   fact10m=1.   ! factor for converting winds to 10m level   
+!
+! copy input profile (above cloud only) and rescale
+! change p from Pa to hPa      
+! change q from kg/kg to g/kg
+! change ozone units from kg/kg to ppmv --constant is 604229
+! top pressure is fixed as 0.005 mb
+   Atmosphere(1)%Level_Pressure(0) = 0.005
+   do i=1,n_layers
+     Atmosphere(1)%Pressure(i)    = prof_plevs(i,2)*0.01 ! p at data levs  
+     Atmosphere(1)%Temperature(i) = prof_3d(i,nf_t) 
+     qvap=max(prof_3d(i,nf_qv), 1.e-6)
+     wvap=qvap/(1.-qvap)                        ! change to mixing ratio
+     Atmosphere(1)%Absorber(i,1)  = 1000.*wvap  ! change to g/kg
+     if (nf_o3 > 0) then  ! consider ozone as a second absorber (change units)
+       Atmosphere(1)%Absorber(i,2)  = 604229.*max(prof_3d(i,nf_o3), 1.e-10)
+     endif
+   enddo
+!
+! Set pressure at interfaces (edges) in mb; start at 1st interface below top
+! (if lcldtop=nlevs, then 'cloud top' is actually the earth's surface and 
+! plcdtop is then actually the true surface pressure.) 
+   do i=1,n_layers-1
+     Atmosphere(1)%Level_Pressure(i) = prof_plevs(i+1,1)*0.01 
+   enddo
+   Atmosphere(1)%Level_Pressure(n_layers)=effective_ps*0.01
+!
+! Set cloud/precip scatttering information to be considered if requested
+   if (n_Clouds > 0) then  
+     call crtm_interface_set_clouds (prof_kmax,prof_dim3,n_layers, &
+                                     prof_3d)   
+   endif  ! test on whether cloud fields are present & should be considered 
+!
+! Set aerosol scattering information to be considered if requested
+   if (n_Aerosols > 0) then  
+     call crtm_interface_set_aerosols (prof_kmax,prof_dim3,n_layers, &
+                                      prof_3d)   
+   endif  ! test on whether aerosol fields are present & should be considerd
+!
+!
+! Begin setting of surface type information
+!
+   Surface(1)%SensorData%n_channels = channelinfo(1)%n_channels   
+   Surface(1)%SensorData%Sensor_Id = channelinfo(1)%sensor_id     
+   Surface(1)%SensorData%WMO_Sensor_Id = channelinfo(1)%WMO_sensor_id  
+   Surface(1)%SensorData%WMO_Satellite_Id = channelinfo(1)%WMO_satellite_id 
+   Surface(1)%SensorData%sensor_channel = channelinfo(1)%sensor_channel  
+!
+   Surface(1)%Land_Coverage  = 0.0
+   Surface(1)%Water_Coverage = 0.0
+   Surface(1)%Snow_Coverage  = 0.0 
+   Surface(1)%Ice_Coverage   = 0.0
+!
+! Get surface fraction values from either prof_info or prof_2d arrays
+   if (nf_flnd < 100) then
+     frac_land=prof_info(nf_flnd)
+   else
+     frac_land=prof_2d(nf_flnd-100)
+   endif
+!
+   if (nf_flic < 100) then
+     frac_land_ice=prof_info(nf_flic)
+   else
+     frac_land_ice=prof_2d(nf_flic-100)
+   endif
+!
+   if (nf_fsic < 100) then
+     frac_sea_ice=prof_info(nf_fsic)
+   else
+     frac_sea_ice=prof_2d(nf_fsic-100)
+   endif
+!
+   if (nf_fsno > 0) then   ! fraction of snow cover is available field
+     if (nf_fsno < 100) then
+       frac_snow=prof_info(nf_fsno)
+     else
+       frac_snow=prof_2d(nf_fsno-100)
+     endif
+   else
+     frac_snow=0.          ! default value
+   endif
+!
+! Get vegitation type index if it exists; otherwise set to 0
+   if (nf_vegt > 0) then
+     ivegtype=nint(prof_2d(nf_vegt))
+   else
+     ivegtype=0 
+   endif
+!
+! Consider ice points
+   if (frac_land_ice > 0.2 .or. frac_sea_ice > 0.2) then  
+     Surface(1)%Ice_Coverage = 1.0
+     Surface(1)%Ice_Type = 1
+     if (n_layers == prof_kmax) then
+       Surface(1)%Ice_Temperature = sktp
+     else
+       Surface(1)%Ice_Temperature = &
+       Atmosphere(1)%Temperature(Atmosphere(1)%n_Layers)
+     endif
+     Surface(1)%Ice_Thickness = 50.  ! units mm
+     Surface(1)%Ice_Density = 0.9
+     Surface(1)%Ice_Roughness = 0.1
+     sfc_type=2 
+!
+   elseif (frac_land > 0.2) then ! treat as either land or snow point
+!
+     sfc_type=3   ! will be changed to =4 if sfc is snow
+!
+! If no clouds, snow depth field exists and sndp > 0.1m, then treat as 
+! 100% snow covered. Must convert snow depth from ECMWF unit of m of 
+! water equivalent to CRTM unit of mm snow (use 1m water = 5m snow = 
+! 5000mm snow)
+!
+! This first IF block tests whether the radiative surface is the true 
+! Earth surface (and not an elevated cloud) and if the snow depth field
+! is present to be referenced.
+     if (n_layers == prof_kmax .and. nf_sndp > 0) then
+       if (prof_2d(nf_sndp) > 0.2 .and. prof_2d(nf_sndp) < 1.e10 ) then  
+! Treat as 100% snow covered.  Exlude points with missing value
+! Also check if snow T is reasonable (may not be if missing vales interpolated)
+         Surface(1)%Snow_Coverage = 1.0   
+         Surface(1)%Snow_Depth = prof_2d(nf_sndp)*1000. ! change m to mm
+         if (nf_tsno > 0) then  ! field sntp exists so use rather than sktp
+           if (prof_2d(nf_tsno) < 320. .and. prof_2d(nf_tsno) > 200.) then 
+             Surface(1)%Snow_Temperature = prof_2d(nf_tsno)
+           else
+             Surface(1)%Snow_Temperature = sktp  
+           endif   
+         else
+           Surface(1)%Snow_Temperature = sktp 
+         endif
+         Surface(1)%Land_Temperature = Surface(1)%Snow_Temperature 
+         Surface(1)%Vegetation_Fraction = 0.01   ! must not be zero
+         sfc_type=4
+       endif
+     endif
+!
+     if (Surface(1)%Snow_Coverage < 0.9999) then ! treat portion as land
+       Surface(1)%Land_Coverage  = 1.-Surface(1)%Snow_Coverage
+       if (n_layers == prof_kmax) then ! no clouds so rad. sfc. is true sfc.
+         Surface(1)%Land_Temperature = sktp
+       else                       ! cloud present, so rad. sfc. is elevated 
+         Surface(1)%Land_Temperature = &
+                 Atmosphere(1)%Temperature(Atmosphere(1)%n_Layers)
+       endif
+       if (nf_vegf > 0) then   ! vegetation fraction exists
+         Surface(1)%Vegetation_Fraction = max(prof_2d(nf_vegf),0.01)
+       else
+         Surface(1)%Vegetation_Fraction = 0.9
+       endif
+     endif
+!
+! If vegitation type data exists and neither ice or water are indicated
+! then use data; otherwise set to grassland as default
+     if (nf_vegt > 0 .and. ivegtype /= 17 .and. ivegtype /= 15) then  
+       Surface(1)%Land_Type = ivegtype
+     else
+       Surface(1)%Land_Type = 10  ! grassland
+     endif
+!
+     if (nf_swet > 0) then               ! soil moisture in g/cm**3 = m**3/m**3
+       Surface(1)%Soil_Moisture_Content = max(prof_2d(nf_swet),0.01)
+     else
+       Surface(1)%Soil_Moisture_Content = 0.1
+     endif
+!
+     Surface(1)%Soil_Temperature = Surface(1)%Land_Temperature 
+     Surface(1)%Canopy_Water_Content = 0.05
+!
+! End treatment of land
+!
+   else                                 ! treat as sea water 
+     Surface(1)%Water_Coverage = 1.0
+     Surface(1)%Water_Type = 1
+     if (n_layers == prof_kmax) then ! no clouds so rad. sfc. is true sfc.
+       Surface(1)%Water_Temperature = sktp
+     else
+       Surface(1)%Water_Temperature = &
+          Atmosphere(1)%Temperature(Atmosphere(1)%n_Layers)
+     endif
+     Surface(1)%Salinity = 33.0
+     sfc_type=1
+   endif
+!
+   windspeed=sqrt(max(u*u+v*v,0.9e-4)) 
+   if (windspeed > 0.01) then  
+     Surface(1)%Wind_Direction=rad2deg*atan2(u,v)
+     if (Surface(1)%Wind_Direction < 0.) then  
+       Surface(1)%Wind_Direction=Surface(1)%Wind_Direction+360.
+     endif
+   else
+     Surface(1)%Wind_Direction=0.
+   endif 
+   Surface(1)%Wind_Speed=fact10m*windspeed
+!
+! End setting of surface type information
+!
+! Call CRTM
+   ier_crtm=CRTM_Forward(Atmosphere,Surface,Geometry,ChannelInfo, &
+                         RTSolution  )
+   if (ier_crtm /= SUCCESS ) then 
+     ier=ier_crtm+100 
+     if (lprint) then
+       print *,' '
+       print *,'Error in call to CRTM: ier_crtm=',ier_crtm
+     endif
+   else
+!
+! copy output into obs_values(1:n_channels)
+     ier=0
+     do i=1,ChannelInfo(1)%n_Channels
+       k=ChannelInfo(1)%Channel_Index(i)
+       if (trim(dtype) == 'IASI' .or. trim(dtype) == 'CRIS' .or. &
+           trim(dtype) == 'CRISFSR') then
+         btchan(k)= RTSolution(k,1)%Radiance
+       else 
+         btchan(k)= RTSolution(k,1)%Brightness_Temperature
+       endif
+     enddo
+!
+   endif  ! test on ier_crtm
+!
+! If GMI, then recall CRTM since channel set 2 (channels 10-13) have a 
+! different viewing angle than for set 1
+   if (ier == 0 .and. trim(dtype) == 'GMI' ) then
+     call crtm_interface_set_gmi (prof_dim1,prof_info,2)
+     ier_crtm=CRTM_Forward(Atmosphere,Surface,Geometry,ChannelInfo, &
+                           RTSolution  )
+     if (ier_crtm /= SUCCESS ) then
+       ier=(ier_crtm+100)*100  
+       if (lprint) then
+         print *,' '
+         print *,'Error in 2nd call to CRTM for GMI: ier_crtm=',ier_crtm
+       endif
+     else      ! extract only channels > 9 for this set
+       ier=0
+       do i=1,ChannelInfo(1)%n_Channels
+         k=ChannelInfo(1)%Channel_Index(i)
+         if (k > 9) then
+           btchan(k)= RTSolution(k,1)%Brightness_Temperature
+         endif
+       enddo
+     endif    ! test on 2nd value of ier_crtm
+   endif      ! test if 'GMI'
+!
+!  destroy the RTSolution and atmosphere
+   call CRTM_RTSolution_Destroy( RTSolution )
+   call CRTM_Atmosphere_Destroy( Atmosphere )
+   deallocate( RTSolution )
+!
+   end subroutine crtm_interface_comp_rad 
+!
+!
+!  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+!
+   subroutine crtm_interface_set_clouds (prof_kmax,prof_dim3,n_layers, &
+                                         prof_3d)
+!
+!  Set radiance parameters pertaining to clouds if requested:
+!  concentration, effective partical radius, and size variance
+!  Current version only set for cloud ice and liquid water  
+!  Present formulation comes from current GSI code
+! 
+!  Initial Code  Ronald Errico  October 22 2014
+!
+   use m_rad_prob, only  : list_cloud_nums, list_cloud_names
+   use m_rad_index, only : nf_cloud_list
+!
+   implicit none
+!
+   integer, intent(in) :: prof_kmax
+   integer, intent(in) :: prof_dim3
+   integer, intent(in) :: n_layers
+   real(rkind1), intent(in) :: prof_3d(prof_kmax,prof_dim3) 
+!
+   integer :: k,n,nf
+   real(rkind1) :: tc  ! T centigrade (difference from freezing)
+   real(rkind1) :: tv  ! virtual temperature
+   real(rkind1) :: dz  ! thickness of data grid layer in m 
+   real(rkind1) :: fac1
+   real(rkind1) :: dp(n_layers)  ! thickness of data grid layer in mb
+   real(rkind1) :: wc_in_g_m3    ! water content in units of g/m**3
+   real(rkind1) :: x
+!
+   real(rkind1), parameter :: const1=100.0/9.8          ! (100Pa/1mb)/g
+   real(rkind1), parameter :: const2=461.6/287.04 - 1.0 ! Rvap/Rdry - 1
+   real(rkind1), parameter :: const3=9.81/287.04        ! g/Rdry
+!
+! Compute pressure layer "thickness" in mb
+   do k=1,n_layers
+     dp(k)=Atmosphere(1)%Level_Pressure(k)-Atmosphere(1)%Level_Pressure(k-1)
+   enddo
+!
+   do n=1,list_cloud_nums
+     nf=nf_cloud_list(n)   ! index for prof_3d for this cloud type
+     if (trim(list_cloud_names(n)) == 'QL') & 
+             Atmosphere(1)%Cloud(n)%Type=WATER_CLOUD
+     if (trim(list_cloud_names(n)) == 'QI') & 
+             Atmosphere(1)%Cloud(n)%Type=ICE_CLOUD
+     if (trim(list_cloud_names(n)) == 'QR') & 
+             Atmosphere(1)%Cloud(n)%Type=RAIN_CLOUD
+     if (trim(list_cloud_names(n)) == 'QS') & 
+             Atmosphere(1)%Cloud(n)%Type=SNOW_CLOUD
+!
+! Equivalent cloud water content in kg/m2  
+     do k=1,n_layers    
+       Atmosphere(1)%Cloud(n)%Water_content(k)= &
+                   max(0.,prof_3d(k,nf)*dp(k)*const1) 
+     enddo 
+!
+! Cloud effective radius
+     do k=1,n_layers
+!      
+       tc=Atmosphere(1)%Temperature(k)-273.15         ! T in degrees C
+       tv=Atmosphere(1)%Temperature(k)*(1.+const2*prof_3d(k,nf_qv)) ! virtual T 
+       dz=const3*Atmosphere(1)%Pressure(k)/(dp(k)*tv) ! layer thickness (m) 
+!
+       if (Atmosphere(1)%Cloud(n)%Type == WATER_CLOUD) then
+!                     liquid water cloud drop size
+         fac1=max(0.0,-0.05*tc)
+         Atmosphere(1)%Cloud(n)%Effective_radius(k)=5.0+5.0*min(1.0,fac1)
+!
+       elseif (Atmosphere(1)%Cloud(n)%Type == ICE_CLOUD) then
+!                     ice water cloud particle size
+         fac1=dz*Atmosphere(1)%Cloud(n)%Water_content(k)
+         if (tc < -50.0 ) then
+           Atmosphere(1)%Cloud(n)%Effective_radius(k)= &
+                  (1250.0/9.917)*fac1**0.109
+         elseif (tc < -40.0) then
+           Atmosphere(1)%Cloud(n)%Effective_radius(k)= &
+                  (1250.0/9.337)*fac1**0.08
+         elseif (tc < -30.0) then
+           Atmosphere(1)%Cloud(n)%Effective_radius(k)= &
+                  (1250.0/9.208)*fac1**0.055
+         else
+           Atmosphere(1)%Cloud(n)%Effective_radius(k)= &
+                  (1250.0/9.387)*fac1**0.031
+         endif
+!
+       else  ! rain or snow/ice 
+         wc_in_g_m3 = 1000.0*dz*Atmosphere(1)%Cloud(n)%Water_content(k)
+         if (wc_in_g_m3 > 0.) then  
+           x = log10(wc_in_g_m3)         
+           if (Atmosphere(1)%Cloud(n)%Type == RAIN_CLOUD) then
+             Atmosphere(1)%Cloud(n)%Effective_radius(k)=max(100., &
+                       7.934*x*x*x + 90.858*x*x + 387.807*x + 679.939)
+           elseif (Atmosphere(1)%Cloud(n)%Type == SNOW_CLOUD) then
+             Atmosphere(1)%Cloud(n)%Effective_radius(k)=max(100., &
+                       9.33*x*x*x +  84.779*x*x + 351.1345*x + 691.391)
+           else   ! cloude type not considered
+             Atmosphere(1)%Cloud(n)%Effective_radius(k)=0.
+           endif
+         else     ! no water content 
+           Atmosphere(1)%Cloud(n)%Effective_radius(k)=0.
+         endif
+       endif      ! test on cloud type
+!
+       Atmosphere(1)%Cloud(n)%Effective_radius(k)=   &
+             max(0.,Atmosphere(1)%Cloud(n)%Effective_radius(k))
+       Atmosphere(1)%Cloud(n)%Effective_variance(k)=2.0
+     enddo  ! loop over layers k
+!
+   enddo    ! loop over cloud types
+!
+   end subroutine crtm_interface_set_clouds 
+!
+!
+!  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+!
+   subroutine crtm_interface_set_aerosols (prof_kmax,prof_dim3,n_layers, &
+                                           prof_3d)
+!
+!  Set aerosol information if requested:
+!  concentration, effective partical radius, and size variance
+! 
+!  Initial Code  Ronald Errico  October 22 2014
+!
+   use m_rad_prob, only  : list_aerosol_nums, list_aerosol_names 
+   use m_rad_index, only : nf_aerosol_list, nf_rh
+!
+   implicit none
+!
+   integer, intent(in) :: prof_kmax
+   integer, intent(in) :: prof_dim3
+   integer, intent(in) :: n_layers
+   real(rkind1), intent(in) :: prof_3d(prof_kmax,prof_dim3) 
+!
+   integer :: k,n,nf
+   integer :: itype
+   real(rkind1) :: dp(n_layers)
+!
+   do k=1,n_layers
+     dp(k)=Atmosphere(1)%Level_Pressure(k)-Atmosphere(1)%Level_Pressure(k-1)
+   enddo
+!
+   do n=1,list_aerosol_nums
+     nf=nf_aerosol_list(n)
+     if (list_aerosol_names(n)(1:2) == 'DU') then
+       itype=DUST_AEROSOL
+     elseif (list_aerosol_names(n)(1:5) == 'SS001') then
+       itype=SEASALT_SSAM_AEROSOL
+     elseif (list_aerosol_names(n)(1:5) == 'SS002') then 
+       itype=SEASALT_SSCM1_AEROSOL
+     elseif (list_aerosol_names(n)(1:5) == 'SS003') then
+       itype=SEASALT_SSCM2_AEROSOL
+     elseif (list_aerosol_names(n)(1:5) == 'SS004') then
+       itype=SEASALT_SSCM3_AEROSOL
+     elseif (list_aerosol_names(n)(1:5) == 'SS005') then
+       itype=SEASALT_SSCM3_AEROSOL
+     elseif (list_aerosol_names(n)(1:2) == 'BC')    then
+       itype=BLACK_CARBON_AEROSOL
+     elseif (list_aerosol_names(n)(1:2) == 'OC')    then
+       itype=ORGANIC_CARBON_AEROSOL
+     elseif (list_aerosol_names(n)(1:3) == 'SO4')   then
+       itype=SULFATE_AEROSOL
+     else
+       itype=INVALID_AEROSOL
+     endif
+   enddo
+!
+!  Set Conentrations
+!  Set effective radii
+!
+   end subroutine crtm_interface_set_aerosols 
+!
+!
+!  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+!
+   subroutine crtm_interface_set_gmi (prof_dim1,prof_info,iset)
+!
+!  Set viewing geometry for GMI that has 2 possible sets  
+!
+   implicit none
+!
+   integer, intent(in) :: prof_dim1
+   integer, intent(in) :: iset
+   real(rkind1), intent(in) :: prof_info(prof_dim1)
+!
+   integer :: ix  
+   real(rkind1), parameter :: bmiss9=0.9e10
+   real(rkind1), parameter :: rearth=6.3712e3  ! GSI value for earthr, km
+   real(rkind1), parameter :: default_scan_ang1=52.8
+   real(rkind1), parameter :: default_scan_ang2=49.2
+   real(rkind1) :: afac,dfac
+   real(rkind1) :: default_scan_ang
+!
+! Set index offset and default scan angle for this channel subset 
+   if (iset == 1) then  
+     ix=0
+     default_scan_ang=default_scan_ang1
+   else
+     ix=5
+     default_scan_ang=default_scan_ang2
+   endif
+!
+   if (prof_info(nf_saza+ix) < bmiss9) then
+     Geometry(1)%Sensor_zenith_angle  = prof_info(nf_saza+ix)
+   else  
+     Geometry(1)%Sensor_zenith_angle  = default_scan_ang
+   endif
+   Geometry(1)%Sensor_Azimuth_Angle   = prof_info(nf_satazm+ix)  
+   Geometry(1)%Source_zenith_angle    = prof_info(nf_soza+ix)     
+   if (prof_info(nf_solazm+ix) < 0. .or. prof_info(nf_solazm+ix) > 360.) then 
+     Geometry(1)%Source_Azimuth_Angle   = 0.
+   else
+     Geometry(1)%Source_Azimuth_Angle   = prof_info(nf_solazm+ix)
+   endif
+!
+! Determine scan angle (note that sat altitude is in km, not m as stated
+! in gmi bufr file, so rearth here is in km also) 
+   afac=sin(Geometry(1)%Sensor_zenith_angle*deg2rad)
+   dfac=rearth/(rearth+prof_info(nf_hmsl))
+   Geometry(1)%Sensor_scan_angle    = rad2deg*asin(afac*dfac) 
+!          
+   end subroutine crtm_interface_set_gmi 
+!
+!
+!  X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
+!
+   end module m_crtm_interface

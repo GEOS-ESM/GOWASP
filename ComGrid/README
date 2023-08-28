@@ -1,0 +1,17 @@
+common_grid_ana : takes 0.5x0.5deg NR low RES data, puts it on a 0.625x0.5deg
+grid and outputs an ana file.  But note that aside from u,v,t,q,ps,phis the 
+interpol between longitudinal points may not be appropriate, since the purpose
+here is specifically to put only the dynamical fields into a file that can be 
+used by some g5das routines that, however, attempt to input other fields also.
+
+common_grid:  0.5x0.5deg NR low RES data, puts it on a 0.625x0.5deg
+grid and outputs a netcdf fikle containing only those fields.
+
+The netcdf headers contain minimal information required by most netcdf reading
+routines. 
+
+The interpolation in longitude is accomplished using Fourier transforms, with
+a spectral truncation to the lower resol. grid. 
+
+ 
+

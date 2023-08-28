@@ -1,0 +1,236 @@
+!
+   program create_error
+!
+!  Main program for adding random observational error to simulated obs
+!
+!  Initial Code by Ronald Errico NASA/GMAO Sept. 2014
+!
+   use m_kinds, only : rkind1   ! precision of most real numbers
+!
+   use MAPL_ShmemMod    ! The SHMEM infrastructure 
+!
+! Use module for printing info when aborting jobs   
+   use m_die, only : mpi_die
+   use m_die, only : die_proc_id
+!
+   use m_obs_error_table, only : error_table_setup
+!
+   use m_sat_info_table, only : sat_info_table_read
+!
+   use m_random_fields, only : random_fields_setup
+   use m_random_fields, only : random_fields_clean
+!
+   use m_rf_diags_fields, only : rf_diags_fields_calc
+!
+   use m_pert_loop, only : pert_loop_setup
+   use m_pert_loop, only : pert_loop_do
+!
+   use m_count_types, only : count_subtypes_print
+!
+   implicit none
+!
+   include "mpif.h"   ! defines some standard MPI variables
+!
+   logical :: check_class
+   logical :: lprint
+   logical :: ltest
+   logical :: ldum
+   logical :: lcorrfld ! true if random correlated fields required
+!
+   integer, parameter :: nerrors=11    ! number of types of counters
+   integer, parameter :: ntypes=70     ! max number of subtypes counted
+   integer, parameter :: change_year=0  ! 0 if year on file to be unchanged
+!
+   integer :: ROOT         
+   integer :: ierr          ! error flag
+   integer :: iseed 
+   integer :: myid          ! processor id number 0, ... ,npet
+   integer :: npet          ! number of processors used
+   integer :: n_mesg        ! counter of messages in file
+   integer :: n_test        ! counter of obs selected for test printout
+   integer :: CoresPerNode
+   integer :: argc
+   integer :: idatetime4    ! integer equal to yymmddhh
+   integer :: i_random_seed(2)
+   integer :: count_types(ntypes,3)  ! counter for obs sub-types
+   integer :: ierrors(nerrors)
+   integer(4) :: iargc
+!
+   real(8) :: x_random  
+!
+   character(len=1)   :: ctest
+   character(len=12)  :: dtype
+   character(len=10)  :: cdatetime
+   character(len=256) :: file_rc
+   character(len=256) :: file_sat_info
+   character(len=256) :: bufr_in_file
+   character(len=256) :: bufr_out_file
+   character(len=256) :: bufr_tab_file
+   character(len=256) :: crtm_coef_dir
+   character(len=13), parameter :: obs_classes(18) = (/ 'PREPBUFR', &
+      'AIRS', 'AMSUA', 'AMSUB', 'MSU', 'AMSUAAQUA', 'IASI', 'ATMS', &
+      'HIRS2', 'HIRS3', 'HIRS4', 'MHS', 'GMI', 'CRIS', 'SSMIS',     &
+      'GPSRO', 'SATWIND', 'GENRADTXT' /)
+   character(len=*), parameter :: my_name='main_program'
+!
+!
+!  Initialize MPI
+!  --------------
+   call MPI_INIT(ierr)
+   call MPI_COMM_RANK(MPI_COMM_WORLD,myid,ierr)
+   die_proc_id=myid
+   call MPI_COMM_SIZE(MPI_COMM_WORLD,npet,ierr)
+   ROOT=0
+   if (myid == ROOT) write(*,'(A,I4,A)')'Starting MPI on ',npet, ' processors'
+!
+!  ---------------------------------------------------------
+!  Initialize SHMEM
+!  ----------------
+   CoresPerNode = MAPL_CoresPerNodeGet(MPI_COMM_WORLD,rc=ierr) ! a must
+   if (ierr /= 0) call mpi_die ('main:CoresPerNode',ierr)
+   call MAPL_InitializeShmem(rc=ierr)
+   if (ierr /= 0) call mpi_die ('main:InitializeShem',ierr)
+!
+!  Only ask for printing when myid=0
+   if (myid == ROOT) then
+     lprint=.true. 
+   else  
+     lprint=.false.
+   endif   
+!
+! Read and check arguments
+   argc = iargc()
+   if (argc .ne. 9) then
+     if (lprint) then
+       print ('(3a)'),'usage must be: sim_error.x d_type datetime ', &
+          'file_rc file_inputbufr file_outputbufr bufr_table-file ', &
+          'crtm_coef_dir sat_info_file print_sample(TorF)'
+     endif
+     call mpi_die (my_name,77)        
+   endif
+   call GetArg( 1_4, dtype)      ! data type
+   call GetArg( 2_4, cdatetime)  ! date time yyyymmddhh
+   call GetArg( 3_4, file_rc)    ! resource file with params and file info
+   call GetArg( 4_4, bufr_in_file)  ! input bufr file
+   call GetArg( 5_4, bufr_out_file) ! output bufr file
+   call GetArg( 6_4, bufr_tab_file) ! 'none' or bufr table file, if required
+   call GetArg( 7_4, crtm_coef_dir)
+   call GetArg( 8_4, file_sat_info) 
+   call GetArg( 9_4, ctest)      ! if T, print extra information for testing
+!
+   check_class=any(trim(dtype) == obs_classes)
+   if (check_class) then
+     if (lprint) then 
+       print *,'Processing for d_type=',trim(dtype),'  cdatetime=', &
+               trim(cdatetime)
+     endif
+   else
+     if (lprint) then 
+       print *,' Specification of dtype=',trim(dtype), &
+               ' not one that is implimented'
+     endif
+     call mpi_die (my_name,77)        
+   endif
+!
+! Set some variables
+   if (ctest == 'T') then
+     ltest=.true.
+   else
+     ltest=.false.
+   endif
+!
+   if (lprint .and. change_year > 0) then
+     print *,' '
+     print ('(a,i4)'),' YEAR ON FILE CHANGED TO ',change_year
+   endif
+!
+! Read and save table of sat/instr info
+   call sat_info_table_read (file_sat_info,lprint,ierr)
+   if (ierr /= 0) call mpi_die ('main:sat_info_table_read',ierr)
+!
+! Read resource file
+! Also read error stdv table and file of error correlation parameters
+   if (myid==0) then  !QQQQ
+   call error_table_setup (lprint,dtype,file_rc,ldum,lcorrfld,iseed,ierr)
+   endif  !QQQQ
+     call MPI_Barrier(MPI_COMM_WORLD,ierr) !QQQQ
+     ierr=999 !QQQQ
+   if (ierr /= 0) then
+     call mpi_die (my_name,ierr)    
+   endif 
+!
+! Set seed for random number generator to datetime
+   read (cdatetime(3:10),'(i8)') idatetime4
+   i_random_seed(1)=idatetime4
+   i_random_seed(2)=iseed
+   call random_seed (put=i_random_seed(1:2))
+   if (lprint) then 
+     print ('(a,2i10,a,i10)'),' Two Seeds for random number generator = ' &
+            ,i_random_seed(1:2),'  for idatetime4=',idatetime4 
+   endif
+!
+! Create horizontally-correlated random fields if errors are to be horiz correl
+! (cor_dist is the vertical correl. distance, relevant for MASS or WIND obs)
+   if (lcorrfld) then
+     call random_fields_setup (lprint,dtype,myid,npet,ltest,ierr) 
+     call MPI_Barrier(MPI_COMM_WORLD,ierr)
+     if (ltest .and. lprint) then 
+       call rf_diags_fields_calc (dtype,'Called from Main')
+     endif
+   endif
+   call MPI_Barrier(MPI_COMM_WORLD,ierr)
+!
+! Open bufr files and initialize pert loop in setup, then loop over 
+! observations in file and finally, print out some counts of obs.
+   if (myid == ROOT) then
+     call pert_loop_setup (bufr_in_file,bufr_out_file, &
+                           bufr_tab_file,lprint,dtype,ierr)
+     call pert_loop_do (lprint,change_year,ltest,crtm_coef_dir,dtype)
+     call count_subtypes_print
+   endif
+   call MPI_Barrier(MPI_COMM_WORLD,ierr)
+!
+   if (ltest .and. lprint) then ! for comparing random x from different runs
+     call random_number (x_random)
+     print *,' '  
+     print *,'random number after last drawn = ',x_random
+   endif
+!
+   if (lprint) then
+     print *,' '
+     print *,'program completed' 
+   endif
+!
+   call shutdown
+!
+   contains
+!
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x 
+!
+   subroutine shutdown
+!
+!  deallocate arrays
+!
+   use m_pert_loop, only : pert_loop_clean
+   use m_random_fields, only : random_fields_clean
+   use m_obs_error_table, only : error_table_clean
+!
+   if (myid == ROOT) then
+     call pert_loop_clean (dtype)
+   endif
+   call error_table_clean
+   if (lcorrfld) then 
+     call random_fields_clean (myid)
+   endif
+   call MPI_Barrier(MPI_COMM_WORLD,ierr)
+   call MAPL_FinalizeShmem (rc=ierr)
+   call MPI_Finalize (ierr) 
+!
+   end subroutine shutdown
+!
+!
+!  x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x 
+!
+   end program create_error
+   

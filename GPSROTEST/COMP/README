@@ -1,0 +1,50 @@
+
+/discover/nobackup/rerrico/TEST_GPS_517  
+
+allBKG0p.txt   all lat, BKG 517 fields, unmodified ROPP and GSI, file has ob p
+allNR0p.txt   all lat, NR fields, unmodified ROPP and GSI, file has ob p
+allBKG4p.txt   all lat, BKG 517 fields, ROPP and GSI modified 4, file has ob p
+allNR4p.txt   all lat, NR fields, unmodified ROPP and GSI modified 4, file has ob p
+allBKG4p.txt   all lat, BKG 517 fields, ROPP and GSI modified 1, file has ob p
+allNR4p.txt   all lat, NR fields, unmodified ROPP and GSI modified 1, file has ob p
+    mean of levs above and below and p,z used at data levels
+modified 1 means that 1d ROPP (when m_counter_test>0) 
+modified 4 means that 1d ROPP and GSI uses field values on data levels rather
+    than interfaces (m_counter_test>3)
+
+statistics are in /home/rerrico/GOWASP_3/GPSROTEST/COMP 
+all.0.txt compares allNR0p.txt and allBKG0p.txt 
+all.1.txt compares allNR1p.txt and allBKG1p.txt 
+all.4.txt compares allNR4p.txt and allBKG4p.txt 
+The stats are for means and stdvs of  ROPP_NR obs, ROPP_BKG - GSI_BKG, and O-F (ROPP_NR - GSI_BKG)  
+
+These are all for fields at July 11 0Z   #obs = 114000  globally
+The lable ".26" refers to results for fields at July 26 0Z  #obs = 139000 globally
+
+test_OUT_3d conatins printout of profile O,O-F,F for one GPS profile from
+the 517 3DVAR OSSE run for checking O and F from test program at same
+location. This uses the .ods file output for 0Z 7/11. 
+
+--------------------------------
+
+VERY OLD STUFF (details unavailable) 
+
+x_ctl_hr  ! standard GSI and OSSE ROPP hr means z=imp-roc
+
+x_ctl_hzs    ! standard GSI and OSSE ROPP hzs means z=imp-roc-und-zs
+
+These have little difference, so use hzs therafter
+
+x_1d_hzs ! as above but with 1 d calc in ROPP for all levels.
+           makes a big diffeence at lower levels
+
+           stdv of diff reduced by 30% for  8> imp > 3
+
+x_1dcon  ! as above but with some constants changed 
+          diff in last digit
+          rd, grav, eps, eccent.
+
+x_datlev ! use h,p at data levs, T,q not used at interface as averages
+
+x_datlev_N like above plus change kappas for N calc
+         very small diff below 14 km  

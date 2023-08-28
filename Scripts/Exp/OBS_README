@@ -1,0 +1,34 @@
+Changes I made:
+
+First, for obs with no added error:
+
+For satwinds, I increased target count-numbers for Meteosat by approx 1.6 and
+Himarawi by about 2. For others, I made minor adjustments of less than
+10%. These I did in the kx_table_in_10.rc files in table 1.
+
+For GMI, I went back to computing obs for all locations in the
+corresponding real BUFR files, so there is no thinning. Note that unlike other
+rad obs types, for most ana periods, the real obs counts in the BUFR files 
+are identical.   
+
+For AIRS, I changed the probability params that will affect the numbers of obs
+that will be QC-rejected by GSI based on cloud fractions.  This is done by
+changing params in the rad_prob_10.rc file. For chans that peaked at low
+levels, the latest counts were about 30% too large. I do not know why the
+counts for high-peaking or window channels is 2% lower in the latest test but
+I also try now to make those obs less QC-affected
+
+For AMSUA I tried addding consideration of low-level cld fractions to create
+more QC rejected obs for chans 4-5. I have also had 20% more of those obs in
+the OSSEs, but I never tried using the cloud info to create more of an affect,
+so i have no idea how it will work. 
+
+ATMS has 10% fewer obs in the latest exp, but I did not try to change this
+since its treatment in GSI is complicated by performing averages of nearby
+obs.
+
+AVHRR has 2x the number of obs in the OSSE. I have nver worked with this
+before and would have to learn more about its peculiarities, like its QC and
+what the instrument is supposed to see. 
+
+Changes to error adding:

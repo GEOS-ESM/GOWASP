@@ -1,0 +1,8 @@
+sonde_subs.o: sonde_subs.f90 
+m_conv_obs.o: m_conv_obs.F90 m_conv_types.o sonde_subs.o 
+m_conv_types.o: m_conv_types.f90 m_shmem_fields.o 
+m_shmem_fields.o: m_shmem_fields.F90
+create_conv.o: create_conv.F90 sonde_subs.o m_conv_types.o m_shmem_fields.o m_conv_obs.o
+
+
+

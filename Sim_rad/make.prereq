@@ -1,0 +1,33 @@
+m_realloc_get.o: m_realloc_get.f90 
+m_realloc_bad.o: m_realloc_bad.f90  
+m_make_rad_obs_bad.o: m_make_rad_obs_bad.f90
+compute_plevs.o: compute_plevs.f90 
+goss_mpeu.o: goss_mpeu.F90
+prof_io_files.o: prof_io_files.f90 m_set_unit_nums.o
+read_nc4_file.o: read_nc4_file.F90
+sub_prof_all_2d3d.o: sub_prof_all_2d3d.f90 
+m_copy_rad_obs.o: m_copy_rad_obs.f90 m_obs_list.o m_rad_index.o 
+m_crtm_interface.o: m_crtm_interface.f90 m_rad_index.o 
+m_mympi.o: m_mympi.F90 goss_mpeu.o
+m_obs_list.o: m_obs_list.f90 
+m_prof_merge.o: m_prof_merge.f90 m_read_profiles.o m_obs_list.o   
+m_rad_index.o: m_rad_index.f90 m_read_profiles.o m_obs_list.o m_rad_prob.o
+m_rad_prob.o: m_rad_prob.f90 m_read_profiles.o m_obs_list.o m_set_unit_nums.o
+m_rad_thin.o: m_rad_thin_flds.o m_set_unit_nums.o m_rad_thin.f90
+m_rad_thin_flds.o: read_nc4_file.o m_set_unit_nums.o m_rad_thin_flds.f90 
+m_read_profiles.o: m_read_profiles.f90 m_obs_list.o 
+m_set_unit_nums.o: m_set_unit_nums.f90
+m_write_profiles.o: m_write_profiles.f90 m_obs_list.o m_set_unit_nums.o
+create_rad_bufr.o: create_rad_bufr.F90 m_obs_list.o compute_plevs.o m_copy_rad_obs.o m_read_profiles.o sub_prof_all_2d3d.o m_crtm_interface.o m_rad_index.o m_set_unit_nums.o m_mympi.o goss_mpeu.o m_realloc_bad.o
+create_rad_obs_list.o: create_rad_obs_list.f90 m_rad_thin.o  m_set_unit_nums.o m_realloc_get.o
+create_rad_profs.o: create_rad_profs.F90 m_obs_list.o m_write_profiles.o m_set_unit_nums.o
+create_rad_reord.o: create_rad_reord.f90 m_obs_list.o m_read_profiles.o m_write_profiles.o sub_prof_all_2d3d.o m_set_unit_nums.o  
+create_rad_merge.o: create_rad_merge.f90 m_obs_list.o m_read_profiles.o m_write_profiles.o sub_prof_all_2d3d.o m_prof_merge.o m_set_unit_nums.o  
+
+  
+
+
+
+ 
+
+

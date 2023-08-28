@@ -1,0 +1,434 @@
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.2193E+00
+enorm ps     3.6250E-01
+enorm sphu   1.8300E+00
+enorm tv     1.1526E+00
+enorm u      2.1409E+00
+enorm v      1.7334E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.5668E+00
+enorm ps     3.6556E-01
+enorm sphu   1.9263E+00
+enorm tv     1.2247E+00
+enorm u      2.2166E+00
+enorm v      1.8337E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.1624E+00
+enorm ps     3.6293E-01
+enorm sphu   1.7512E+00
+enorm tv     1.1366E+00
+enorm u      2.1579E+00
+enorm v      1.7537E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.5060E+00
+enorm ps     3.6556E-01
+enorm sphu   1.8408E+00
+enorm tv     1.2074E+00
+enorm u      2.2467E+00
+enorm v      1.8456E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3985E+00
+enorm ps     3.6338E-01
+enorm sphu   1.7925E+00
+enorm tv     1.1495E+00
+enorm u      2.2129E+00
+enorm v      1.8802E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7452E+00
+enorm ps     3.6609E-01
+enorm sphu   1.8748E+00
+enorm tv     1.2290E+00
+enorm u      2.2991E+00
+enorm v      1.9763E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.6407E+00
+enorm ps     3.6274E-01
+enorm sphu   1.8074E+00
+enorm tv     1.1770E+00
+enorm u      2.3332E+00
+enorm v      1.9605E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   8.0203E+00
+enorm ps     3.6600E-01
+enorm sphu   1.8870E+00
+enorm tv     1.2567E+00
+enorm u      2.4519E+00
+enorm v      2.0587E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.5579E+00
+enorm ps     3.6349E-01
+enorm sphu   1.8222E+00
+enorm tv     1.1581E+00
+enorm u      2.2846E+00
+enorm v      1.9295E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.9082E+00
+enorm ps     3.6665E-01
+enorm sphu   1.8880E+00
+enorm tv     1.2504E+00
+enorm u      2.3638E+00
+enorm v      2.0393E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3381E+00
+enorm ps     3.6350E-01
+enorm sphu   1.7857E+00
+enorm tv     1.1443E+00
+enorm u      2.1785E+00
+enorm v      1.8661E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.6891E+00
+enorm ps     3.6705E-01
+enorm sphu   1.8693E+00
+enorm tv     1.2253E+00
+enorm u      2.2575E+00
+enorm v      1.9699E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.4599E+00
+enorm ps     3.6326E-01
+enorm sphu   1.7920E+00
+enorm tv     1.1781E+00
+enorm u      2.2187E+00
+enorm v      1.9078E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7848E+00
+enorm ps     3.6558E-01
+enorm sphu   1.8687E+00
+enorm tv     1.2492E+00
+enorm u      2.3039E+00
+enorm v      1.9974E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.6000E+00
+enorm ps     3.6409E-01
+enorm sphu   1.7803E+00
+enorm tv     1.2189E+00
+enorm u      2.3016E+00
+enorm v      1.9351E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.9807E+00
+enorm ps     3.6708E-01
+enorm sphu   1.8611E+00
+enorm tv     1.2993E+00
+enorm u      2.3998E+00
+enorm v      2.0534E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.5114E+00
+enorm ps     3.6273E-01
+enorm sphu   1.7900E+00
+enorm tv     1.1891E+00
+enorm u      2.2670E+00
+enorm v      1.9025E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.8763E+00
+enorm ps     3.6615E-01
+enorm sphu   1.8682E+00
+enorm tv     1.2634E+00
+enorm u      2.3441E+00
+enorm v      2.0345E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.4074E+00
+enorm ps     3.6341E-01
+enorm sphu   1.8221E+00
+enorm tv     1.1749E+00
+enorm u      2.1723E+00
+enorm v      1.8747E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7180E+00
+enorm ps     3.6603E-01
+enorm sphu   1.8909E+00
+enorm tv     1.2441E+00
+enorm u      2.2394E+00
+enorm v      1.9776E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3947E+00
+enorm ps     3.6186E-01
+enorm sphu   1.8693E+00
+enorm tv     1.1707E+00
+enorm u      2.1520E+00
+enorm v      1.8408E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.6983E+00
+enorm ps     3.6556E-01
+enorm sphu   1.9363E+00
+enorm tv     1.2462E+00
+enorm u      2.2188E+00
+enorm v      1.9315E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.2702E+00
+enorm ps     3.6286E-01
+enorm sphu   1.8351E+00
+enorm tv     1.1650E+00
+enorm u      2.1149E+00
+enorm v      1.7924E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.6235E+00
+enorm ps     3.6610E-01
+enorm sphu   1.9069E+00
+enorm tv     1.2445E+00
+enorm u      2.2120E+00
+enorm v      1.8940E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3342E+00
+enorm ps     3.6432E-01
+enorm sphu   1.8597E+00
+enorm tv     1.1705E+00
+enorm u      2.1372E+00
+enorm v      1.8025E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.6631E+00
+enorm ps     3.6705E-01
+enorm sphu   1.9168E+00
+enorm tv     1.2472E+00
+enorm u      2.2279E+00
+enorm v      1.9042E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3804E+00
+enorm ps     3.6425E-01
+enorm sphu   1.8691E+00
+enorm tv     1.1780E+00
+enorm u      2.1476E+00
+enorm v      1.8215E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7105E+00
+enorm ps     3.6696E-01
+enorm sphu   1.9197E+00
+enorm tv     1.2642E+00
+enorm u      2.2279E+00
+enorm v      1.9317E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.4742E+00
+enorm ps     3.6318E-01
+enorm sphu   1.9134E+00
+enorm tv     1.1909E+00
+enorm u      2.1730E+00
+enorm v      1.8337E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7697E+00
+enorm ps     3.6566E-01
+enorm sphu   1.9648E+00
+enorm tv     1.2725E+00
+enorm u      2.2378E+00
+enorm v      1.9289E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3960E+00
+enorm ps     3.6278E-01
+enorm sphu   1.9183E+00
+enorm tv     1.1824E+00
+enorm u      2.1535E+00
+enorm v      1.7791E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7178E+00
+enorm ps     3.6569E-01
+enorm sphu   1.9927E+00
+enorm tv     1.2643E+00
+enorm u      2.2341E+00
+enorm v      1.8610E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.2718E+00
+enorm ps     3.6293E-01
+enorm sphu   1.9432E+00
+enorm tv     1.1589E+00
+enorm u      2.0763E+00
+enorm v      1.7304E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.5882E+00
+enorm ps     3.6628E-01
+enorm sphu   2.0347E+00
+enorm tv     1.2406E+00
+enorm u      2.1440E+00
+enorm v      1.8025E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.1703E+00
+enorm ps     3.6458E-01
+enorm sphu   1.8845E+00
+enorm tv     1.1348E+00
+enorm u      2.0904E+00
+enorm v      1.6960E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.4701E+00
+enorm ps     3.6768E-01
+enorm sphu   1.9823E+00
+enorm tv     1.2030E+00
+enorm u      2.1446E+00
+enorm v      1.7725E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.1913E+00
+enorm ps     3.6572E-01
+enorm sphu   1.8197E+00
+enorm tv     1.1150E+00
+enorm u      2.1350E+00
+enorm v      1.7559E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.5038E+00
+enorm ps     3.6877E-01
+enorm sphu   1.8988E+00
+enorm tv     1.1826E+00
+enorm u      2.2108E+00
+enorm v      1.8427E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3857E+00
+enorm ps     3.6624E-01
+enorm sphu   1.8181E+00
+enorm tv     1.1277E+00
+enorm u      2.2477E+00
+enorm v      1.8259E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7208E+00
+enorm ps     3.6962E-01
+enorm sphu   1.8957E+00
+enorm tv     1.1950E+00
+enorm u      2.3309E+00
+enorm v      1.9295E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.5219E+00
+enorm ps     3.6573E-01
+enorm sphu   1.8016E+00
+enorm tv     1.1194E+00
+enorm u      2.3641E+00
+enorm v      1.8711E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.8458E+00
+enorm ps     3.6939E-01
+enorm sphu   1.8781E+00
+enorm tv     1.1869E+00
+enorm u      2.4508E+00
+enorm v      1.9606E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.6384E+00
+enorm ps     3.6571E-01
+enorm sphu   1.7925E+00
+enorm tv     1.1554E+00
+enorm u      2.3766E+00
+enorm v      1.9481E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.9637E+00
+enorm ps     3.6833E-01
+enorm sphu   1.8637E+00
+enorm tv     1.2318E+00
+enorm u      2.4615E+00
+enorm v      2.0383E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.6549E+00
+enorm ps     3.6471E-01
+enorm sphu   1.8329E+00
+enorm tv     1.1940E+00
+enorm u      2.3611E+00
+enorm v      1.9022E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.9991E+00
+enorm ps     3.6762E-01
+enorm sphu   1.8966E+00
+enorm tv     1.2787E+00
+enorm u      2.4533E+00
+enorm v      2.0029E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.5179E+00
+enorm ps     3.6400E-01
+enorm sphu   1.8153E+00
+enorm tv     1.1838E+00
+enorm u      2.3343E+00
+enorm v      1.8205E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.8573E+00
+enorm ps     3.6741E-01
+enorm sphu   1.8925E+00
+enorm tv     1.2681E+00
+enorm u      2.4165E+00
+enorm v      1.9127E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.5560E+00
+enorm ps     3.6450E-01
+enorm sphu   1.8125E+00
+enorm tv     1.1720E+00
+enorm u      2.3249E+00
+enorm v      1.8821E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.9084E+00
+enorm ps     3.6818E-01
+enorm sphu   1.8904E+00
+enorm tv     1.2530E+00
+enorm u      2.4172E+00
+enorm v      1.9797E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.4916E+00
+enorm ps     3.6352E-01
+enorm sphu   1.7802E+00
+enorm tv     1.1606E+00
+enorm u      2.2953E+00
+enorm v      1.8920E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.8497E+00
+enorm ps     3.6692E-01
+enorm sphu   1.8692E+00
+enorm tv     1.2458E+00
+enorm u      2.3788E+00
+enorm v      1.9889E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.4793E+00
+enorm ps     3.6413E-01
+enorm sphu   1.7556E+00
+enorm tv     1.1733E+00
+enorm u      2.2998E+00
+enorm v      1.8866E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.8147E+00
+enorm ps     3.6691E-01
+enorm sphu   1.8328E+00
+enorm tv     1.2476E+00
+enorm u      2.3900E+00
+enorm v      1.9774E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3503E+00
+enorm ps     3.6566E-01
+enorm sphu   1.7383E+00
+enorm tv     1.1633E+00
+enorm u      2.2487E+00
+enorm v      1.8343E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7039E+00
+enorm ps     3.6855E-01
+enorm sphu   1.8183E+00
+enorm tv     1.2348E+00
+enorm u      2.3562E+00
+enorm v      1.9260E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3142E+00
+enorm ps     3.6386E-01
+enorm sphu   1.7416E+00
+enorm tv     1.1560E+00
+enorm u      2.2590E+00
+enorm v      1.7937E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.6149E+00
+enorm ps     3.6702E-01
+enorm sphu   1.8252E+00
+enorm tv     1.2232E+00
+enorm u      2.3362E+00
+enorm v      1.8632E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.3808E+00
+enorm ps     3.6345E-01
+enorm sphu   1.7468E+00
+enorm tv     1.1563E+00
+enorm u      2.3033E+00
+enorm v      1.8110E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.6633E+00
+enorm ps     3.6572E-01
+enorm sphu   1.8115E+00
+enorm tv     1.2308E+00
+enorm u      2.3582E+00
+enorm v      1.8971E+00
+data_type= ana  norm_type=twe       nfields= 5
+enorm sum=   7.4229E+00
+enorm ps     3.6328E-01
+enorm sphu   1.7295E+00
+enorm tv     1.1798E+00
+enorm u      2.2970E+00
+enorm v      1.8533E+00
+data_type= bkg  norm_type=twe       nfields= 5
+enorm sum=   7.7347E+00
+enorm ps     3.6634E-01
+enorm sphu   1.8015E+00
+enorm tv     1.2602E+00
+enorm u      2.3724E+00
+enorm v      1.9343E+00

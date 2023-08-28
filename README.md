@@ -1,1 +1,0 @@
-# geos-template-repo

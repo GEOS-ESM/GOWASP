@@ -1,0 +1,198 @@
+Explanation of kx table input 
+
+FIRST PART OF Kx_Table : values for single variables
+                         MUST BE IN THIIS ORDER
+
+1. kx_num=        19 : The number of distinct pairs of kx values and sat ids 
+                    in the 2nd part of the table   
+2. kx_cbins=      21 : The numbers of bins in each histogram for each
+                    sub-domain (e.g., for cloud_fraction values within some 
+                    range of p and geographic locations)  
+3. kx_pbins=       7 : The number of pressure ranges between 0 and 1000 mb, 
+                    equally spaced in p.  
+4. kx_jbins_lats=  6 : The number of latititude ranges, equally spaced in lat
+                    between +/- 90 degrees.
+5. kx_jbins_lors=  2 : 2 means counts and probabilities separated into values 
+                    over land or sea (Do not change this)
+6. kx_jbins_time=  1 : Do not change this. With additional coding, it will later
+                    allow for separate probabilities at different synoptic 
+                    times
+7. kx_nparams=     6 : The number of parameters to determine for the
+                    probability functions for each for each set of latitude,
+                    pressure, time, and land vs sea ranges.
+8. kx_nfilters=    4 : The number of variables specified as filters. There 
+                    are distinct sets of values for each kx and satid pair
+9. kx_filt_flat=   1 : index for the filter value defining the 
+10. kx_filt_slev=   2 : index for the filter value defining the min solar
+                    elevation allowed for this obs kx and satid   
+11. kx_filt_torb=   3 : index for the filter value defining 
+12. kx_filt_mcnt=   4 : index for the filter value defining 
+13. kx_ipw_nlevs=  see explanation for kx_ipw_...
+14. kx_ipw_types=  see explanation for kx_ipw_...
+15. kx_times_satloc= num of ana periods used to comp satloc
+16. kx_times_params= num of ana periods used to comp params
+17. kx_field_kdim=   num of vertical levels on which interpolated fields will
+                     be defined. Set to number of data levels to be read from
+                    the NR if no vert interp to be performed; otherwise a file
+                    kx_akbk_file_name is needed.
+ 
+18. kx_field_slots=  num of time-interpolated fields to consider in each
+                    analysis period
+19. kx_field_imax=  number of longitudes in interpolated grid
+20. kx_field_jmax=  number of latitudes in interpolated grid
+21. kx_speed_min=  3.00     : the minimum wind speed allowed for an observation 
+                          to be made.
+22. kx_cloud_obscure= 0.950 : If the fractional cloud cover in layers above this
+                          layer is greater than this value, this layer is 
+                          considered obscured
+23. kx_cdtime0_satloc= ! 1st ana datetime used to comp satloc yyyymmddhhmmss
+24. kx_cdtime0_params= ! 1st ana datetime used to comp params yyyymmddhhmmss
+25. kx_path_name=      ! common part of directory path for satloc and akbk
+                         file names
+26. kx_satloc_file_name= ! rest of directory and file name for satloc location counts
+27. kx_akbk_file_name=   ! rest of directory and file name (or none) for file
+                    of interface ak, bk eta coordinate parameters for vertical
+                    grid to which NR data are to be interpolated. This grid must lie 
+                    within the NR data that is read.   
+
+kx_ipw_plevs and kx_ipw_bparm  in table 3;  see explanation for kx_ipw_...
+
+kx_ipw_... explanation:   
+  These all refer to how layers of integated precipitable water (ipw) are  
+     defined and used for various kx types and subtypes.   
+  Each AMV type and subtype designed to simulate feature tracking based on 
+     images of water vapor will consider one or more ipw layers. Each layer is
+     defined by a pair of real numbers indicating its top and bottom p in mb.
+     The number of separate, perhaps overlapping, layers considered by any and
+     and all of the types and subtypes is set as kx_ipw_nlevs. Separate ipw 
+     values will be computed for each defined layer.          
+  Different AMV types and subtypes may use different sets of ipw values (i.e.,
+     different layers or combinations of layers). Also, they may use different
+     scalings of ipw values or minimum values of q for determining the 
+     vertical location of observations of its considered layers. The number of
+     distinct layer combinations, scalings, and minimum q values is set as 
+     kx_ipw_itypes. Each specified combination is refered to by an index
+     0,1,...,kx_ipw_itypes, with 0 meaning none considered (i.e., for not a 
+     WV-based observation). These latter indexes are specified in Table 2 for 
+     each kx,ks.                    
+  The specific combinations are defined in Table 3 and stored in the array 
+     kx_ipw_bparms(1:2,1:kx_ipw_nlevs,1:kx_ipw_types). Its first index refers
+     to the two values q-scaling and q-min. These must be defined for each of
+     the kx_ipw_nlevs layers as ordered when kx_ipw_plevs was specified (they
+     must both be set to 0. for any layers not to be included in this 
+     combination. There are kx_ipw_types of combinations that must be defined.
+  For example, for kx_ipw_nlevs=2, kx_ipw_plevs=  100. 700. 600. 900. means 
+     that ipw will be determined for each of the 2 layers 100<p<700 and  
+     600<p<900. Then for kx_ipw_types=4, the combinations
+     "1  3.00 .00010 0.  0.", "2 0. 0. 2.00 .0005", "3 3.00 .00020 1. .001", 
+     means that for any kx,ks WV type refering to combination 1, only 
+     ipw for layer 1 will be considered, with scaling of delta q by a factor 
+     of 3. and qmin set to .0001, to combination 2, only ipw for layer 2 will 
+     be considered, with scaling of delta q by a factor          
+     of 2. and qmin set to .0005 (gnerally the respecive lower and higher 
+     values compared to combination 1 because the q values are larger    
+     lower in the atmosphere), and combination 3 meaning that this kx,ks  
+     type considers 2 different ipw layers, each with its own scaling and 
+     q min). Note that although different kx types may refer to the same   
+     layers the scaling and q min may need to differ, e.g., if one concerns 
+     observations near the poles and the other near the equator, different 
+     scaling and qmin m,ay be required because the q field has such different
+     magnitudes in the 2 regions. 
+  As coded this appears the most general way of specifying which and how 
+     layers are to be used for distinct kx,ks.           
+
+Regarding the scaling, values of ipw for this layer will be divided by this 
+value. Bining to produce the histogram will be defined for scaled values
+between 1 and 0, with scaled values greater than 1 set to 1. (This is required
+because, unlike for cloud fractions that are defined between 1 and 0, ipw has
+no fixed range. Using the max and min values to define the range along with
+equally-spaced bins results in a poorly discerning histogram because
+high-valued outliers are determining the spacing). 
+
+Regarding the min q value, the p-level defined for an obs based on ipw will be
+defined as the first value of q found that is > this min value when seraching
+through the profile p-levels falling in the range of which thi ipw for this
+layer is computed. 
+
+Explanation of table 2:
+
+TABLE 2: descriptions for kx, sat id combinations
+Column  1: id for the combination; id=1,...,kx_num
+Column  2: GSI kx value for this obs type
+Column  3: WMO sat id number; 0 if mutiple ids, as for polar orbiters 
+Column  4: NC# This is the number following the NC identifier for this obs
+           type in the satwind BUFR tables
+Column  5: ks=0 means all satellites for this kx are considered together
+           ks=1,2,... is an index corresponding to distinct sat id for this 
+           kx; such values can be in any order. 
+Column  6: nw is value of NCWSM variable in meta-data in BUFR file for this
+           sat id.
+Column  7: satellite name
+Column  8: data type: 1st character either G (for geostationary) or P (polar);
+           2nd character either V (AMV from visible clouds), I (AMV from 
+           infrared cloubs), B (both visible and IR), or W (for water vapor
+	   AMV)
+Column  9: 0 if not a WV AMV; otherwise it is the index for the set of kx_ipw_bparms 
+           to be used for this set of obs. 
+Column 10: satellite location longitude if geostationary; otherwise 999.
+Column 11: dx is the minimum horizontal distance between obs allowed (km)
+Column 12: fu=1 if probability is function of cloud fraction; 
+           fu=2 if probability is function of ipw range in box
+Column 13: gd is flag indicating the type of subset grid to consider for the
+           NR data:      
+           = 3 if the starting index for i is determined as a random  
+            value for each time and lat j within the length of the stride, 
+            for which the  length in terms of numbers of grid points depends 
+            on the cosine of each lat; 
+           = 1 if the starting index is set to 1 so that it is the 
+            same for all times and lats; 
+           = 2 if the starting index will vary randomly with time but not lat.
+           This should be set after examining the pattern of real obs
+	   locations; i.e., how regular they are in time and space.
+Column 14: qsfac= factor to multiply the target counts by in order to
+           compensate for a fraction of the simulated obs that will be 
+           rejected due to QC in the GSI. This must be estimated by trial
+           and error. =1 means no count inflation.
+Column 15: flat: for gd<3, use this particular lat to determine what the 
+           stride in the grid i-index should be based on dx (the same i-stride
+           is then used for obs at all lats) 
+Column 16: slev= min solar zenith angle for obs to exist at location; only 
+           applies to obs types based on VIS observations only; otherwis set
+           to some number less than -90. 
+Column 17: torb: for cloud track winds, indicates that that for clouds with
+           their tops at leve p<torb, the obs p level is assigned as that of
+	   the cloud top; otherwise it is the cloud base.  
+Column 18: mcnt: the minimum number of obs required to consider that obs are 
+           present in a satlocation area at any NR time considered. If the 
+           number of of obs is less than this, it is treated as though no 
+           observations should be produced for this region, time, and
+	   kx,sat_id pair. 
+
+#
+# Sample of Table 2: define all AMV observation types
+# n   kx said    NC# ks nw  satname  typ q locat    dx fu gd qsfac flat slev torb mcnt
+  1  242  172   5045  1  2 Himawari  GV  0 147.0  60.0  1  1  1.00  20.  10. 700.  10.
+  2  243   57   5065  2  2 Meteo-10  GV  0   0.0  30.0  1  2  1.00   0.  10. 700.  10.
+  3  243   54   5065  1  2 Meteo-07  GV  0  57.5  30.0  1  2  1.00   0.  10. 700.  10.
+  4  244    0   5080  0  1 Polar     PI  0 999.0  15.0  1  3  1.10  70. -99. 700. 100.
+  5  245  257   5010  1  1 GOES13    GI  0 285.0  25.0  1  3  1.05  20. -99. 700.  10.
+  6  245  259   5010  2  1 GOES15    GI  0 225.0  25.0  1  3  1.05  20. -99. 700.  10.
+  7  246  257   5011  1  3 GOES13    GW  1 285.0  15.0  2  3  1.05  20. -99. 700.  10.
+  8  246  259   5011  2  3 GOES15    GW  1 225.0  15.0  2  3  1.05  20. -99. 700.  10.
+  9  247  257   5000  1  3 GOES13    GW  2 285.0  15.0  2  3  1.05  20. -99. 700.  10.
+ 10  247  259   5000  2  3 GOES15    GW  2 225.0  15.0  2  3  1.05  20. -99. 700.  10.
+ 11  250  172   5046  1  3 Himawari  GW  1 147.0  30.0  2  1  1.00  20. -99. 700.  10.
+ 12  252  172   5044  1  1 Himawari  GI  0 147.0  60.0  1  1  1.00  20. -99. 700.  10.
+ 13  253   57   5064  2  1 Meteo-10  GI  0   0.0  25.0  1  2  1.05   0. -99. 700.  10.
+ 14  253   54   5064  1  1 Meteo-07  GI  0  57.5  25.0  1  2  1.05   0. -99. 700.  10.
+ 15  254   57   5066  2  3 Meteo-10  GW  1   0.0  25.0  2  2  1.05   0. -99. 700.  10.
+ 16  254   54   5066  1  3 Meteo-07  GW  1  57.5  25.0  2  2  1.05   0. -99. 700.  10.
+ 17  257    0   5070  0  1 Polar     PI  0 999.0  10.0  1  3  1.10   70. -99. 700. 100.
+ 18  258    0   5071  0  3 Polar     PW  3 999.0  30.0  2  3  1.10   70. -99. 700. 100.
+ 19  259    0   5071  0  5 Polar     PW  3 999.0  30.0  2  3  1.10   70. -99. 700. 100.
+
+
+Explanation of table 3:
+
+TABLE 3: define ipw_bparams
+See expnation for ipw_plevs above

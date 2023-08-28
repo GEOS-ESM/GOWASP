@@ -1,0 +1,16 @@
+filepath= /discover/nobackup/rerrico/ODSstats/real2moment/Impacts_prog
+expname=   real2moment
+ntimes=    31
+levels=    .true.  
+242         w           KX242
+243         w           KX243
+245         w           KX245
+246         w           KX246
+250         w           KX250
+252         w           KX252
+253         w           KX253
+254         w           KX254
+257         w           KX257
+258         w           KX258
+259         w           KX259
+EOF         EOF         EOF

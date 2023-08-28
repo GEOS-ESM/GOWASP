@@ -1,0 +1,20 @@
+fft99.o: fft99.f90
+m_count_types.o: m_count_types.f90 
+m_fft.o: m_fft.f90 fft99.o
+m_rad2bt.o: m_rad2bt.f90
+m_obs_pert.o: m_obs_pert.f90 m_random_gauss.o m_random_fields.o
+m_pert_loop.o: m_pert_loop.f90 m_random_fields.o m_rad2bt.o 
+m_random_fields.o: m_random_fields.F90 m_shtrans_rf.o m_random_gauss.o m_rf_diags_power.o m_random_power.o 
+m_random_gauss.o: m_random_gauss.f90
+m_random_power.o: m_random_power.f90
+m_rf_diags_fields.o: m_rf_diags_fields.f90 m_shtrans_rf.o m_random_fields.o 
+m_rf_diags_power.o: m_rf_diags_power.f90 m_shtrans_rf.o  
+m_shtrans_rf.o: m_shtrans_rf.f90 m_fft.o fft99.o m_fft.o 
+create_error.o: create_error.F90 fft99.o m_count_types.o m_fft.o m_rad2bt.o m_obs_pert.o m_pert_loop.o m_random_fields.o m_random_gauss.o m_rf_diags_power.o m_rf_diags_fields.o m_shtrans_rf.o 
+
+  
+
+
+ 
+
+

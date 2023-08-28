@@ -1,0 +1,14 @@
+data_type= ana  norm_type=kxe     
+enorm sum=    4.50E+00
+enorm ps      0.00E+00
+enorm sphu    0.00E+00
+enorm tv      0.00E+00
+enorm u       2.51E+00
+enorm v       1.99E+00
+data_type= bkg  norm_type=kxe     
+enorm sum=    4.71E+00
+enorm ps      0.00E+00
+enorm sphu    0.00E+00
+enorm tv      0.00E+00
+enorm u       2.59E+00
+enorm v       2.12E+00

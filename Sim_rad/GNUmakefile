@@ -12,7 +12,7 @@ _Lnetcdf      = $(shell ${BASELIBDIR}/bin/nf-config --flibs)
 _Ibufr	      = -I${GEOSPATH}/Linux/include/NCEP_bufr_r4i4 
 _Lbufr	      = -L${GEOSPATH}/Linux/lib -lNCEP_bufr_r4i4
 
-_Icrtm	      = -I${GEOSPATH}/src/NCEP_Shared/NCEP_crtm
+_Icrtm	      = -I${GEOSPATH}/Linux/include/NCEP_crtm
 _Lcrtm	      = -L${GEOSPATH}/Linux/lib -lNCEP_crtm
 
 _Ibasic	      = -I../Lib_basic1

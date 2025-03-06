@@ -1,9 +1,8 @@
 #!/usr/bin/make 
 
 BASELIBDIR = ${BASEDIR1}/Linux
-GEOSPATH = ${GEOSPATH1}
 
-_Ibufr        = -I${GEOSPATH}/Linux/include/NCEP_bufr_r4i4
+_Ibufr        = -I${GEOSINSTALL}/include/NCEP_bufr_r4i4
 
 _Ibasic	      = -I../Lib_basic1
 

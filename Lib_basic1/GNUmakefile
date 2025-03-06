@@ -1,7 +1,6 @@
 #!/usr/bin/make 
 
 BASELIBDIR = ${BASEDIR1}/Linux
-GEOSPATH = ${GEOSPATH1}
 
 FC	= mpiifort
 FCFLAGS	= -O3 

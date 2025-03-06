@@ -1,7 +1,6 @@
 #!/usr/bin/make 
 
 BASELIBDIR = ${BASEDIR1}/Linux
-GEOSPATH = ${GEOSPATH1}
 
 NETCDF_LIBDIR = ${BASELIBDIR}/lib
 NETCDF_INCDIR = ${BASELIBDIR}/include/netcdf
@@ -9,11 +8,11 @@ NETCDF_INCDIR = ${BASELIBDIR}/include/netcdf
 _Inetcdf      = -I$(NETCDF_INCDIR) 
 _Lnetcdf      = $(shell ${BASELIBDIR}/bin/nf-config --flibs)
 
-_Ibufr	      = -I${GEOSPATH}/Linux/include/NCEP_bufr_r4i4 
-_Lbufr	      = -L${GEOSPATH}/Linux/lib -lNCEP_bufr_r4i4
+_Ibufr	      = -I${GEOSINSTALL}/include/NCEP_bufr_r4i4 
+_Lbufr	      = -L${GEOSINSTALL}/lib -lNCEP_bufr_r4i4
 
-_Icrtm	      = -I${GEOSPATH}/Linux/include/NCEP_crtm
-_Lcrtm	      = -L${GEOSPATH}/Linux/lib -lNCEP_crtm
+_Icrtm	      = -I${GEOSINSTALL}/include/NCEP_crtm
+_Lcrtm	      = -L${GEOSINSTALL}/lib -lNCEP_crtm
 
 _Ibasic	      = -I../Lib_basic1
 _Lbasic	      = -L../Lib_basic1 -lbasic1

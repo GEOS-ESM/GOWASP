@@ -1,7 +1,6 @@
 #!/usr/bin/make 
 
 BASELIBDIR = ${BASEDIR1}/Linux
-GEOSPATH = ${GEOSPATH1}
 
 NETCDF_LIBDIR = ${BASELIBDIR}/lib
 NETCDF_INCDIR = ${BASELIBDIR}/include/netcdf

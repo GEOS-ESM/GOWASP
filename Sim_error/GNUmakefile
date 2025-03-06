@@ -1,12 +1,11 @@
 #!/usr/bin/make 
 BASELIBDIR = ${BASEDIR1}/Linux
-GEOSPATH = ${GEOSPATH1}
 
-_Ibufr	      = -I${GEOSPATH}/Linux/include/NCEP_bufr_r4i4 
-_Lbufr	      = -L${GEOSPATH}/Linux/lib -lNCEP_bufr_r4i4
+_Ibufr	      = -I${GEOSINSTALL}/include/NCEP_bufr_r4i4 
+_Lbufr	      = -L${GEOSINSTALL}/lib -lNCEP_bufr_r4i4
 
-_Icrtm	      = -I${GEOSPATH}/Linux/include/NCEP_crtm
-_Lcrtm	      = -L${GEOSPATH}/Linux/lib -lNCEP_crtm
+_Icrtm	      = -I${GEOSINSTALL}/include/NCEP_crtm
+_Lcrtm	      = -L${GEOSINSTALL}/lib -lNCEP_crtm
 
 _Ibasic	      = -I../Lib_basic1
 _Lbasic	      = -L../Lib_basic1 -lbasic1
